@@ -1,0 +1,207 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* nav */
+.nav{
+    background: #222 !important;
+    padding: 10px 25px;
+    height: 60px;
+    border-bottom: 1px solid gold;
+    font-family: 'Times New Roman', Times, serif;
+}
+.nav a{
+    font-size: clamp(16px, 2vw, 27px);
+}
+.nav button{
+    border: none;
+    color: white;
+    background: none;
+    cursor: pointer;
+    outline: none;
+}
+.nav button i{
+    transform: scale(1.4);
+}
+
+.row{
+    margin: 0;
+    height: auto;
+}
+
+/* sidebar */
+.sidebar{
+    background-color: #252525;
+    height:calc(100vh - 60px);
+    position: sticky;
+    top: 60px;
+    overflow: hidden;
+}
+.profile_sidebar{
+    width: 100%;
+    border-bottom: 1px solid grey;
+    padding-bottom: 15px !important;
+}
+.profile_sidebar > img{
+    display: block;
+    width: 90%;
+    aspect-ratio: 5/2;
+    object-fit: cover;
+    margin: 24px auto;
+}
+.profile_name{
+    font-weight: bold;
+    font-size: 15px;
+    font-family: 'Times New Roman', Times, serif;
+}
+.profile_name span{
+    font-size: 20px;
+}
+.green__circle{
+    height: 10px;
+    width: 10px;
+    border-radius: 50%;
+    background: chartreuse;
+    margin-right: 5px;
+}
+.menu__box{
+    list-style: none;
+    padding: 0px;
+    margin: 0px;
+}
+.menu__box li{
+    text-align: left;
+    border-bottom: 1px solid grey;
+    cursor: pointer;
+}
+.menu__box li a{
+    display: block;
+    color: white;
+    padding: 20px 30px;
+    font-size: 18px;
+    font-family: 'Times New Roman', Times, serif;
+    letter-spacing: 3px;
+    text-decoration: none;
+}
+.menu__box li a:hover {
+    background: #025e0e;
+}
+.active_list{
+    color: white ;
+    background: #007BFF;
+}
+.fas{
+    margin-right: 10px;
+}
+
+
+/* schedule*/
+.title_box{
+    padding-bottom: 10px;
+    border-bottom: 1px solid grey;
+    position: relative;
+}
+.title_box > button{
+    border-radius: 50%;
+    height: 40px;
+    width: 40px;
+}
+.left_month{
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+}
+.right_month{
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+}
+#calender{
+    cursor: pointer;
+}
+.calender-sticker{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+}
+
+/*  */
+
+.main_box{
+    background: #E9ECF2;
+    height: calc(100vh - 60px);
+    padding: 20px;
+    font-family: 'Times New Roman', Times, serif;
+    text-align: center;
+    position: relative;
+}
+
+/* booking */
+
+.reservation_title, .customer_info {
+    border-bottom: 1px solid grey;
+}
+.booking-customer-list{
+    gap: 10px;
+}
+.booking-customer-list > button{
+    background: #ddd;
+    min-width: 50px;
+    outline: 0px;
+    border: 1px solid #8b8989ad;
+    border-radius: 5px;
+    padding: 3px 10px;
+}
+.booking-customer-list > button:hover{
+    background: #ccc;
+}
+
+#alert-box{
+    position: absolute;
+}
+
+/* room */
+
+.room_page_nav{
+    border-bottom: 1px solid grey;
+}
+.room_search_bar{
+    border-bottom: 1px solid grey;
+    padding-bottom: 10px;
+    font-family: 'Times New Roman', Times, serif;
+}
+.floorSelector{
+    font-size: 16px;
+    padding: 5px;
+    padding-right: 10px;
+    color: gray;
+}
+.display_room{
+    width: 100%;
+    max-height: calc(100vh - 250px);
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    grid-auto-flow: dense;
+}
+.room_box{
+    width: 25%;
+    text-align: center;
+}
+.room_title{
+    width: 100%;
+    height: 130px;
+    display: grid;
+    align-items: center;
+    font-size: 25px;
+    font-weight: bold;
+    cursor: pointer !important;
+}
