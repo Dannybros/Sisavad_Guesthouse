@@ -42,7 +42,7 @@
         $typeID=$rooms['room_type_id'];
         $status=$rooms['room_status'];
         $price=$rooms['price'];
-
+        $booking=$rooms['booking_id'];
         
         $return_arr[] = array(
             "id" => $id,
@@ -50,7 +50,8 @@
             "type"=>$type,
             "typeID"=>$typeID,
             "status" => $status,
-            "price"=>$price
+            "price"=>$price,
+            "booking"=>$booking
         );
     }
 

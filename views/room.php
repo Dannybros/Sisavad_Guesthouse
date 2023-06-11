@@ -3,7 +3,7 @@
 </h1>
 
 <div class="d-flex justify-content-between align-items-center room_search_bar px-2">
-    <select name="floor" id="roomTypeSelector" class="floorSelector" onchange="showRooms(this.value)">
+    <select name="floor" id="roomTypeSelector" class="floorSelector" onchange="loadRooms()">
         <option value="all" selected="select">All</option>
         <?php
             $sql ="SELECT * FROM `room_type`";
@@ -17,7 +17,7 @@
         <?php }?>
     </select>
     <div class="input-group" style="width: 300px !important;">
-        <input type="text" id="roomSearchBar" class="form-control" style="border:1px solid lightblue" placeholder="Search" value="" onkeyup="searchRoom(this)"/>
+        <input type="text" id="roomSearchBar" class="form-control" style="border:1px solid lightblue" placeholder="Search" value="" onkeyup="loadRooms()"/>
     </div>
     <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#roomModal" onclick="addNewRoom()">
         <i class="fa fa-plus"></i>
@@ -25,42 +25,107 @@
     </button>
 </div> 
 
-<div class="display_room row my-4 overflow-auto" id="display_room">
-    <?php
-        $room_query = "SELECT * FROM `room` NATURAL JOIN `room_type` ORDER BY room_name";
-        $room_result = mysqli_query($conn, $room_query);
-        while ($rooms = mysqli_fetch_assoc($room_result)) {
-            if($rooms['room_status']==="Free") $color = "bg-success";
-            else $color = "bg-danger"; 
+<table class="table">
+    <thead>
+        <tr class="table-dark">
+            <th scope="col">ID</th>
+            <th scope="col">Room</th>
+            <th scope="col">Type</th>
+            <th scope="col">Price</th>
+            <th scope="col">Status</th>
+            <th scope="col">Action</th>
+        </tr>
+    </thead>
+    <tbody id="display_room" class="table-group-divider ">
+        <?php
+            $room_query = "SELECT * FROM `room` NATURAL JOIN `room_type` ORDER BY room_name";
+            $room_result = mysqli_query($conn, $room_query);
+            while ($rooms = mysqli_fetch_assoc($room_result)) {
+
+                $customer = "disabled";
+                $booking = "disabled";
+                
+                if($rooms['room_status']==="Booked"){
+                    $color = "table-primary";
+                    $booking="";
+                }
+                else if ($rooms['room_status']==="Maintenance"){
+                    $color = "table-danger";
+                }
+                else if ($rooms['room_status']==="Staying"){
+                    $color = "table-warning";
+                    $customer="";
+                    $booking="";
+                }
+                else{
+                    $color = "table-success"; 
+                }
+            ?>
+                <tr class=<?php echo $color?>>
+                    <td class="align-middle"> <?php echo $rooms['room_id'] ?> </td>
+                    <td class="align-middle"><b> <?php echo $rooms['room_name'] ?> </b></td>
+                    <td class="align-middle"> <?php echo $rooms['room_type_name'] ?> </td>
+                    <td class="align-middle"> <?php echo number_format($rooms['price']) ?> KIP</td>
+                    <td class="align-middle"><b> <?php echo $rooms['room_status'] ?> </b></td>
+                    <td class="d-flex justify-content-around">
+                        <button 
+                            type="button" 
+                            class="btn btn-primary btn-sm" 
+                            onclick="viewRoomInfo('<?php echo $rooms['room_id']?>')" 
+                            data-bs-toggle="modal" 
+                            data-bs-target="#roomModal"
+                        >
+                            <i class="fa fa-eye" aria-hidden="true"></i>
+                        </button>
+                        <button 
+                            type="button" 
+                            class="btn btn-secondary btn-sm" <?php echo $customer?>
+                        >
+                            <i class="fa fa-address-book" aria-hidden="true"></i>
+                        </button>
+                        <button 
+                            type="button" 
+                            class="btn btn-success btn-sm" <?php echo $booking?>
+                            onclick="viewBookingInfo('<?php echo $rooms['booking_id']?>')" 
+                            data-bs-toggle="modal" 
+                            data-bs-target='#bookingRoomModal'
+                        >
+                            <i class="fa fa-bookmark" aria-hidden="true"></i>
+                        </button>
+                    </td>
+                </tr>
+            <?php  }
         ?>
-            <main class="room_box p-3 rounded-10" id="room_box">
-                <div class="room_title p-0 <?php echo $color?>" style="--bs-bg-opacity: .5;">
-                    <?php echo $rooms['room_name'] ?>
-                </div>
-                <article class="border">
-                    <aside class="bg-white py-2 border-bottom"> 
-                        <b>
-                            <?php echo $rooms['room_type_name'] ?>
-                            &nbsp; 
-                            (<?php echo $rooms['room_status'] ?>)
-                        </b>
-                    </aside>
-                    <div class="bg-white py-2 d-flex justify-content-around">
-                        <em class="btn btn-success" onclick="viewRoomInfo('<?php echo $rooms['room_id']?>')" data-bs-toggle="modal" data-bs-target="#roomModal" >
-                            View
-                        </em>
-                        <?php
-                        if($rooms['room_status']=="Booked"){?>
-                            <em class="btn btn-primary staff_icon" onclick="viewBookingInfo('<?php echo $rooms['booking_id']?>')" data-bs-toggle="modal" data-bs-target='#bookingRoomModal'>
-                                Client
-                            </em>
-                        <?php }?>
-                    </div>
-                </article>
-            </main>
-        <?php  }
-    ?>
-</div>
+    </tbody>
+</table>
+
+
+<!-- <div class="display_room row my-4 overflow-auto" id="display_room"> -->
+<!-- <main class="room_box p-3 rounded-10" id="room_box">
+        <div class="room_title p-0 <?php echo $color?>" style="--bs-bg-opacity: .5;">
+        <?php echo $rooms['room_name'] ?>
+        </div>
+        <article class="border">
+            <aside class="bg-white py-2 border-bottom"> 
+                <b>
+                    <?php echo $rooms['room_type_name'] ?>
+                    &nbsp; 
+                    (<?php echo $rooms['room_status'] ?>)
+                </b>
+            </aside>
+            <div class="bg-white py-2 d-flex justify-content-around">
+                <em class="btn btn-success" onclick="viewRoomInfo('<?php echo $rooms['room_id']?>')" data-bs-toggle="modal" data-bs-target="#roomModal" >
+                    View
+                </em>
+                <?php
+                if($rooms['room_status']=="Booked"){?>
+                    <em class="btn btn-primary staff_icon" onclick="viewBookingInfo('<?php echo $rooms['booking_id']?>')" data-bs-toggle="modal" data-bs-target='#bookingRoomModal'>
+                        Booking
+                    </em>
+                <?php }?>
+            </div>
+        </article>
+    </main> -->
 
 <div class="modal fade" id="roomModal" tabindex="-1" role="dialog" aria-labelledby="roomModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -178,6 +243,7 @@
             <div class="button-group">
                 <button type="button" class="btn btn-danger" onclick="openCancelModal()" data-bs-target="#memoModal" data-bs-toggle="modal">Cancel Booking</button>
                 <button type="button" class="btn btn-info" onclick="openMoveModal()" data-bs-target="#memoModal" data-bs-toggle="modal">Move Room</button>
+                <button type="button" class="btn btn-dark" onclick="openExtendDateModal()" data-bs-target="#extendBookingModal" data-bs-toggle="modal">Extend Booking</button>
             </div>
             <div class="button-group">
                 <button type="button" class="btn btn-success" onclick="roomCheckIn_Out('Checked In')">Check In</button>
@@ -189,6 +255,48 @@
     </div>
 </div>
 
+<div class="modal fade" id="extendBookingModal" aria-hidden="true" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5">Extend the Duration</h1>
+        <button type="button" class="btn-close" data-bs-target="#bookingRoomModal" data-bs-toggle="modal"></button>
+      </div>
+      <div class="modal-body row">
+        <div class="col-6">
+            <h5 style="float:left"><b>Old Check out Date</b></h5>
+            <input 
+                type="date" 
+                id="old_check_out_date"  
+                class="form-control" 
+                disabled
+            />
+        </div>
+        <div class="col-6">
+            <h5 style="float:left"><b>New Check Out Date</b></h5>
+            <input 
+                type="date" 
+                id="new_check_out_date" 
+                onchange="getDuration(old_check_out_date, new_check_out_date, 'extend_room_price', 'extend_duration', 'extend_total')"  
+                class="form-control" 
+                data-error="Select Check In Date"  
+                required
+            />
+        </div>
+
+        <figure class="d-flex pt-4 mb-0 justify-content-between">
+            <b>Extend Duration: <label style="color:#fd7e14" id="extend_duration"> 0 Day </label> </b>
+            <b class="col-4">Price: <label style="color:#fd7e14" id="extend_room_price"></label> </b>
+            <b class="col-4">Extend Total: <label style="color:#fd7e14" id="extend_total"> 0 KIP </label> </b>
+        </figure>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-info" data-bs-target="#bookingRoomModal" data-bs-toggle="modal">Back</button>
+        <button class="btn btn-primary" onclick="extendBookingDate()">Submit</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <div class="modal fade" id="memoModal" aria-hidden="true" tabindex="-1">
   <div class="modal-dialog modal-dialog-centered">
@@ -215,7 +323,7 @@
       </div>
       <div class="modal-footer">
         <button class="btn btn-info" data-bs-target="#bookingRoomModal" data-bs-toggle="modal">Back</button>
-        <button class="btn btn-primary" onclick="bookedRoomMove_Cancel()">Submit</button>
+        <button class="btn btn-primary" onclick="Move_CancelRoom()">Submit</button>
       </div>
     </div>
   </div>

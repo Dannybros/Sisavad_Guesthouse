@@ -1,5 +1,4 @@
 <section id="schedule" onload="test()">
-
     <div class="title_box"> 
         <button class="btn btn-light left_month" onclick="goPrevMonth()">
             <i class="fa fa-chevron-left"></i>
@@ -13,11 +12,79 @@
             <i class="fa fa-chevron-right"></i>
         </button>
     </div>
+
+    <section class="d-flex justify-content-between px-5 my-3">
+        <figure class="d-flex m-0">
+            <div class="d-flex mx-2">
+                <div class="calender-legend bg-success bg-opacity-75"></div>
+                <label>Finished</label>
+            </div>
+            <div class="d-flex mx-2">
+                <div class="calender-legend bg-primary bg-opacity-75"></div>
+                <label>Staying</label>
+            </div>
+            <div class="d-flex mx-2">
+                <div class="calender-legend bg-warning bg-opacity-75"></div>
+                <label>Reserved</label>
+            </div>
+            <div class="d-flex mx-2">
+                <div class="calender-legend bg-danger bg-opacity-75"></div>
+                <label>Maintanence</label>
+            </div>
+        </figure>
+
+        <figure class="d-flex m-0">
+            <aside class="d-flex mx-2">
+                <div class="calender-legend bg-success bg-opacity-75">
+                    <div class="calender-sign bg-white"></div>
+                </div>
+                <label>Checked In</label>
+            </aside>
+
+            <aside class="d-flex mx-2">
+                <div class="calender-legend bg-success bg-opacity-75">
+                    <div class="calender-sign bg-black"></div>
+                </div>
+                <label>Checked Out</label>
+            </aside>
+
+            <aside class="d-flex mx-2">
+                <div class="calender-legend bg-success bg-opacity-75">
+                    <div class="calender-sign bg-warning"></div>
+                </div>
+                <label>Moved</label>
+            </aside>
+            <aside class="d-flex mx-2">
+                <div class="calender-legend bg-success bg-opacity-75 text-white">
+                    <i class="fa fa-money" style="font-size: 11px;" aria-hidden="true"></i>
+                </div>
+                <label>Not Paid</label>
+            </aside>
+        </figure>
+    </section>
     
-    <table class="table table-bordered" id="calender">
-        <thead id="calender_header" onload="test()">
+    <table class="table table-bordered table-group-divider" id="calender">
+        <thead id="calender_header">
         </thead>
         <tbody id="calender_body">
         </tbody>
     </table>
 </section>
+
+<div class="modal fade" id="scheduleBookingModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Understood</button>
+      </div>
+    </div>
+  </div>
+</div>

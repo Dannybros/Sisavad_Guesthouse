@@ -122,18 +122,32 @@
     right: 0;
     transform: translateY(-50%);
 }
+.calender-legend{
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+    display: grid;
+    place-items: center;
+}
+.calender-sign{
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+}
 #calender{
     cursor: pointer;
+    border-top: 1px solid grey;
 }
 .calender-sticker{
     position: absolute;
-    top: 50%;
+    top: 60%;
     left: 50%;
-    transform: translate(-50%, -50%);
-    width: 10px;
-    height: 10px;
+    transform: translate(-60%, -50%);
+    width: 8px;
+    height: 8px;
     border-radius: 50%;
 }
+
 
 /*  */
 

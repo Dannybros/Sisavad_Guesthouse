@@ -12,12 +12,12 @@
 
     $time = date('Y-m-d');
 
-
-    $sql="INSERT INTO `booking`(`booking_id`, `customer_id`, `date_check_in`, `date_check_out`, `duration`, `total_payment`, `payment_status`) VALUES ('$booking_ID','$customer','$checkIn','$checkOut','$duration','$total','$cbPayment');
-        
+    $sql="INSERT INTO `booking`(`booking_id`, `customer_id`, `date_in`, `date_out`, `duration`, `booking_status`, `total_payment`, `payment_status`)
+     VALUES ('$booking_ID','$customer','$checkIn','$checkOut','$duration', 'Confirmed', '$total','$cbPayment');
+    
     UPDATE `room` SET `room_status`='Booked', `booking_id`='$booking_ID' WHERE `room_id`='$roomID';
     
-    INSERT INTO `booking_log`(`booking_id`, `room`, `time`, `booking_status`, `memo`) VALUES ('$booking_ID','$roomID','$time','Reserved','') ";
+    INSERT INTO `room_log`(`booking_id`, `room_id`, `time`, `action`, `memo`) VALUES ('$booking_ID','$roomID','$time','Reserved','')";
 
     $result = mysqli_multi_query($conn, $sql);
     
