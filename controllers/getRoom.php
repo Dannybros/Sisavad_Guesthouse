@@ -29,6 +29,15 @@
         $query = "SELECT * FROM `room` NATURAL JOIN `room_type` WHERE `room_type_id` = '$id' AND `room_status` = 'Free'";
     }
 
+    if(isset($_GET['free'])){
+        
+        $id = $_POST['type'];
+        $checkIn = $_POST['checkIn'];
+        $checkOut = $_POST['checkOut'];
+        
+        $query = "SELECT * FROM `room` NATURAL JOIN `room_type` WHERE `room_id` NOT IN (SELECT `booked_room` FROM `booking` WHERE `date_in` BETWEEN '$checkIn' AND '$checkOut') AND `room_type_id` = '$id' AND `room_status` = 'Free'";
+    }
+
     if(isset($_GET['all'])){
         $query = "SELECT * FROM `room` NATURAL JOIN `room_type`";
     }
@@ -42,7 +51,6 @@
         $typeID=$rooms['room_type_id'];
         $status=$rooms['room_status'];
         $price=$rooms['price'];
-        $booking=$rooms['booking_id'];
         
         $return_arr[] = array(
             "id" => $id,
@@ -51,10 +59,10 @@
             "typeID"=>$typeID,
             "status" => $status,
             "price"=>$price,
-            "booking"=>$booking
         );
     }
 
+    // echo mysqli_error($conn);
     echo json_encode($return_arr);
 
     exit();

@@ -71,12 +71,19 @@
     padding: 0px;
     margin: 0px;
 }
-.menu__box li{
+.main-menu {
     text-align: left;
     border-bottom: 1px solid grey;
     cursor: pointer;
 }
-.menu__box li a{
+.sub-menu{
+    text-decoration: none;
+}
+.sub-menu:hover{
+    text-decoration: underline;
+    color:#1787ff !important;
+}
+.menu__list{
     display: block;
     color: white;
     padding: 20px 30px;
@@ -85,19 +92,27 @@
     letter-spacing: 3px;
     text-decoration: none;
 }
-.menu__box li a:hover {
-    background: #025e0e;
-}
-.active_list{
-    color: white ;
-    background: #007BFF;
-}
 .fas{
     margin-right: 10px;
 }
 
+.menu_list:hover{
+    background: #58349b;
+}
+
+.active_list{
+    background:#8540f5 !important;
+}
+.icon-rotate{
+    transition: all .3s linear;
+}
+
+.icon-rotate.down {
+    transform:translateY(5px) rotate(90deg);
+}
 
 /* schedule*/
+
 .title_box{
     padding-bottom: 10px;
     border-bottom: 1px solid grey;
@@ -141,8 +156,8 @@
 .calender-sticker{
     position: absolute;
     top: 60%;
-    left: 50%;
     transform: translate(-60%, -50%);
+    left: 50%;
     width: 8px;
     height: 8px;
     border-radius: 50%;
@@ -168,18 +183,6 @@
 .booking-customer-list{
     gap: 10px;
 }
-.booking-customer-list > button{
-    background: #ddd;
-    min-width: 50px;
-    outline: 0px;
-    border: 1px solid #8b8989ad;
-    border-radius: 5px;
-    padding: 3px 10px;
-}
-.booking-customer-list > button:hover{
-    background: #ccc;
-}
-
 #alert-box{
     position: absolute;
 }
@@ -190,8 +193,6 @@
     border-bottom: 1px solid grey;
 }
 .room_search_bar{
-    border-bottom: 1px solid grey;
-    padding-bottom: 10px;
     font-family: 'Times New Roman', Times, serif;
 }
 .floorSelector{
@@ -218,4 +219,54 @@
     font-size: 25px;
     font-weight: bold;
     cursor: pointer !important;
+}
+
+
+/* stepper */
+.steps {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    position: relative;
+}
+.step-button {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: none;
+    background-color: #CACACA;
+    transition: .4s;
+}
+.step-button[aria-expanded="true"] {
+    width: 60px;
+    height: 60px;
+    background-color: #0D6EFD;
+    color: #fff;
+}
+.done {
+    background-color: #0D6EFD;
+    color: #fff;
+}
+.step-item {
+    z-index: 10;
+    text-align: center;
+}
+#progress {
+    position: absolute;
+    width: 95%;
+    z-index: 5;
+    height: 10px;
+    margin-left: 23px;
+    border: none;
+    margin-bottom: 18px;
+}
+/* to customize progress bar */
+#progress::-webkit-progress-value {
+    background-color:#0D6EFD;
+    transition: .7s ease;
+}
+#progress::-webkit-progress-bar {
+    background-color: #CACACA;
+
 }

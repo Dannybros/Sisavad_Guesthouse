@@ -9,7 +9,7 @@
         $year = $_POST['year'];
         $month = $_POST['month'];
 
-        $query = "SELECT * FROM `booking` NATURAL JOIN `room_log` WHERE MONTH(`date_in`)=$month OR MONTH(`date_out`)=$month AND YEAR(`date_in`)=$year";
+        $query = "SELECT * FROM `booking` NATURAL JOIN `room_log` WHERE MONTH(`date_in`)=$month OR MONTH(`date_out`)=$month AND YEAR(`date_in`)=$year ORDER BY `date_in`";
         $result = mysqli_query($conn, $query);
 
         while ($booking = mysqli_fetch_array($result)) {
@@ -20,6 +20,7 @@
             $dateIn=$booking['date_in'];
             $dateOut=$booking['date_out'];
             $duration=$booking['duration'];
+            $bStatus=$booking['booking_status'];
             $movement_time=$booking['time'];
             $movement=$booking['action'];
             $memo=$booking['memo'];
@@ -30,6 +31,7 @@
                 "b_id" => $b_id,
                 "c_id" => $c_id,
                 "roomID"=>$r_id,
+                "bStatus"=>$bStatus,
                 "oldRoomID"=>$old_r_id,
                 "dateIn"=>$dateIn,
                 "dateOut" => $dateOut,
