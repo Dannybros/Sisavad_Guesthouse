@@ -1121,7 +1121,7 @@ function extendBookingDate(){
 function moveRoom(){
     const BookingID = $('#bookingRoomModal').data('id');
     const time = new Date().toISOString().split('T')[0];
-    const memo = $('#bookingMemo').val();
+    const memo = $('#movingRoomMemo').val();
     const roomID = $('#availableRooms').val();
     const prevRoomID = $("#bookedRoom").data('id');
 
@@ -1154,7 +1154,7 @@ function moveRoom(){
 function cancelBooking(){
     const BookingID = $('#bookingRoomModal').data('id');
     const time = new Date().toISOString().split('T')[0];
-    const memo = $('#bookingMemo').val();
+    const memo = $('#cancelMemo').val();
     const roomID = $("#bookedRoom").data('id');
     const payStatus = $("#bookingModalPayment").val();
 
