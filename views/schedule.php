@@ -1,9 +1,9 @@
-<section id="schedule" onload="test()">
+<section id="schedule">
     <div class="title_box"> 
         <button class="btn btn-light left_month" onclick="goPrevMonth()">
             <i class="fa fa-chevron-left"></i>
         </button>
-        <h1>
+        <h1 onclick="test()">
             Schedule For : 
             <span class="text-danger" id="schedule-month">
             </span>

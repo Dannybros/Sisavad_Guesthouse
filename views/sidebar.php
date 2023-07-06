@@ -76,24 +76,24 @@
         
         <li class="p-2" >
             <a class="menu_list text-decoration-none row p-3 text-white rounded-2 
-                <?php if (isset($_GET['reserve'])) echo 'active_list'?>"
-                href="index.php?reserve"
-            >
-                <div>
-                    <i class="fa fa-book px-2">&nbsp;</i>
-                    Reserve
-                </div>
-            </a>
-        </li>
-
-        <li class="p-2" >
-            <a class="menu_list text-decoration-none row p-3 text-white rounded-2 
                 <?php if (isset($_GET['rooms'])) echo 'active_list'?>"
                 href="index.php?rooms"
             >
                 <div>
                     <i class="fa fa-hotel px-2">&nbsp;</i>
                     Rooms
+                </div>
+            </a>
+        </li>
+
+        <li class="p-2" >
+            <a class="menu_list text-decoration-none row p-3 text-white rounded-2 
+                <?php if (isset($_GET['reserve'])) echo 'active_list'?>"
+                href="index.php?reserve"
+            >
+                <div>
+                    <i class="fa fa-book px-2">&nbsp;</i>
+                    Reserve
                 </div>
             </a>
         </li>

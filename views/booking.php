@@ -66,10 +66,10 @@
                         <button 
                             type="button" 
                             class="btn btn-primary btn-sm" 
-                            onclick="viewBookingInfo('<?php echo $booking['booking_id']?>')" 
+                            onclick="viewBookingInfo('<?php echo $booking['booking_id']?>', 'booking')" 
                             data-bs-toggle="modal" 
                             data-bs-target="#bookingRoomModal"
-                            <?php if($booking['booking_status']==="Finished" || $booking['booking_status']==="Maintenanace") echo 'disabled'?>
+                            <?php if($booking['booking_status']==="Finished" || $booking['booking_status']==="Cancelled") echo 'disabled'?>
                         >
                             <i class="fa fa-pencil" aria-hidden="true"></i>
                         </button>

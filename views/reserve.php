@@ -1,7 +1,7 @@
 <form class="container my-4" onsubmit="registerBooking(event)" method="post">
     <main class="bg-white shadow h-100 p-3">
         <h2 class="reservation_title pb-2 mb-4">
-           <b> Room Information </b>
+           <b > Room Information </b>
         </h2>
         <!-- Stepper -->
         <div class="accordion mx-2 " id="accordionExample">
@@ -126,7 +126,7 @@
                     </div>
                 </div>
                 <div class="d-flex justify-content-end w-100 pe-2 mt-3 gap-3">
-                    <button type="button" class="btn btn-primary" onclick="stepClick(50, 1)" data-bs-toggle="collapse" data-bs-target="#collapseTwo">
+                    <button type="button" class="btn btn-primary" onclick="goToSecondStep()">
                         NEXT
                     </button>
                 </div>
@@ -417,65 +417,6 @@
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 
 <script>
-    const stepButtons = document.querySelectorAll('.step-button');
-    const progress = document.querySelector('#progress');
-
-    function stepClick(value, index){
-        progress.setAttribute('value', value);
-        
-        stepButtons.forEach((item, secindex)=>{
-            if(index > secindex){
-                item.classList.add('done');
-            }
-            if(index < secindex){
-                item.classList.remove('done');
-            }
-        })
-    }
-    
-    function goToFinalStep(){
-
-        function getBookingInfo(){
-
-            var duration = $("#booking_duration").text();
-            var price = $("#booking_room_price").text();
-            var total = $("#booking_total").text();
-            var check_in = $("#check_in_date").val();
-            var check_out = $("#check_out_date").val();
-            var room = $("#availableRooms").val();
-
-            $("#bill_check_in").text(check_in);
-            $("#bill_check_out").text(check_out);
-            $("#bill_room").text(room);
-            $("#bill_room_duration").text(duration);
-            $("#bill_room_price").text(price);
-            $("#bill_room_total").text(total);
-            $("#bill_total").text(total);
-        }
-
-        function getCustomerInfo(){
-
-            var customer_id = customerList.children[0].dataset.id;
-
-            $.ajax({
-                url:`./controllers/getCustomer.php?id=${customer_id}`,
-                type:"GET",
-                dataType:"JSON",
-                success: function(data){
-                    $("#bill_customer_name").text(data.cust_name + " " + data.cust_firstname);
-                    $("#bill_customer_email").text(data.email);
-                    $("#bill_customer_phone").text(data.contact);
-                    $("#bill_customer_passport").text(data.passport);
-                }   
-            })
-
-        }
-
-        getCustomerInfo();
-        getBookingInfo();
-        stepClick(100, 2);
-    }
-
     $(function() {
         $('input[name="datefilter"]').daterangepicker({
             autoUpdateInput: false,

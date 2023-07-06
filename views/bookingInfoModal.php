@@ -20,40 +20,56 @@
                 <tbody id="bookedCustomerTb" class="table-group-divider"></tbody>
             </table>
             
-            <section class="row mt-4">
-                <figure class="col-4 text-primary">
+            <section class="row mt-3">
+                <figure class="col-3 text-primary">
                     Room: 
                     <input type="text" class="form-control text-center" disabled id="bookedRoom" style="font-weight: bold;" value=""/>
                 </figure>
-                <figure class="col-4 text-primary">
+                <figure class="col-3 text-primary">
                     Booked From: 
                     <input type="text" class="form-control text-center" disabled id="bookingCID" style="font-weight: bold;" value=""/>
                 </figure>
-                <figure class="col-4 text-primary">
+                <figure class="col-3 text-primary">
                     Booked To : 
                     <input type="text" class="form-control text-center" disabled id="bookingCOD" style="font-weight: bold;" value=""/>
+                </figure>
+                <figure class="col-3 text-primary">
+                    Booking Status : 
+                    <input type="text" class="form-control text-center" disabled id="bookingStatus" style="font-weight: bold;" value=""/>
                 </figure>
 
                 <div class="my-2 border"></div>
 
-                <figure class="col-4 text-success">
+                <figure class="col-3 text-success">
                     Duration:
                     <input type="text" class="form-control text-center" disabled id="bookingModalDuration" style="font-weight: bold;" value=""/>
                 </figure>
-                <figure class="col-4 text-success">
+                <figure class="col-3 text-success">
                     Total:
                     <input type="text" class="form-control text-center" disabled id="bookingModalTotal" style="font-weight: bold;" value=""/>
                 </figure>
-                <figure class="col-4 text-success"> 
+                <figure class="col-3 text-success"> 
                     Payment Status:
                     <input type="text" class="form-control text-center text-capitalize" disabled id="bookingModalPayment" style="font-weight: bold;" value=""/>
+                </figure>
+                <figure class="col-3 text-success"> 
+                    Payment Option:
+                    <select 
+                        class="form-control text-center text-capitalize fw-bold" 
+                        id="bookingPaymentOption"
+                        disabled
+                    >
+                        <option selected disabled> -- Choose --</option>
+                        <option value="Cash"> Cash</option>
+                        <option value="OnePay"> OnePay </option>
+                    </select>
                 </figure>
             </section>
         </div>
         <div class="modal-footer d-flex justify-content-between" id="bookingModal_footer">
             <div class="button-group">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" onclick="payBooking()">Paid</button>
+                <button type="button" class="btn btn-primary" onclick="payBooking('Paid')">Full Pay</button>
+                <button type="button" class="btn btn-secondary" onclick="payBooking('Deposit')">Deposit</button>
             </div>
             <div class="button-group">
                 <button type="button" class="btn btn-danger" data-bs-target="#cancelModal" data-bs-toggle="modal">Cancel Booking</button>

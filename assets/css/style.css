@@ -123,19 +123,17 @@
     height: 40px;
     width: 40px;
 }
-.left_month{
+.left_month, .right_month{
     content: "";
     position: absolute;
     top: 50%;
-    left: 0;
     transform: translateY(-50%);
 }
+.left_month{
+    left: 0;
+}
 .right_month{
-    content: "";
-    position: absolute;
-    top: 50%;
     right: 0;
-    transform: translateY(-50%);
 }
 .calender-legend{
     width: 20px;

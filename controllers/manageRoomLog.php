@@ -16,6 +16,15 @@
         UPDATE `room` SET `room_status`='Free' WHERE `room_id`='$roomID';
         UPDATE `booking` SET `booking_status`='Finished' WHERE `booking_id`='$booking_ID';";
     }
+    else if(isset($_GET['re-book'])) {
+        $prevRoomID = $_POST['prevRoom'];
+        
+        $sql="UPDATE `room_log` SET `room_id` = '$roomID' WHERE `booking_id`='$booking_ID';
+            UPDATE `booking` SET `booked_room` = '$roomID' WHERE `booking_id`='$booking_ID';
+            UPDATE `room` SET `room_status`='Reserved' WHERE `room_id`='$roomID';
+            UPDATE `room` SET `room_status`='Free' WHERE `room_id`='$prevRoomID';
+        ";
+    }
     else if(isset($_GET['move'])) {
         $prevRoomID = $_POST['prevRoom'];
         $memo = $_POST['memo'];

@@ -9,7 +9,7 @@
         $year = $_POST['year'];
         $month = $_POST['month'];
 
-        $query = "SELECT * FROM `booking` NATURAL JOIN `room_log` WHERE MONTH(`date_in`)=$month OR MONTH(`date_out`)=$month AND YEAR(`date_in`)=$year ORDER BY `date_in`";
+        $query = "SELECT * FROM `booking` NATURAL JOIN `room_log` WHERE `booking_status` <> 'Cancelled' AND (MONTH(`date_in`)=$month OR MONTH(`date_out`)=$month AND YEAR(`date_in`)=$year) ORDER BY `date_in`";
         $result = mysqli_query($conn, $query);
 
         while ($booking = mysqli_fetch_array($result)) {
