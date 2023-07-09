@@ -27,7 +27,7 @@
     <div class="d-flex">
         <?php include "./views/sidebar.php"; ?>
 
-        <div class="col-sm-10 main_box bg-light overflow-y-auto" id="main_box">
+        <div class="col-sm-10 main_box overflow-y-auto" style="background-color: #F5F8FA;" id="main_box">
             <main id="alert-box" style="z-index: 10;"></main>
             <?php
                 if (isset($_GET['calender'])){
@@ -54,12 +54,16 @@
         </div>
     </div>
 
-    <script src="./assets/js/app.js"></script>
     <script src="https://code.jquery.com/jquery-3.1.1.min.js" ></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>   
     <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="./assets/js/app.js"></script>
+    <script src="./assets/js/report.js"></script>
+    <script src="./assets/js/dateRanger.js"></script>
+
 </body>
 </html>

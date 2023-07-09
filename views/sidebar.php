@@ -19,36 +19,6 @@
     </main>
 
     <ul class="menu__box">
-        <!-- <li class="p-2">
-            <div class="row p-3 text-white rounded-2 menu_list <?php if (isset($_GET['schedule'])) echo 'active_list'?>" role="button" data-bs-toggle="collapse" data-bs-target="#submenu1" >
-                <div class="col-10">
-                    <i class="fa fa-user px-2">&nbsp;</i>
-                    Schedule
-                </div>
-                <i class="fa fa-chevron-down col-2" aria-hidden="true"></i>
-            </div>
-            
-            <div class="collapse ps-3 pb-0" id="submenu1">
-                <a class="menu_list text-decoration-none row p-2 m-1 mt-2 text-white rounded-2 
-                    <?php if (isset($_GET['calender'])) echo 'active_list'?>"
-                    href="index.php?schedule&calender"
-                >
-                    <div>
-                        <i class="fa fa-file px-2" aria-hidden="true">&nbsp;</i>
-                        Calender
-                    </div>
-                </a>
-                <a class="menu_list text-decoration-none row p-2 m-1 mt-2 text-white rounded-2 
-                    <?php if (isset($_GET['booking'])) echo 'active_list'?>"
-                    href="index.php?schedule&booking"
-                >
-                    <div>
-                        <i class="fa fa-book px-2" aria-hidden="true">&nbsp;</i>
-                        Booking
-                    </div>
-                </a>
-            </div>
-        </li> -->
 
         <li class="p-2" >
             <a class="menu_list text-decoration-none row p-3 text-white rounded-2 

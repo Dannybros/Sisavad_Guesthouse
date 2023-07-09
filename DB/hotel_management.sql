@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 02, 2023 at 04:16 AM
+-- Generation Time: Jul 09, 2023 at 04:10 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -46,8 +46,13 @@ CREATE TABLE `booking` (
 
 INSERT INTO `booking` (`booking_id`, `customer_id`, `booked_room`, `date_in`, `date_out`, `duration`, `booking_status`, `total_payment`, `payment_option`, `payment_status`) VALUES
 ('b6492a41eeb485', '[\"c64639473b3a55\"]', 'r645f9fcb6ad67', '2023-06-23', '2023-06-30', 7, 'Finished', 3500000, 'OnePay', 'Paid'),
-('b64950a7a93bff', '[\"c64639473b3a55\"]', 'r645fa058cf1e2', '2023-06-24', '2023-07-03', 10, 'Staying', 10000000, 'Cash', 'Deposit'),
-('b649eee1e368f7', '[\"c64589f6408656\"]', 'r6485b71182519', '2023-06-30', '2023-07-02', 2, 'Confirmed', 2000000, 'Cash', 'Paid');
+('b64950a7a93bff', '[\"c64639473b3a55\"]', 'r645fa058cf1e2', '2023-06-24', '2023-07-03', 10, 'Finished', 10000000, 'Cash', 'Deposit'),
+('b649eee1e368f7', '[\"c64589f6408656\"]', 'r6485b71182519', '2023-06-30', '2023-07-02', 2, 'Cancelled', 2000000, 'Cash', 'Paid'),
+('b64a427c9846ab', '[\"c645887aa707ad\"]', 'r645f947e1df75', '2023-07-06', '2023-07-08', 2, 'Finished', 1000000, 'Cash', 'Paid'),
+('b64a442269152f', '[\"c64589f6408656\"]', 'r645fa1ac8cc62', '2023-07-05', '2023-07-08', 4, 'Finished', 2000000, 'OnePay', 'Paid'),
+('b64a5813b6887e', '[\"c64589f6408656\",\"c6458aa2b43ead\"]', 'r645fa41e4d89b', '2023-07-05', '2023-07-10', 5, 'Staying', 4000000, 'OnePay', 'Deposit'),
+('b64a65014ddcbb', '[\"c64589f6408656\"]', 'r645fa058cf1e2', '2023-07-11', '2023-07-13', 2, 'Confirmed', 2000000, '', 'Unpaid'),
+('b64a653bf37557', '[\"c6459d7400beb9\"]', 'r645f9fcb6ad67', '2023-07-17', '2023-07-19', 2, 'Confirmed', 1000000, '', 'Unpaid');
 
 -- --------------------------------------------------------
 
@@ -98,13 +103,13 @@ CREATE TABLE `room` (
 
 INSERT INTO `room` (`room_id`, `room_name`, `room_type_id`, `room_status`) VALUES
 ('r645f947e1df75', 'A-101', 'rt645e45c73d72b', 'Free'),
-('r645f9fcb6ad67', 'A-102', 'rt645e45c73d72b', 'Free'),
+('r645f9fcb6ad67', 'A-102', 'rt645e45c73d72b', 'Reserved'),
 ('r645fa0361833c', 'A-103', 'rt645e45e74e5a9', 'Free'),
-('r645fa058cf1e2', 'A-104', 'rt645e45f9a305c', 'Occupied'),
+('r645fa058cf1e2', 'A-104', 'rt645e45f9a305c', 'Reserved'),
 ('r645fa1962c973', 'A-105', 'rt645e46045d1e2', 'Free'),
 ('r645fa1ac8cc62', 'B-101', 'rt645e45c73d72b', 'Free'),
-('r645fa41e4d89b', 'B-102', 'rt645e45e74e5a9', 'Free'),
-('r6485b71182519', 'B-103', 'rt645e45f9a305c', 'Reserved');
+('r645fa41e4d89b', 'B-102', 'rt645e45e74e5a9', 'Occupied'),
+('r6485b71182519', 'B-103', 'rt645e45f9a305c', 'Free');
 
 -- --------------------------------------------------------
 
@@ -132,7 +137,19 @@ INSERT INTO `room_log` (`room_log_id`, `booking_id`, `room_id`, `old_room_id`, `
 (73, 'b6492a41eeb485', 'r645f9fcb6ad67', NULL, '2023-06-23', 'Checked In', ''),
 (74, 'b64950a7a93bff', 'r645fa058cf1e2', NULL, '2023-06-24', 'Checked In', ''),
 (75, 'b6492a41eeb485', 'r645f9fcb6ad67', NULL, '2023-06-30', 'Checked Out', ''),
-(76, 'b649eee1e368f7', 'r6485b71182519', NULL, '2023-06-30', 'Reserved', '');
+(76, 'b649eee1e368f7', 'r6485b71182519', NULL, '2023-06-30', 'Reserved', ''),
+(77, 'b649eee1e368f7', 'r6485b71182519', NULL, '2023-07-02', 'Cancelled', ''),
+(78, 'b64950a7a93bff', 'r645fa058cf1e2', NULL, '2023-07-03', 'Checked Out', ''),
+(79, 'b64a427c9846ab', 'r645f947e1df75', NULL, '2023-07-04', 'Reserved', ''),
+(82, 'b64a442269152f', 'r645fa1ac8cc62', NULL, '2023-07-04', 'Reserved', ''),
+(83, 'b64a442269152f', 'r645fa1ac8cc62', NULL, '2023-07-05', 'Checked In', ''),
+(84, 'b64a5813b6887e', 'r645fa41e4d89b', NULL, '2023-07-05', 'Reserved', ''),
+(89, 'b64a5813b6887e', 'r645fa41e4d89b', NULL, '2023-07-05', 'Checked In', ''),
+(90, 'b64a427c9846ab', 'r645f947e1df75', NULL, '2023-07-06', 'Checked In', ''),
+(93, 'b64a65014ddcbb', 'r645fa058cf1e2', NULL, '2023-07-06', 'Reserved', ''),
+(94, 'b64a653bf37557', 'r645f9fcb6ad67', NULL, '2023-07-06', 'Reserved', ''),
+(95, 'b64a427c9846ab', 'r645f947e1df75', NULL, '2023-07-08', 'Checked Out', ''),
+(96, 'b64a442269152f', 'r645fa1ac8cc62', NULL, '2023-07-08', 'Checked Out', '');
 
 -- --------------------------------------------------------
 
@@ -198,7 +215,7 @@ ALTER TABLE `room_type`
 -- AUTO_INCREMENT for table `room_log`
 --
 ALTER TABLE `room_log`
-  MODIFY `room_log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=77;
+  MODIFY `room_log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=97;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
