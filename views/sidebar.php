@@ -3,9 +3,9 @@
     <main class="profile_sidebar p-3 mb-2">
         <img src="https://picsum.photos/200" alt="">
         <div class="profile_name ms-3">
-            <h3 class="text-light mb-3">
-                GuestHouse
-            </h3>
+            <h4 class="text-light mb-3 text-uppercase">
+                Hotel Sisavad
+            </h4>
             <figure class="d-flex align-items-center text-light mb-0">
                 <span class="green__circle me-3"></span>
                 <?php 

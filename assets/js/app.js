@@ -802,6 +802,9 @@ function loadRooms(){
     function addElement(data){
 
         var status = data.status;
+        var type = data.type;
+        var color, pic;
+
         var bookingBtn=`
             <button class="btn btn-primary staff_icon" 
                 onclick="getRoomBookingList('${data.id}')" 
@@ -811,34 +814,47 @@ function loadRooms(){
                 Booking
             </button>
         `
-        var bg;
+
+        if(type==="Single Room"){
+            pic = "url('https://www.hotelmonterey.co.jp/upload_file/monhtyo/stay/sng_600_001.jpg');";
+        }
+        else if (type==="Double Room"){
+            pic = "url('https://www.colatour.com.tw/COLA_AppFiles/A03H_Hotel/Images/209677-04.GIF');";
+        }
+        else if (type==="Deluxe Room"){
+            pic = "url('https://mardhiyyahhotel.com/wp-content/uploads/sites/18/2021/03/CORPORATE-FLOOR-DELUXE-ROOM_KING-1.png');";
+        }
+        else {
+            pic = "url('https://visotsky-hotel.ru/en/assets/photo/vip-rooms-photo/room-5101/hotel-visotsky-vip-rooms-5101-01.jpg');";
+        }
 
         if(status==="Reserved"){
-            bg = "bg-warning";
+            color = "text-warning";
         }
         else if (status==="Maintenance"){
-            bg = "bg-danger";
+            color = "text-danger";
             bookingBtn= '';
         }
         else if (status==="Occupied"){
-            bg = "bg-primary";
+            color = "text-primary";
         }
         else{
-            bg = "bg-success"; 
+            color = "text-success"; 
             bookingBtn= '';
         }
 
         var display=`
             <main class="room_box p-3 rounded-10" id="room_box">
-                <div class="room_title p-0 ${bg}" style="--bs-bg-opacity: .5;">
-                ${data.name}
+                <div class="room_title p-0" style="background-image:${pic}">
+                    <div class="bg-dark bg-opacity-50 text-light p-2" style="width:auto">${data.name}</div>
                 </div>
+                
                 <article class="border">
                     <aside class="bg-white py-2 border-bottom"> 
                         <b>
                             ${data.type}
                             &nbsp; 
-                            (${status})
+                            <span class="${color}">(${status})</span>
                         </b>
                     </aside>
                     <div class="bg-white py-2 d-flex justify-content-around">
