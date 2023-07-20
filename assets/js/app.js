@@ -15,7 +15,6 @@ var editCustomerTitle = "Edit Customer";
 const customerList = document.querySelector('.booking-customer-list');
 const customerSelector = document.getElementById("customerSelector");
 
-
 // alert 
 
 function appendAlert(message, type){
@@ -30,6 +29,11 @@ function appendAlert(message, type){
     `
 
     content.append(wrapper)
+
+    setTimeout(function() {
+        $(".alert").alert('close');
+    }, 2500);
+    
 }
 
 function reportBtnClick(){
@@ -81,7 +85,7 @@ function createCalender(rooms){
 
     var totalDays  = getTotalDays(year, month);
     
-    function insertDates(parent, element, name, id){
+    function insertDates(parent, element, name, id, type){
 
         const isTbody = element==="th"? false : true;
 
@@ -89,7 +93,9 @@ function createCalender(rooms){
         const row_head = document.createElement("th");
         
         row_head.setAttribute("scope", !isTbody? "col" : "row");
-        row_head.innerHTML=name;
+        row_head.innerHTML=`
+            ${name} <b class="fs-base fw-medium" style="width:20px"> (${type})</b>
+        `;
         table_tr.appendChild(row_head);
         
         for (let i = 1; i <= totalDays; i++){
@@ -116,10 +122,10 @@ function createCalender(rooms){
         parent.appendChild(table_tr);
     }
 
-   insertDates(cal_header, "th", "#");
+   insertDates(cal_header, "th", "#", null, '');
 
    rooms.map((room)=>{
-    insertDates(cal_body, "td", room.name, room.id)
+    insertDates(cal_body, "td", room.name, room.id, room.type)
    })
 }
 
@@ -129,7 +135,7 @@ function createSchedule(){
         type:"GET",
         dataType:"JSON",
         success: function(data){
-            let roomNames = data.map(a => ({id: a.id, name:a.name}));
+            let roomNames = data.map(a => ({id: a.id, name:a.name, type:a.type}));
             createCalender(roomNames);
             getBookingSchedule();
         }   
@@ -151,7 +157,7 @@ function getBookingSchedule(){
     })
 }
 
-function insertDataToSchedule(data){
+function groupData(data){
     const groupedData = data.reduce((acc, cur) => {
         if (acc.find(item => item.bookingID === cur.b_id)) {
             const existingItem = acc[acc.findIndex(item => item.bookingID === cur.b_id)].action;
@@ -183,6 +189,12 @@ function insertDataToSchedule(data){
         
         return acc;
     }, []);
+
+    return groupedData;
+}
+
+function insertDataToSchedule(data){
+    const groupedData = groupData(data)
 
     groupedData.map((booking, i)=>{
         var dateOut, dateIn, bookingNo = i + 1;
@@ -388,10 +400,6 @@ function resetBooking(){
     $("#collapseOne").collapse('show');
 }
 
-function test(){
-    appendAlert("he", "success")
-}
-
 function formatDate(date) {
     var d = new Date(date),
         month = '' + (d.getMonth() + 1),
@@ -429,6 +437,8 @@ function fetchFreeRoom(id){
         $("#reserveRoomType").val("disabled");
         return;
     }
+
+    console.log(dateIn, dateOut);
 
     $.ajax({
         url:`./controllers/getRoom.php?free`,
@@ -553,6 +563,7 @@ function clickCustomerList(id){
 
 function customerManage(){
 
+    var cust_type = $('#btnCustInfoSubmit').data('type');
     var cust_id = $('#btnCustInfoSubmit').data('id');
     var cust_contact = $('#cust_contact').val();
     var cust_name = $('#cust_name').val();
@@ -561,7 +572,7 @@ function customerManage(){
     var passport = $('#cust_id_passport').val();
     var bd = $('#cust_bd').val();
 
-    var url= cust_id === 'new' ? "./controllers/addCustomer.php" : `./controllers/editCustomer.php`;
+    var url= cust_type === 'new' ? "./controllers/addCustomer.php" : `./controllers/editCustomer.php`;
 
     $.ajax({
         url:url,
@@ -610,7 +621,18 @@ function registerBooking(event){
     var checkOut = $('#check_out_date').val();
     var paymentOption = $('#paymentOptionSelector').val();
     var paymentStatus = $('#paymentStatusSelector').val();
+    var employee = $('#employeeSelector').val();
     var customers = [];
+
+    if(!employee){
+        alert("Please select employee")
+        return;
+    }
+
+    if(customerList.children.length <= 0){
+        alert("Please select customer");
+        return;
+    }
 
     for (const list of customerList.children) {
         customers.push(list.dataset.id);
@@ -628,7 +650,8 @@ function registerBooking(event){
                 total:total,
                 paymentOption:paymentOption,
                 paymentStatus:paymentStatus,
-                customer:JSON.stringify(customers)
+                customer:JSON.stringify(customers),
+                employee:employee
             },
             success: function(data){
                 
@@ -661,16 +684,16 @@ function loadBooking(){
         var bg;
 
         if(status==="Staying"){
-            bg = "table-primary";
+            bg = "bg-primary-subtle";
         }
         else if (status==="Confirmed"){
-            bg = "table-warning";
+            bg = "bg-warning-subtle";
         }
         else if (status==="Cancelled"){
-            bg = "table-danger";
+            bg = "bg-danger-subtle";
         }
         else{
-            bg = "table-success"; 
+            bg = "bg-success-subtle"; 
         }
 
         var display=`
@@ -688,6 +711,15 @@ function loadBooking(){
                 <td class="d-flex justify-content-around">
                     <button 
                         type="button" 
+                        class="btn btn-success btn-sm" 
+                        id="btnLogCollapse${data.id}"
+                        aria-expanded="false" 
+                        onclick="showBookingLog('${data.id}')"
+                    >
+                        <i class="fa fa-chevron-down" aria-hidden="true"></i>
+                    </button>
+                    <button 
+                        type="button" 
                         class="btn btn-primary btn-sm"
                         onclick="viewBookingInfo('${data.id}')" 
                         data-bs-toggle="modal" 
@@ -698,6 +730,12 @@ function loadBooking(){
                     </button>
                 </td>
             </tr>
+            <td colspan="11" class="p-0 ">
+                <div class="collapse" id="bookingLog${data.id}">
+                    <div class="card card-body row ${bg} border-0 px-0 py-2">
+                    </div>
+                </div>
+            </td>
         `
         
         display_booking.innerHTML += display;
@@ -753,6 +791,7 @@ function viewBookingInfo(id, form){
 
     function fillBookingModal(booking){
         $('#bookingRoomModal').data('id', id);
+        $('#booking_ID_Title').text(id);
         $('#bookingRoomModal').data('form', form);
         $('#bookingCID').val(booking.checkIn);
         $('#bookingCOD').val(booking.checkOut);
@@ -787,6 +826,51 @@ function viewBookingInfo(id, form){
     })
 }
 
+function showBookingLog(id){
+
+    var log_container = document.getElementById(`bookingLog${id}`).children[0];
+
+    const displayLog=(data)=>{
+
+        var room_msg = data.room;
+
+        if(data.movement==="Moved"){
+            room_msg=`
+                ${data.old_room} &nbsp; <i class="fa fa-arrow-right"></i> &nbsp; ${data.room}
+            `;
+        }
+
+        var display =`
+            <main class="log col-12 row py-2 ps-5 border-bottom border-secondary-subtle text-start">
+                <span class="col-2 fw-bold text-capitalize"> ${data.movement} </span>
+                <span class="col-2"> ${data.time} </span>
+                <span class="col-2 fw-semibold"> ${room_msg}</span>
+                <span class="col-6"> ${data.memo}</span>
+            </main>
+        `
+        log_container.innerHTML+=display;
+        
+    }
+
+    if(log_container.innerHTML.trim()==="") {
+        $.ajax({
+            url:`./controllers/getRoomLog.php?&one-booking-logs`,
+            type:"POST",
+            data:{
+                id:id
+            },
+            dataType:"JSON",
+            success: function(data){
+                for(var i=0; i<data.length; i++){
+                    displayLog(data[i]);
+                }
+            }   
+        })
+    }
+
+    $(`#bookingLog${id}`).collapse('toggle');
+}
+
 // Room
 
 function loadRooms(){
@@ -802,6 +886,9 @@ function loadRooms(){
     function addElement(data){
 
         var status = data.status;
+        var type = data.type;
+        var color, pic;
+
         var bookingBtn=`
             <button class="btn btn-primary staff_icon" 
                 onclick="getRoomBookingList('${data.id}')" 
@@ -811,34 +898,47 @@ function loadRooms(){
                 Booking
             </button>
         `
-        var bg;
+
+        if(type==="Single Room"){
+            pic = "url('https://www.hotelmonterey.co.jp/upload_file/monhtyo/stay/sng_600_001.jpg');";
+        }
+        else if (type==="Double Room"){
+            pic = "url('https://www.colatour.com.tw/COLA_AppFiles/A03H_Hotel/Images/209677-04.GIF');";
+        }
+        else if (type==="Deluxe Room"){
+            pic = "url('https://mardhiyyahhotel.com/wp-content/uploads/sites/18/2021/03/CORPORATE-FLOOR-DELUXE-ROOM_KING-1.png');";
+        }
+        else {
+            pic = "url('https://visotsky-hotel.ru/en/assets/photo/vip-rooms-photo/room-5101/hotel-visotsky-vip-rooms-5101-01.jpg');";
+        }
 
         if(status==="Reserved"){
-            bg = "bg-warning";
+            color = "text-warning";
         }
         else if (status==="Maintenance"){
-            bg = "bg-danger";
+            color = "text-danger";
             bookingBtn= '';
         }
         else if (status==="Occupied"){
-            bg = "bg-primary";
+            color = "text-primary";
         }
         else{
-            bg = "bg-success"; 
+            color = "text-success"; 
             bookingBtn= '';
         }
 
         var display=`
             <main class="room_box p-3 rounded-10" id="room_box">
-                <div class="room_title p-0 ${bg}" style="--bs-bg-opacity: .5;">
-                ${data.name}
+                <div class="room_title p-0" style="background-image:${pic}">
+                    <div class="bg-dark bg-opacity-50 text-light p-2" style="width:auto">${data.name}</div>
                 </div>
+                
                 <article class="border">
                     <aside class="bg-white py-2 border-bottom"> 
                         <b>
                             ${data.type}
                             &nbsp; 
-                            (${status})
+                            <span class="${color}">(${status})</span>
                         </b>
                     </aside>
                     <div class="bg-white py-2 d-flex justify-content-around">
@@ -853,9 +953,9 @@ function loadRooms(){
                     </div>
                 </article>
             </main>
-        `
+        `;
         
-       display_room.innerHTML += display;
+        display_room.innerHTML += display;
     }
 
     $.ajax({
@@ -1049,7 +1149,8 @@ function payBooking(status){
         },
         success: function(data){
             if(data==='success'){
-                $("#bookingRoomModal").modal('hide');
+                $('#bookingModalPayment').val(status);
+                $('#bookingPaymentOption').prop('disabled', true);
                 reloadAfterRoomAction(form);
                 appendAlert(`Payment status has been updated`, "success");
             }
@@ -1062,7 +1163,7 @@ function roomCheckIn(){
     const id = $('#bookingRoomModal').data('id');
     const form = $('#bookingRoomModal').data('form');
     const payOption = $('#bookingPaymentOption').val();
-    const time = new Date().toISOString().split('T')[0];
+    const time =  moment(new Date()).format("YYYY-MM-DD");
     const roomID = $("#bookedRoom").data('id');
 
     if(payOption===null) {
@@ -1092,22 +1193,36 @@ function roomCheckIn(){
 function roomCheckOut(){
     const id = $('#bookingRoomModal').data('id');
     const form = $('#bookingRoomModal').data('form');
-    const time = new Date().toISOString().split('T')[0];
+    const time = $('#bookingCOD').val();
+    const currentTime = moment(new Date()).format("YYYY-MM-DD");
     const roomID = $("#bookedRoom").data('id');
     const paid = $('#bookingModalPayment').val();
-
+    var url;
+    
     if(paid!=="Paid"){
         alert("Please Fully Pay The Fee");
         return;
     }
 
+     if(currentTime < time){
+        const earlyCheckOut= confirm("If You Are Checking Out Early, You Won't Get Refund Of Remaining Days");
+
+        if(earlyCheckOut){
+            url = `./controllers/manageRoomLog.php?earlyCheckOut&id=${id}`
+        }
+
+    }else {
+        url = `./controllers/manageRoomLog.php?checkOut&id=${id}`;
+    }
+
     $.ajax({
-        url:`./controllers/manageRoomLog.php?checkOut&id=${id}`,
+        url:url,
         type:"POST",
         data:{
             roomID:roomID,
             status:"Checked Out",
             time:time,
+            currentDay:currentTime,
         },
         success: function(data){
             if(data==='success'){
@@ -1115,9 +1230,13 @@ function roomCheckOut(){
                 reloadAfterRoomAction(form);
                 appendAlert(`Room has been Checked Out`, "success");
             }
-            else appendAlert(data, "danger");
+            else {
+                appendAlert(data, "danger");
+                console.log("error");
+            }
         }   
     })
+    
 }
 
 function convertStringCommaToNumber(string) {
@@ -1177,7 +1296,8 @@ function extendBookingDate(){
 function moveRoom(){
     const bookingID = $('#bookingRoomModal').data('id');
     const form = $('#bookingRoomModal').data('form');
-    const time = new Date().toISOString().split('T')[0];
+    const time = moment(new Date()).format("YYYY-MM-DD");
+    const CID = $("#bookingCID").val();
     const bookingStatus = $("#bookingStatus").val();
     const memo = $('#movingRoomMemo').val();
     const roomID = $('#availableRooms').val();
@@ -1189,7 +1309,7 @@ function moveRoom(){
         return;
     }
 
-    if(bookingStatus==="Confirmed"){
+    if(bookingStatus==="Confirmed" || time <= CID){
         action = "re-book" 
     }else{
         action = "move"
@@ -1219,7 +1339,7 @@ function moveRoom(){
 function cancelBooking(){
     const BookingID = $('#bookingRoomModal').data('id');
     const form = $('#bookingRoomModal').data('form');
-    const time = new Date().toISOString().split('T')[0];
+    const time = moment(new Date()).format("YYYY-MM-DD");
     const memo = $('#cancelMemo').val();
     const roomID = $("#bookedRoom").data('id');
     const payStatus = $("#bookingModalPayment").val();
@@ -1334,6 +1454,249 @@ function getDaysBetween(d1, d2){
     return (dayDiff);
 }
 
+// setting
+function openRoomTypeModal(type, id, name, price){
+    $("#roomTypeModal").data('type', type);
+    $('#roomType__id').val(id);
+    $('#roomType__name').val(name);
+    $('#roomType__price').val(price);
+    $('#roomTypeButton').text(type);
+}
+
+function refreshRoomType(){
+
+    var roomTypeBody = document.getElementById('roomType_tbody');
+    roomTypeBody.innerHTML = '';
+
+    function showRoomType(data){
+
+        var display=`
+        <tr class="text-center">  
+            <td>
+                <span class="fw-bold fs-6" style="color:#6c757d"> 
+                    ${data.id}
+                </span>                                
+            </td>
+
+            <td>
+                <span class="fw-bold fs-6" style="color:#6c757d">
+                    ${data.name}
+                </span>                                
+            </td>
+            
+            <td>
+                <span class="badge text-bg-success fs-6" >                                
+                    ${ formatNumber(data.price)} KIP
+                </span>                                                                  
+            </td>     
+
+            <td>
+                <button class="btn btn-primary" 
+                    data-bs-toggle="modal" 
+                    data-bs-target="#roomTypeModal" 
+                    onclick="openRoomTypeModal('edit', ${data.id}', '${data.name}', '${data.price}')" 
+                >
+                    <i class="fa fa-pencil"></i>
+                </button>
+                <button class="btn btn-danger" onclick="delRoomType('${data.id}')">
+                    <i class="fa fa-trash"></i>
+                </button>
+            </td>
+        </tr>
+        `
+
+        roomTypeBody.innerHTML += display;
+    }
+
+    $.ajax({
+        url:`./controllers/getRoomType.php`,
+        type:"GET",
+        dataType:"JSON",
+        success: function(data){
+            for(var i=0; i<data.length; i++){
+                showRoomType(data[i]);
+            }
+        }   
+    })
+}
+
+function roomTypeManage(){
+    const type = $("#roomTypeModal").data('type');
+    const id = $("#roomType__id").val();
+    const name = $("#roomType__name").val();
+    const price = $("#roomType__price").val();
+
+    $.ajax({
+        url:`./controllers/manageRoomType.php?${type}`,
+        type:"POST",
+        data:{
+            id:id,
+            name:name,
+            price:parseInt(price)
+        },
+        success: function(data){
+            if(data==='success'){
+                refreshRoomType();
+                $("#roomTypeModal").modal('hide');
+                appendAlert(`Room type ${type}ed Successfully`, "success");
+            }else appendAlert(data.error, "danger");
+        }   
+    })
+}
+
+function delRoomType(id){
+    $.ajax({
+        url:`./controllers/manageRoomType.php?del`,
+        type:"POST",
+        data:{
+            id:id,
+        },
+        success: function(data){
+            if(data==='success'){
+                refreshRoomType();
+                appendAlert(`Room type deleted Successfully`, "success");
+            }else appendAlert(data.error, "danger");
+        }   
+    })
+}
+
+function openStaffModal(type, id, name, ID_Card, phone, email, position, salary){
+    $("#staffModal").data('type', type);
+    $("#staffModal").data('id', id);
+    $('#staff__name').val(name);
+    $('#staff__id_card').val(ID_Card);
+    $('#staff__phone').val(phone);
+    $('#staff__email').val(email);
+    $('#staff__position').val(position);
+    $('#staff__salary').val(salary);
+    $('#staffBtn').text(type);
+}
+
+function refreshStaff(){
+
+    var staff_tbody = document.getElementById('staff_tbody');
+    staff_tbody.innerHTML = '';
+
+    function showStaff(data){
+
+        var display=`
+        <tr class="text-center">                            
+            <td>
+                <div class="d-flex align-items-center">
+                    <div class="d-flex justify-content-start flex-column">
+                        <div class="fw-bold fs-6">
+                            ${data.name}
+                        </div>
+                        <span class="fw-semibold d-block text-body-tertiary text-start">
+                            (${data.ID_Card})
+                        </span>
+                    </div>
+                </div>                                
+            </td>
+
+            <td>
+                <span class="fw-bold fs-6" style="color:#6c757d">
+                    ${data.phone}
+                </span>                                
+            </td>
+
+            <td>
+                <span class="fw-bold fs-6" style="color:#6c757d">
+                    ${data.email}
+                </span>                                
+            </td>
+
+            <td>
+                <span class="fw-bold fs-6" style="color:#6c757d">
+                    ${data.position}
+                </span>                                
+            </td>
+            
+            <td>
+                <span class="badge text-bg-success fs-6">                                
+                    ${formatNumber(data.salary)} KIP
+                </span>                                                                  
+            </td>     
+
+            <td>
+                <button class="btn btn-primary" 
+                    data-bs-toggle="modal" 
+                    data-bs-target="#staffModal" 
+                    onclick="openStaffModal('edit', '${data.id}', '${data.name}', '${data.ID_Card}', '${data.phone}', '${data.email}', '${data.position}', '${data.salary}')" 
+                >
+                    <i class="fa fa-pencil"></i>
+                </button>
+                <button class="btn btn-danger" onclick="delStaff('${data.id}')">
+                    <i class="fa fa-trash"></i>
+                </button>
+            </td>
+        </tr>
+        `
+
+        staff_tbody.innerHTML += display;
+    }
+
+    $.ajax({
+        url:`./controllers/getStaff.php`,
+        type:"GET",
+        dataType:"JSON",
+        success: function(data){
+            for(var i=0; i<data.length; i++){
+                showStaff(data[i]);
+            }
+        }   
+    })
+}
+
+function staffManage(){
+    const type = $("#staffModal").data('type');
+    const id = $("#staffModal").data('id');
+    const name = $("#staff__name").val();
+    const ID_Card = $("#staff__id_card").val();
+    const phone = $('#staff__phone').val();
+    const email = $('#staff__email').val();
+    const position = $('#staff__position').val();
+    const salary = $('#staff__salary').val();
+
+    $.ajax({
+        url:`./controllers/manageStaff.php?${type}`,
+        type:"POST",
+        data:{
+            id:id,
+            name:name,
+            ID_Card:ID_Card,
+            phone:phone,
+            email:email,
+            position:position,
+            salary:parseInt(salary)
+        },
+        success: function(data){
+            if(data==='success'){
+                refreshStaff();
+                $("#staffModal").modal('hide');
+                appendAlert(`Staff ${type}ed Successfully`, "success");
+            }else appendAlert(data.error, "danger");
+        }   
+    })
+}
+
+function delStaff(id){
+    $.ajax({
+        url:`./controllers/manageStaff.php?del`,
+        type:"POST",
+        data:{
+            id:id,
+        },
+        success: function(data){
+            if(data==='success'){
+                refreshStaff();
+                appendAlert(`Staff deleted Successfully`, "success");
+            }else appendAlert(data.error, "danger");
+        }   
+    })
+}
+
+
 // window onLoad
 
 window.onload = function() {
@@ -1342,4 +1705,8 @@ window.onload = function() {
     }
 };
 
-
+$(document).ready(function() {
+    setTimeout(function() {
+        $("mainAlert").alert('close');
+    }, 2000);
+});

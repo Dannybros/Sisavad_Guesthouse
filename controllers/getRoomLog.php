@@ -1,15 +1,46 @@
 <?php
     include_once ("../config/dbconnect.php");
-        session_start();
+    session_start();
 
     $return_arr = array();
+
+    if(isset($_GET['one-booking-logs'])){
+        $id = $_POST['id'];
+        $query = "SELECT service.*,
+        room1.room_name AS room,
+        room2.room_name AS old_room 
+        FROM service
+        INNER JOIN room AS room1 ON service.room_id = room1.room_id
+        LEFT JOIN room AS room2 ON service.old_room_id = room2.room_id
+        WHERE service.booking_id = '$id'";
+        $result = mysqli_query($conn, $query);
+
+        while ($log = mysqli_fetch_array($result)) {
+            $bookingID=$log['booking_id'];
+            $room=$log['room'];
+            $old_room =$log['old_room'];
+            $time=$log['time'];
+            $movement=$log['action'];
+            $memo=$log['memo'];
+            
+            
+            $return_arr[] = array(
+                "bookingID" => $bookingID,
+                "room" => $room,
+                "old_room"=>$old_room,
+                "time"=>$time,
+                "movement"=>$movement,
+                "memo"=>$memo
+            );
+        }        
+    }
 
     if (isset($_GET['all'])){
 
         $year = $_POST['year'];
         $month = $_POST['month'];
 
-        $query = "SELECT * FROM `booking` NATURAL JOIN `room_log` WHERE `booking_status` <> 'Cancelled' AND (MONTH(`date_in`)=$month OR MONTH(`date_out`)=$month AND YEAR(`date_in`)=$year) ORDER BY `date_in`";
+        $query = "SELECT * FROM `booking` NATURAL JOIN `service` WHERE `booking_status` <> 'Cancelled' AND (MONTH(`date_in`)=$month OR MONTH(`date_out`)=$month AND YEAR(`date_in`)=$year) ORDER BY `date_in`";
         $result = mysqli_query($conn, $query);
 
         while ($booking = mysqli_fetch_array($result)) {
@@ -41,11 +72,10 @@
                 "movement_time"=>$movement_time,
                 "memo"=>$memo,
             );
-        }
-
-        echo json_encode($return_arr);  
-        exit();       
-
+        }        
     }
+
+    echo json_encode($return_arr);  
+    exit();       
     
 ?>

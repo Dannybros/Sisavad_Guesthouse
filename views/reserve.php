@@ -27,7 +27,7 @@
                 </div>
                 <div class="step-item">
                     <button class="step-button text-center collapsed" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                        data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree" >
                         3
                     </button>
                     <div class="step-title">
@@ -100,7 +100,7 @@
                         </div>
                         <div class="modal-footer d-flex justify-content-start px-2">
                             <button type="button" onclick="resetCustomerInfo()" class="btn btn-secondary me-2"> Reset</button> 
-                            <button type="button" onclick="customerManage()" id="btnCustInfoSubmit" class="btn btn-success"  data-id="new"> Add New Customer </button>
+                            <button type="button" onclick="customerManage()" id="btnCustInfoSubmit" class="btn btn-success" data-type="new"  data-id="new"> Add New Customer </button>
                         </div>
 
                         <div class="border-top my-4"></div>
@@ -184,7 +184,6 @@
                                 id="availableRooms" 
                                 name="available_room_id" 
                                 data-error="Select Room Type" 
-                                required
                             >
                             </select>
                         </article>
@@ -224,9 +223,28 @@
                         </div>
                         <div class="bg-warning-subtle w-100" style="height: 10px;"></div>
                         <div class="bg-primary-subtle w-100" style="height: 10px;"></div>
-                        <h3 class="text-start p-0 mt-4">
-                            <div class="col-3 bg-warning ps-4 bg-opacity-50">Bill To</div>
+
+                        <h3 class="d-flex justify-content-between align-items-center p-0 pb-2 mt-4 border-bottom border-dark">
+                            <div class="col-3 bg-warning py-2 bg-opacity-50">Bill To</div>
+                            <div class="d-flex align-items-center">
+                                <span class="fs-5 fw-bold me-3"> Employee: </span>
+                                <select id="employeeSelector" class="form-control fs-6">
+                                    <option selected disabled> Select the Employee</option>
+                                    <?php 
+                                        $sql ="SELECT * FROM `employee`";
+                                        $result=$conn-> query($sql);
+                                        while($row=$result-> fetch_assoc()){
+                                            $id = $row["emp_ID"];
+                                            $name = $row["emp_Name"];
+                                    ?>        
+                                        <option value='<?php echo $id ?>'>
+                                            <?php echo $name?>
+                                        </option>
+                                    <?php } ?>
+                                </select>
+                            </div>
                         </h3>
+
                         <section class="col-4">
                             <article class="w-100 px-4 py-3 text-start ">
                                 <h5 class="mb-2"><b> Name </b> </h5>

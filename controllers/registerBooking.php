@@ -11,15 +11,16 @@
         $checkOut = $_POST['checkOut'];
         $paymentOption = $_POST['paymentOption'];
         $paymentStatus = $_POST['paymentStatus'];
+        $employee = $_POST['employee'];
 
         $time = date('Y-m-d');
 
-        $sql="INSERT INTO `booking`(`booking_id`, `customer_id`, `booked_room`, `date_in`, `date_out`, `duration`, `booking_status`, `total_payment`, `payment_option`, `payment_status`)
-        VALUES ('$booking_ID','$customer', '$roomID', '$checkIn','$checkOut','$duration', 'Confirmed', '$total', '$paymentOption', '$paymentStatus');
+        $sql="INSERT INTO `booking`(`booking_id`, `customer_id`, `emp_ID`, `booked_room`, `date_in`, `date_out`, `duration`, `booking_status`, `total_payment`, `payment_option`, `payment_status`)
+        VALUES ('$booking_ID','$customer', '$employee', '$roomID', '$checkIn','$checkOut','$duration', 'Confirmed', '$total', '$paymentOption', '$paymentStatus');
         
         UPDATE `room` SET `room_status`='Reserved' WHERE `room_id`='$roomID';
         
-        INSERT INTO `room_log`(`booking_id`, `room_id`, `time`, `action`, `memo`) VALUES ('$booking_ID','$roomID','$time','Reserved','')";
+        INSERT INTO `service`(`booking_id`, `room_id`, `time`, `action`, `memo`) VALUES ('$booking_ID','$roomID','$time','Reserved','')";
 
         $result = mysqli_multi_query($conn, $sql);
     }

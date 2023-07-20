@@ -25,7 +25,7 @@
     </button>
 </div> 
 
-<section class="p-3 border-bottom border-dark">
+<!-- <section class="p-3 border-bottom border-dark">
     <figure class="d-flex m-0">
         <div class="d-flex mx-2">
             <div class="calender-legend bg-success bg-opacity-75"></div>
@@ -44,37 +44,50 @@
             <label>Maintanence</label>
         </div>
     </figure>
-</section>
+</section> -->
 
 <div class="display_room row my-4 overflow-auto" id="display_room">
     <?php
         $room_query = "SELECT * FROM `room` NATURAL JOIN `room_type` ORDER BY room_name";
         $room_result = mysqli_query($conn, $room_query);
         while ($rooms = mysqli_fetch_assoc($room_result)) {
+
+            if($rooms['room_type_name']==="Single Room"){
+                $pic = "url('https://www.hotelmonterey.co.jp/upload_file/monhtyo/stay/sng_600_001.jpg');";
+            }
+            else if ($rooms['room_type_name']==="Double Room"){
+                $pic = "url('https://www.colatour.com.tw/COLA_AppFiles/A03H_Hotel/Images/209677-04.GIF');";
+            }
+            else if ($rooms['room_type_name']==="Deluxe Room"){
+                $pic = "url('https://mardhiyyahhotel.com/wp-content/uploads/sites/18/2021/03/CORPORATE-FLOOR-DELUXE-ROOM_KING-1.png');";
+            }
+            else {
+                $pic = "url('https://visotsky-hotel.ru/en/assets/photo/vip-rooms-photo/room-5101/hotel-visotsky-vip-rooms-5101-01.jpg');";
+            }
             
             if($rooms['room_status']==="Free"){
-                $color = "bg-success";
+                $color = "text-success";
             }
             else if ($rooms['room_status']==="Maintenance"){
-                $color = "bg-danger";
+                $color = "text-danger";
             }
             else if ($rooms['room_status']==="Reserved"){
-                $color = "bg-warning";
+                $color = "text-warning";
             }
             else{
-                $color = "bg-primary"; 
+                $color = "text-primary"; 
             }
     ?>
         <main class="room_box p-3 rounded-10" id="room_box">
-            <div class="room_title p-0 <?php echo $color?>" style="--bs-bg-opacity: .5;">
-            <?php echo $rooms['room_name'] ?>
+            <div class="room_title p-0 bg-opacity-50" style="background-image:<?php echo $pic?>">
+                <div class="bg-dark bg-opacity-50 text-light p-2" style="width:auto"><?php echo $rooms['room_name'] ?></div>
             </div>
             <article class="border">
                 <aside class="bg-white py-2 border-bottom"> 
                     <b>
                         <?php echo $rooms['room_type_name'] ?>
                         &nbsp; 
-                        (<?php echo $rooms['room_status'] ?>)
+                        <span class="<?php echo $color?>">(<?php echo $rooms['room_status'] ?>)</span>
                     </b>
                 </aside>
                 <div class="bg-white py-2 d-flex justify-content-around">

@@ -7,19 +7,27 @@
     $time = $_POST['time'];
 
     if(isset($_GET['checkIn'])){
-        $sql="INSERT INTO `room_log`(`booking_id`, `room_id`, `time`, `action`, `memo`) VALUES ('$booking_ID','$roomID','$time','$status','');
+        $sql="INSERT INTO `service`(`booking_id`, `room_id`, `time`, `action`, `memo`) VALUES ('$booking_ID','$roomID','$time','$status','');
         UPDATE `booking` SET `booking_status`='Staying' WHERE `booking_id`='$booking_ID';
         UPDATE `room` SET `room_status`='Occupied' WHERE `room_id`='$roomID';";
     } 
     else if (isset($_GET['checkOut'])){
-        $sql="INSERT INTO `room_log`(`booking_id`, `room_id`, `time`, `action`, `memo`) VALUES ('$booking_ID', '$roomID', '$time', '$status', '');
+        $sql="INSERT INTO `service`(`booking_id`, `room_id`, `time`, `action`, `memo`) VALUES ('$booking_ID', '$roomID', '$time', '$status', '');
         UPDATE `room` SET `room_status`='Free' WHERE `room_id`='$roomID';
         UPDATE `booking` SET `booking_status`='Finished' WHERE `booking_id`='$booking_ID';";
+    }
+    else if (isset($_GET['earlyCheckOut'])){
+
+        $currentDay = $_POST['currentDay'];
+
+        $sql="INSERT INTO `service`(`booking_id`, `room_id`, `time`, `action`, `memo`) VALUES ('$booking_ID', '$roomID', '$currentDay', '$status', '');
+        UPDATE `room` SET `room_status`='Free' WHERE `room_id`='$roomID';
+        UPDATE `booking` SET `date_out`='$currentDay',`duration`='2',`booking_status`='Finished' WHERE `booking_id`='$booking_ID';";
     }
     else if(isset($_GET['re-book'])) {
         $prevRoomID = $_POST['prevRoom'];
         
-        $sql="UPDATE `room_log` SET `room_id` = '$roomID' WHERE `booking_id`='$booking_ID';
+        $sql="UPDATE `service` SET `room_id` = '$roomID' WHERE `booking_id`='$booking_ID';
             UPDATE `booking` SET `booked_room` = '$roomID' WHERE `booking_id`='$booking_ID';
             UPDATE `room` SET `room_status`='Reserved' WHERE `room_id`='$roomID';
             UPDATE `room` SET `room_status`='Free' WHERE `room_id`='$prevRoomID';
@@ -28,7 +36,7 @@
     else if(isset($_GET['move'])) {
         $prevRoomID = $_POST['prevRoom'];
         $memo = $_POST['memo'];
-        $sql="INSERT INTO `room_log`(`booking_id`, `room_id`, `old_room_id`, `time`, `action`, `memo`) VALUES ('$booking_ID', '$roomID', '$prevRoomID', '$time', '$status', '$memo');
+        $sql="INSERT INTO `service`(`booking_id`, `room_id`, `old_room_id`, `time`, `action`, `memo`) VALUES ('$booking_ID', '$roomID', '$prevRoomID', '$time', '$status', '$memo');
             UPDATE `booking` SET `booked_room` = '$roomID' WHERE `booking_id`='$booking_ID';
             UPDATE `room` SET `room_status`='Occupied' WHERE `room_id`='$roomID';
             UPDATE `room` SET `room_status`='Free' WHERE `room_id`='$prevRoomID';
@@ -36,7 +44,7 @@
     }
     else if(isset($_GET['cancel'])){
         $memo = $_POST['memo'];
-        $sql="INSERT INTO `room_log`(`booking_id`, `room_id`, `time`, `action`, `memo`) VALUES ('$booking_ID','$roomID','$time','$status','$memo');
+        $sql="INSERT INTO `service`(`booking_id`, `room_id`, `time`, `action`, `memo`) VALUES ('$booking_ID','$roomID','$time','$status','$memo');
         UPDATE `booking` SET `booking_status`='$status' WHERE `booking_id`='$booking_ID';
         UPDATE `room` SET `room_status`='Free' WHERE `room_id`='$roomID';";
     }

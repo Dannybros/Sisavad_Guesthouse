@@ -2,7 +2,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
         <div class="modal-header">
-            <h5 class="modal-title" id="staticBackdropLabel">Booking Info</h5>
+            <h5 class="modal-title" id="staticBackdropLabel">Booking Info (<span id="booking_ID_Title"></span>)</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
@@ -30,7 +30,7 @@
                     <input type="text" class="form-control text-center" disabled id="bookingCID" style="font-weight: bold;" value=""/>
                 </figure>
                 <figure class="col-3 text-primary">
-                    Booked To : 
+                    Booked Until : 
                     <input type="text" class="form-control text-center" disabled id="bookingCOD" style="font-weight: bold;" value=""/>
                 </figure>
                 <figure class="col-3 text-primary">

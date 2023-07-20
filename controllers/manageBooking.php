@@ -18,13 +18,9 @@
 
         if ($status==="all") {
             $status = "";
-            $order = "";
         }
-        else if ($status==="Confirmed") $order = "ORDER BY `date_in`";
-        else if ($status==="Staying") $order = "ORDER BY `date_out`";
-        else $order="";
 
-        $query = "SELECT * FROM booking JOIN room ON booking.booked_room = room.room_id JOIN room_type ON room.room_type_id = room_type.room_type_id WhERE `room_name` LIKE '%$search%' AND `booking_status` LIKE '%$status%' $order";
+        $query = "SELECT * FROM booking JOIN room ON booking.booked_room = room.room_id JOIN room_type ON room.room_type_id = room_type.room_type_id WhERE `room_name` LIKE '%$search%' AND `booking_status` LIKE '%$status%' ORDER BY `date_in` DESC";
     }
 
     if(isset($_GET['room'])){

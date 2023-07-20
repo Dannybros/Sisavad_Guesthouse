@@ -1,7 +1,7 @@
 <?php
     include_once ("../config/dbconnect.php");
 
-    $cust_ID = $_POST['cust_id'];
+    $cust_ID = uniqid('c');
     $cust_name = $_POST['cust_name'];
     $cust_fname = $_POST['cust_fname'];
     $contact = $_POST['cust_contact'];

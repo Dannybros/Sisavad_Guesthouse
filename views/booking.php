@@ -32,26 +32,27 @@
     </thead>
     <tbody id="display_booking" class="table-group-divider">
         <?php
-            $booking_query = "SELECT * FROM booking JOIN room ON booking.booked_room = room.room_id JOIN room_type ON room.room_type_id = room_type.room_type_id";
+            $booking_query = "SELECT * FROM booking JOIN room ON booking.booked_room = room.room_id JOIN room_type ON room.room_type_id = room_type.room_type_id ORDER BY date_in DESC";
+
             $booking_result = mysqli_query($conn, $booking_query);
             $index = 1;
             while ($booking = mysqli_fetch_array($booking_result)) {
 
                 if($booking['booking_status']==="Staying"){
-                    $color = "table-primary";
+                    $color = "bg-primary-subtle";
                 }
                 else if ($booking['booking_status']==="Confirmed"){
-                    $color = "table-warning";
+                    $color = "bg-warning-subtle";
                 }
                 else if ($booking['booking_status']==="Cancelled"){
-                    $color = "table-danger";
+                    $color = "bg-danger-subtle";
                 }
                 else{
-                    $color = "table-success"; 
+                    $color = "bg-success-subtle"; 
                 }
 
             ?>
-                <tr class=<?php echo $color?>>
+                <tr class='<?php echo $color?> border-bottom border-dark-subtle'>
                     <td class="align-middle"> <?php echo $index++?> </td>
                     <td class="align-middle"> <?php echo $booking['booking_id'] ?> </td>
                     <td class="align-middle"><b> <?php echo $booking['room_name'] ?> </b></td>
@@ -61,8 +62,18 @@
                     <td class="align-middle"> <?php echo $booking['duration'] ?> Nights </td>
                     <td class="align-middle"> <?php echo number_format($booking['total_payment']) ?> KIP</td>
                     <td class="align-middle"> <?php echo $booking['payment_status'] ?> </td>
-                    <td class="align-middle bg-info-subtle fw-bold"> <?php echo $booking['booking_status'] ?> </td>
-                    <td class="d-flex justify-content-around">
+                    <td class="fw-bold align-middle"> <?php echo $booking['booking_status'] ?> </td>
+                    <td>
+                        <button 
+                            type="button" 
+                            class="btn btn-success btn-sm" 
+                            id="btnLogCollapse<?php echo $booking['booking_id'] ?>"
+                            aria-expanded="false" 
+                            onclick="showBookingLog('<?php echo $booking['booking_id'] ?>')"
+                        >
+                            <i class="fa fa-chevron-down" aria-hidden="true"></i>
+                        </button>
+
                         <button 
                             type="button" 
                             class="btn btn-primary btn-sm" 
@@ -75,7 +86,17 @@
                         </button>
                     </td>
                 </tr>
+                <td colspan="11" class="p-0 ">
+                    <div class="collapse" id="bookingLog<?php echo $booking['booking_id'] ?>">
+                        <div class="card card-body row <?php echo $color?> border-0 px-5 py-2">
+                        </div>
+                    </div>
+                </td>
             <?php  }
         ?>
     </tbody>
 </table>
+
+
+<!-- data-bs-toggle="collapse" 
+                            data-bs-target="#bookingLog<?php echo $booking['booking_id'] ?>" -->

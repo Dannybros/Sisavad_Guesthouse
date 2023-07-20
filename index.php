@@ -30,7 +30,7 @@
         <div class="col-sm-10 main_box overflow-y-auto" style="background-color: #F5F8FA;" id="main_box">
             <main id="alert-box" style="z-index: 10;"></main>
             <?php
-                if (isset($_GET['calender'])){
+                if (isset($_GET['calender']) || empty($_GET)){
                     include_once("views/schedule.php");
             
                 }else if(isset($_GET['booking'])){
@@ -42,11 +42,14 @@
                 }else if(isset($_GET['rooms'])){
                     include_once "views/room.php";
                     
-                }else if(isset($_GET['report'])){
-                    include_once "views/report.php";
+                }else if(isset($_GET['overview'])){
+                    include_once "views/reportOverview.php";
                     
-                }else{
-                    include_once("views/schedule.php");
+                }else if(isset($_GET['revenue'])){
+                    include_once("views/reportRevenue.php");
+                }
+                else if(isset($_GET['setting'])){
+                    include_once("views/setting.php");
                 }
             
                 include_once("./views/bookingInfoModal.php")
@@ -61,8 +64,10 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <script src="./assets/js/app.js"></script>
-    <script src="./assets/js/report.js"></script>
+    <script src="./assets/js/report_overview.js"></script>
+    <script src="./assets/js/report_booking.js"></script>
     <script src="./assets/js/dateRanger.js"></script>
 
 </body>
