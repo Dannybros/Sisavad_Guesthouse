@@ -3,12 +3,12 @@
         <span class="text-warning">Hotel &nbsp;</span> 
         <span class="text-light"> Management &nbsp;System </span>
     </a>
-    <button data-bs-toggle="modal" data-bs-target="#signOutModal">
+    <!-- <button data-bs-toggle="modal" data-bs-target="#signOutModal">
         <i class="fa fa-sign-out"></i>
-    </button>
+    </button> -->
 </nav>
 
-<div class="modal fade" id="signOutModal" tabindex="-1" aria-labelledby="signOutModalLabel" aria-hidden="true">
+<!-- <div class="modal fade" id="signOutModal" tabindex="-1" aria-labelledby="signOutModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -24,4 +24,4 @@
       </div>
     </div>
   </div>
-</div>
+</div> -->

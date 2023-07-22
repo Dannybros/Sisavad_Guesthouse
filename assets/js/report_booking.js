@@ -60,7 +60,7 @@ function drawApexBookingLineChart(){
       chart.render();
 }
 
-function drawApexPopularRoomBarChart(element){
+function drawApexPopularRoomBarChart(){
 
     var element = document.getElementById('booking_popularity_bar');
 
@@ -70,21 +70,23 @@ function drawApexPopularRoomBarChart(element){
 
     var options = {
         series: [{
-            name: 'Net Profit',
-            data: [44, 55, 57, 56, 61, 58]
+            name: 'Number',
+            data: [4, 5, 2, 4, 6]
         }],
         chart: {
-            fontFamily: 'inherit',
             type: 'bar',
+            height:'220px',
             toolbar: {
                 show: false
             }
         },
         plotOptions: {
             bar: {
-                horizontal: true,
-                columnWidth: ['30%'],
-                endingShape: 'rounded'
+                horizontal: false,
+                borderRadius: 4,
+                columnWidth: ['40%'],
+                endingShape: 'rounded',
+                barHeight: '100%',
             },
         },
         legend: {
@@ -99,7 +101,7 @@ function drawApexPopularRoomBarChart(element){
             colors: ['transparent']
         },
         xaxis: {
-            categories: ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+            categories: ['A-101', 'A-101', 'A-101', 'A-101', 'A-101'],
             axisBorder: {
                 show: false,
             },
@@ -108,18 +110,20 @@ function drawApexPopularRoomBarChart(element){
             },
             labels: {
                 style: {
-                    colors: '#D2D5E1',
                     fontSize: '12px'
-                }
-            }
+                },
+            },
         },
         yaxis: {
             labels: {
                 style: {
                     colors: '#D2D5E1',
-                    fontSize: '12px'
+                    fontSize: '13px'
                 }
-            }
+            },
+            min: 0,
+            max: 8,
+            tickAmount: 4,
         },
         fill: {
             opacity: 1
@@ -151,19 +155,14 @@ function drawApexPopularRoomBarChart(element){
             },
             y: {
                 formatter: function (val) {
-                    return '$' + val + ' thousands'
+                    return val + ' bookings'
                 }
             }
         },
         colors: ['#FFC700'],
         grid: {
             borderColor: '#D2D5E1',
-            strokeDashArray: 4,
-            yaxis: {
-                lines: {
-                    show: true
-                }
-            }
+            strokeDashArray: 3,
         }
     };
 
@@ -171,47 +170,138 @@ function drawApexPopularRoomBarChart(element){
     chart.render();
 }
 
-function drawApexPopularRoomTypePieChart(){
+function drawApexPopularRoomPieChart(){
+
     var element = document.getElementById('booking_popularity_pie');
+
     if (!element) {
         return;
     }
-    const data = {
-        labels: [
-          'Red',
-          'Blue',
-          'Yellow'
-        ],
-        datasets: [{
-          label: 'My First Dataset',
-          data: [300, 50, 100],
-          backgroundColor: [
-            'rgb(255, 99, 132)',
-            'rgb(54, 162, 235)',
-            'rgb(255, 205, 86)'
-          ],
-          hoverOffset: 4
-        }]
-    };
-  
-    const config = {
-        type: 'pie',
-        data: data,
-        options: {
-            plugins: {
-                legend: {
-                    display: false
-                },
-                title: {
-                    display: false,
-                }
+
+    var options = {
+        series: [2, 6, 1, 5],
+        plotOptions: {
+            pie: {
+                dataLabels: {
+                    offset: -10,
+                }, 
+            }
+        },
+        chart: {
+            type: 'pie',
+            height:'220px',
+            sparkline: {
+                enabled: true
+            }
+        },
+        legend: {
+            show:false
+        },
+        dataLabels: {
+            enabled: true,
+            formatter: function(value, { seriesIndex, dataPointIndex, w }) {
+                return [w.config.labels[seriesIndex].split(' ')[0], ` (${parseInt(value)}%)`]
+            },
+            style: {
+                fontSize: '12px',
+                fontFamily: 'Helvetica, Arial, sans-serif',
+                fontWeight: 'bold',
+            },
+            background: {
+                enabled: true,
+                foreColor: '#000',
+                padding: 4,
+                borderRadius: 2,
+                borderWidth: 1,
+                borderColor: '#000',
+                opacity: 0.2,
+            },
+            dropShadow: {
+                enabled: false,
+                top: 1,
+                left: 1,
+                blur: 1,
+                color: '#222',
+                opacity: 0.45
             },
         },
+        colors: [
+            'rgba(255, 26, 104, 0.5)',
+            'rgba(54, 162, 235, 0.5)',
+            'rgba(255, 206, 86, 0.5)',
+            'rgba(25, 135, 84, 0.5)',
+        ],
+        labels: ['Single Room', 'Double Room', 'VIP Room', 'Deluxe Room'],
+        tooltip: {
+            custom: function({seriesIndex, dataPointIndex, w}) {
+
+              var name = w.config.labels[seriesIndex].split(' ')[0];
+              var value = w.config.series[seriesIndex];
+              var color = w.config.colors[seriesIndex];
+
+              return `<div class='py-2 px-3' style="background:${color}">
+                <span>${name}: ${value} rooms</span>
+              </div>`;
+            },
+            fillSeriesColor: true,
+        }
     };
-  
-    new Chart(element, config);
+
+    var chart = new ApexCharts(element, options);
+    chart.render();
 }
+
+// function drawPopularRoomTypePieChart(){
+//     var element = document.getElementById('booking_popularity_pie');
+//     if (!element) {
+//         return;
+//     }
+//     const data = {
+//         labels: [
+//             'Red',
+//             'Blue',
+//             'Yellow'
+//         ],
+//         datasets: [{
+//             label: 'My First Dataset',
+//             data: [300, 50, 100],
+//             backgroundColor: [
+//                 'rgba(255, 26, 104, 0.2)',
+//                 'rgba(54, 162, 235, 0.2)',
+//                 'rgba(255, 206, 86, 0.2)',
+//             ],
+//             borderColor: [
+//                 'rgba(0, 0, 0, 0.3)',
+//             ],
+//             borderWidth: 1,
+//             hoverOffset: 4
+//         }]
+//     };
+  
+//     const config = {
+//         type: 'pie',
+//         data: data,
+//         options: {
+//             plugins: {
+//                 legend: {
+//                     display: false
+//                 },
+//                 title: {
+//                     display: false,
+//                 },
+//                 // datalabels: {
+//                 //     formatter: (value) => {
+//                 //       return value + '%';
+//                 //     },
+//                 // },
+//             },
+//         },
+//         plugins:[ChartDataLabels]
+//     };
+  
+//     new Chart(element, config);
+// }
 
 drawApexBookingLineChart();
 drawApexPopularRoomBarChart();
-drawApexPopularRoomTypePieChart();
+drawApexPopularRoomPieChart();

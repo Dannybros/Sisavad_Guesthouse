@@ -4,6 +4,8 @@ const income_line = document.getElementById('annual_revenue_line');
 const popular_radar = document.getElementById('popularity_radar');
 const popular_bar = document.getElementById('popular_room_bar');
 
+const navLinks = document.querySelectorAll('.nav-link');
+
 function drawDonutRoomStats(el){
   if(!el) return;
 
@@ -223,6 +225,10 @@ function drawRadarPopularity(el){
   new Chart(el, config);
 }
 
+function setActiveRevenuePeriod(period){
+  $('.period_title').text(`last ${period}`)
+}
+
 $('.counter').each(function(){
     $(this).prop('Counter', 0).animate({
         Counter:$(this).text()
@@ -240,3 +246,21 @@ drawPieRoomType(room_type_pie);
 drawLineIncome(income_line);
 drawRadarPopularity(popular_radar);
 drawBarPopularRooms(popular_bar);
+
+if(navLinks){
+  navLinks.forEach((navLink) => {
+    navLink.addEventListener('click', () => {
+      navLink.children[1].classList.remove('opacity-0');
+      navLink.children[1].classList.add('opacity-100');
+  
+      navLinks.forEach((otherLink) => {
+        if (otherLink !== navLink) {
+          otherLink.children[1].classList.remove('opacity-100');
+          otherLink.children[1].classList.add('opacity-0');
+        }
+      });
+    });
+  });
+}
+
+

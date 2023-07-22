@@ -47,7 +47,7 @@
 .profile_sidebar > img{
     display: block;
     width: 90%;
-    aspect-ratio: 5/2;
+    aspect-ratio: 2;
     object-fit: cover;
     margin: 24px auto;
 }
@@ -278,6 +278,8 @@
     border: 1px solid #F1F1F2;
 }
 
-.pie-chart{
-    height: 300px !important;
+.revenue-stats{
+    position: relative;
+    background-color: #013A6B;
+    background-image: -webkit-linear-gradient(40deg, #013A6B 50%, #004a8f 50.5%);
 }

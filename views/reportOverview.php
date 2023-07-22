@@ -93,7 +93,7 @@
 
     </div>
 
-    <div class="row g-5 g-xl-10"> 
+    <div class="row g-5 gx-2"> 
 
         <div class="col-xl-3">
             <div class="card card-shadow h-100">

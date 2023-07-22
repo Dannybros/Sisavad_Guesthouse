@@ -1,10 +1,10 @@
 <section id="sidebar-collapse" class="col-sm-2 sidebar">
     
     <main class="profile_sidebar p-3 mb-2">
-        <img src="https://picsum.photos/200" alt="">
+        <img src="https://cf.bstatic.com/xdata/images/hotel/max1024x768/375670158.jpg?k=aaa4a7916cf39db3b56e4ccf145773b51d6fed26534bd7409099a0355cd106c7&o=&hp=1" alt="">
         <div class="profile_name ms-3">
             <h3 class="text-light mb-3">
-                GuestHouse
+                Sisavad Guesthouse
             </h3>
             <figure class="d-flex align-items-center text-light mb-0">
                 <span class="green__circle me-3"></span>
@@ -26,7 +26,7 @@
                 href="index.php?calender"
             >
                 <div>
-                    <i class="fa fa-book px-2">&nbsp;</i>
+                    <i class="fa fa-calendar px-2">&nbsp;</i>
                     Schedule
                 </div>
             </a>
@@ -62,7 +62,7 @@
                 href="index.php?reserve"
             >
                 <div>
-                    <i class="fa fa-book px-2">&nbsp;</i>
+                    <i class="fa fa-bookmark px-2">&nbsp;</i>
                     Reserve
                 </div>
             </a>
@@ -85,7 +85,7 @@
             
             <div class="collapse ps-3 pb-0" id="reportSubmenu">
                 <a class="menu_list text-decoration-none row p-2 m-1 mt-2 text-white rounded-2 
-                    <?php if (isset($_GET['report'])) echo 'active_list'?>"
+                    <?php if (isset($_GET['overview'])) echo 'active_list'?>"
                     href="index.php?report&overview"
                 >
                     <div>

@@ -80,7 +80,7 @@
         <div class="accordion-item">
             <h2 class="accordion-header">
                 <button class="accordion-button collapsed fw-bold fs-2" type="button" data-bs-toggle="collapse" data-bs-target="#staffSetting" aria-expanded="false" aria-controls="staffTypeSetting">
-                    Staff Setting
+                    Employee Setting
                 </button>
             </h2>
             <div id="staffSetting" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
