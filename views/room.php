@@ -1,50 +1,28 @@
-<h1 class="pt-2 pb-3 room_page_nav">
-    ROOMS INFO
-</h1>
+<h1 class="pt-2 pb-3 room_page_nav" data-i18n="rooms.title"></h1>
 
 <div class="d-flex justify-content-between align-items-center room_search_bar p-2 border-bottom border-dark">
     <select name="floor" id="roomTypeSelector" class="floorSelector" onchange="loadRooms()">
-        <option value="all" selected="select">All</option>
+        <option value="all" data-i18n="selector.all" selected></option>
         <?php
             $sql ="SELECT * FROM `room_type`";
             $result = mysqli_query($conn, $sql);
             while($roomType = mysqli_fetch_array($result)){?>
                 <option 
                     value=<?php echo $roomType['room_type_id']?> 
+                    class="en-font"
                 >
                     <?php echo $roomType['room_type_name']?>
                 </option>
         <?php }?>
     </select>
     <div class="input-group" style="width: 300px !important;">
-        <input type="text" id="roomSearchBar" class="form-control" style="border:1px solid lightblue" placeholder="Search" value="" onkeyup="loadRooms()"/>
+        <input type="text" id="roomSearchBar" class="form-control en-font" style="border:1px solid lightblue" placeholder="Search..." value="" onkeyup="loadRooms()"/>
     </div>
-    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#roomModal" onclick="addNewRoom()">
-        <i class="fa fa-plus"></i>
-        Add New Room
+    <button class="btn btn-primary d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#roomModal" onclick="addNewRoom()">
+        <i class="fa fa-plus me-2"></i>
+        <span data-i18n="rooms.btn_add"></span>
     </button>
 </div> 
-
-<!-- <section class="p-3 border-bottom border-dark">
-    <figure class="d-flex m-0">
-        <div class="d-flex mx-2">
-            <div class="calender-legend bg-success bg-opacity-75"></div>
-            <label>Free</label>
-        </div>
-        <div class="d-flex mx-2">
-            <div class="calender-legend bg-primary bg-opacity-75"></div>
-            <label>Occupied</label>
-        </div>
-        <div class="d-flex mx-2">
-            <div class="calender-legend bg-warning bg-opacity-75"></div>
-            <label>Reserved</label>
-        </div>
-        <div class="d-flex mx-2">
-            <div class="calender-legend bg-danger bg-opacity-75"></div>
-            <label>Maintanence</label>
-        </div>
-    </figure>
-</section> -->
 
 <div class="display_room row my-4 overflow-auto" id="display_room">
     <?php
@@ -67,46 +45,44 @@
             
             if($rooms['room_status']==="Free"){
                 $color = "text-success";
-            }
-            else if ($rooms['room_status']==="Maintenance"){
-                $color = "text-danger";
+                $stat = "rooms.status.free";
             }
             else if ($rooms['room_status']==="Reserved"){
                 $color = "text-warning";
+                $stat = "rooms.status.reserve";
             }
             else{
                 $color = "text-primary"; 
+                $stat = "rooms.status.occupy";
             }
     ?>
         <main class="room_box p-3 rounded-10" id="room_box">
             <div class="room_title p-0 bg-opacity-50" style="background-image:<?php echo $pic?>">
-                <div class="bg-dark bg-opacity-50 text-light p-2" style="width:auto"><?php echo $rooms['room_name'] ?></div>
+                <div class="bg-dark bg-opacity-50 text-light p-2 en-font" style="width:auto"><?php echo $rooms['room_name'] ?></div>
             </div>
             <article class="border">
                 <aside class="bg-white py-2 border-bottom"> 
                     <b>
-                        <?php echo $rooms['room_type_name'] ?>
+                        <span class="en-font"><?php echo $rooms['room_type_name'] ?></span>
                         &nbsp; 
-                        <span class="<?php echo $color?>">(<?php echo $rooms['room_status'] ?>)</span>
+                        <span class="<?php echo $color?>" data-i18n=<?php echo $stat?>></span>
                     </b>
                 </aside>
                 <div class="bg-white py-2 d-flex justify-content-around">
-                    <button class="btn btn-success" 
+                    <button class="btn btn-sm btn-success roomModalView" 
                         onclick="viewRoomInfo('<?php echo $rooms['room_id']?>')"
                         data-bs-toggle="modal" 
                         data-bs-target="#roomModal" 
-                    >
-                        View
-                    </button>
+                        data-i18n="rooms.btn_view"
+                    ></button>
                     <?php
-                    if($rooms['room_status']!=="Free" && $rooms['room_status']!=="Maintenance"){?>
-                        <button class="btn btn-primary staff_icon" 
+                    if($rooms['room_status']!=="Free"){?>
+                        <button class="btn btn-primary staff_icon btn-sm" 
                             onclick="getRoomBookingList('<?php echo $rooms['room_id']?>')" 
                             data-bs-toggle="offcanvas" 
                             data-bs-target="#bookingOffCanvas"
-                        >
-                            Booking
-                        </button>
+                            data-i18n="rooms.btn_booking"
+                        ></button>
                     <?php }?>
                 </div>
             </article>
@@ -120,17 +96,26 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="roomModalTitle">Room Info</h1>
+                <h1 class="modal-title fs-5" id="roomModalTitle" data-i18n="rooms.info.title">
+                </h1>
                 <button type="button" id="roomModalClose" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form method="post" onsubmit="manageRoom(event)" id="roomModalForm">
                 <main class="modal-body row" style="height:100%; row-gap:20px" >
                     <div class="col-6">
-                        <label class="my-2" style="float:left">Room Name</label>
-                        <input type="text" id="roomModal_name" class="text-center form-control" placeholder="Room Name" data-error="please fill in the room title" required/>
+                        <label class="my-2" style="float:left" data-i18n="rooms.info.name"></label>
+                        <input 
+                            type="text" 
+                            id="roomModal_name" 
+                            class="text-center form-control en-font" 
+                            placeholder="Room Name" 
+                            data-error="please fill in the room title" 
+                            required
+                        />
                     </div>
                     <div class="col-6">
-                        <label class="my-2" style="float:left">Room Type</label>
+                        <label class="my-2" style="float:left" data-i18n="rooms.info.type"></label>
+                        
                         <select 
                             id="roomModal_type" 
                             class="form-control"
@@ -138,12 +123,14 @@
                             data-error="please choose the room type"
                             required
                         >
-                            <option selected disabled> -- choose room type -- </option>
+                            <option selected disabled data-i18n="rooms.info.select">
+                            </option>
                             <?php
                                 $sql ="SELECT * FROM `room_type`";
                                 $result = mysqli_query($conn, $sql);
                                 while($roomType = mysqli_fetch_array($result)){?>
                                     <option 
+                                        class="en-font"
                                         value=<?php echo $roomType['room_type_id']?> 
                                     >
                                         <?php echo $roomType['room_type_name']?>
@@ -152,19 +139,19 @@
                         </select>
                     </div>
                     <div class="col-6">
-                        <label class="my-2" style="float:left">Room Price</label>
-                        <input type="text" class="text-center form-control" id="roomModal_price" disabled/>
+                        <label class="my-2" style="float:left" data-i18n="rooms.info.price"></label>
+                        <input type="text" class="text-center form-control en-font" id="roomModal_price" disabled/>
                     </div>
                     <div class="col-6">
-                        <label class="my-2" style="float:left">Room Status:</label> &nbsp;
-                        <input type="text" class="form-control text-center text-success" id="roomModal_status" disabled value="Free"/>
+                        <label class="my-2" style="float:left" data-i18n="rooms.info.status"></label> &nbsp;
+                        <input type="text" class="form-control text-center text-success" id="roomModal_status" disabled/>
                     </div>
                 </main>
                 <div class="modal-footer">
-                    <button type="submit" id="btnRoomModalSubmit" class="btn btn-primary">ADD</button>
-                    <button type="reset" class="btn btn-warning">Reset</button>
-                    <button type="button" onclick="delRoom()" class="btn btn-danger">Delete</button>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> 
+                    <button type="submit" id="btnRoomModalSubmit" class="btn btn-primary"></button>
+                    <button type="reset" class="btn btn-warning" data-i18n="modal.reset"></button>
+                    <button type="button" onclick="delRoom()" class="btn btn-danger" data-i18n="modal.delete"></button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-i18n="modal.close"></button> 
                 </div>
             </form>
         </div>
@@ -173,10 +160,9 @@
 
 <div class="offcanvas offcanvas-end" data-bs-scroll="true" tabindex="-1" id="bookingOffCanvas" aria-labelledby="offcanvasWithBothOptionsLabel">
   <div class="offcanvas-header">
-    <h5 class="offcanvas-title" id="offcanvasWithBothOptionsLabel">Booking List</h5>
+    <h5 class="offcanvas-title" id="offcanvasWithBothOptionsLabel" data-i18n="rooms.offsidebar.title"></h5>
     <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
   </div>
   <div class="offcanvas-body bg-dark" id="offCanvas-body">
-    
   </div>
 </div>

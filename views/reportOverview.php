@@ -9,7 +9,7 @@
                     <div class="d-flex flex-column mt-3 text-secondary text-start">
                         <span class="fw-semibold fs-1 lh-1 counter" style="color: #3F4254; font-family:Helvetica"> 37 </span>
                         <div class="m-0">
-                            <span class="fw-semibold fs-6">Total Rooms</span>
+                            <span class="fw-semibold fs-6" data-i18n="report.overview.span1">Total Rooms</span>
                         </div>
                     </div>
                 </div>
@@ -24,7 +24,7 @@
                     <div class="d-flex flex-column mt-3 text-secondary text-start">
                         <span class="fw-semibold fs-1 lh-1 counter" style="color: #3F4254; font-family:Helvetica"> 5 </span>
                         <div class="m-0">
-                            <span class="fw-semibold fs-6">Room Types</span>
+                            <span class="fw-semibold fs-6" data-i18n="report.overview.span2">Room Types</span>
                         </div>
                     </div>
                 </div>
@@ -39,7 +39,7 @@
                     <div class="d-flex flex-column mt-3 text-secondary text-start">
                         <span class="fw-semibold fs-1 lh-1 counter" style="color: #3F4254; font-family:Helvetica"> 20 </span>
                         <div class="m-0">
-                            <span class="fw-semibold fs-6">Customers</span>
+                            <span class="fw-semibold fs-6" data-i18n="report.overview.span3">Customers</span>
                         </div>
                     </div>
                 </div>
@@ -54,7 +54,7 @@
                     <div class="d-flex flex-column mt-3 text-secondary text-start">
                         <span class="fw-semibold fs-1 lh-1 counter" style="color: #3F4254; font-family:Helvetica"> 220 </span>
                         <div class="m-0">
-                            <span class="fw-semibold fs-6 ">Bookings</span>
+                            <span class="fw-semibold fs-6" data-i18n="report.overview.span4">Bookings</span>
                         </div>
                     </div>
                 </div>
@@ -69,7 +69,7 @@
                     <div class="d-flex flex-column mt-3 text-secondary text-start">
                         <span class="fw-semibold fs-1 lh-1 counter" style="color: #3F4254; font-family:Helvetica"> 9 </span>
                         <div class="m-0">
-                            <span class="fw-semibold fs-6 ">Employees</span>
+                            <span class="fw-semibold fs-6" data-i18n="report.overview.span5">Employees</span>
                         </div>
                     </div>
                 </div>
@@ -84,7 +84,7 @@
                     <div class="d-flex flex-column mt-3 text-secondary text-start">
                         <div class="fw-semibold fs-1 lh-1" style="color: #3F4254; font-family:Helvetica"><span class="counter text-decoration-none">21</span>M </div>
                         <div class="m-0">
-                            <span class="fw-semibold fs-6 ">Total</span>
+                            <span class="fw-semibold fs-6" data-i18n="report.overview.span6">Total</span>
                         </div>
                     </div>
                 </div>
@@ -98,7 +98,7 @@
         <div class="col-xl-3">
             <div class="card card-shadow h-100">
                 <div class="card-header bg-white">
-                    <h4 class="fw-bold py-2 mb-0">
+                    <h4 class="fw-bold py-2 mb-0" data-i18n="report.overview.graph.donut">
                         Current Room Status
                     </h4>
                 </div>
@@ -110,7 +110,7 @@
         <div class="col-xl-3">
             <div class="card card-shadow h-100">
                 <div class="card-header bg-white">
-                    <h4 class="fw-bold py-2 mb-0">
+                    <h4 class="fw-bold py-2 mb-0" data-i18n="report.overview.graph.pie">
                         Room Type Percentage
                     </h4>
                 </div>
@@ -122,7 +122,7 @@
         <div class="col-xl-6">
             <div class="card card-shadow h-100">
                 <div class="card-header bg-white">
-                    <h4 class="fw-bold py-2 mb-0">
+                    <h4 class="fw-bold py-2 mb-0" data-i18n="report.overview.graph.line">
                         Annual Income
                     </h4>
                 </div>
@@ -137,7 +137,7 @@
         <div class="col-xl-4">
             <div class="card card-shadow h-100">
                 <div class="card-header bg-white">
-                    <h4 class="fw-bold py-2 mb-0">
+                    <h4 class="fw-bold py-2 mb-0" data-i18n="report.overview.graph.radar">
                         Room Popularity
                     </h4>
                 </div>
@@ -149,7 +149,7 @@
         <div class="col-xl-8">
             <div class="card card-shadow h-100">
                 <div class="card-header bg-white">
-                    <h4 class="fw-bold py-2 mb-0">
+                    <h4 class="fw-bold py-2 mb-0" data-i18n="report.overview.graph.bar">
                         Most Popular Room
                     </h4>
                 </div>
@@ -164,57 +164,50 @@
         <div class="col-xl-6">
             <div class="card card-flush h-lg-100">
 
-                <div class="card-header">
-                    <h3 class="card-title d-flex align-items-start flex-column mb-0">				
-                        <span class="card-label fw-bold" style="color:#343a40">Bookings</span>
-                        <span class="mt-1 fw-semibold fs-6 text-secondary">Top 5 with most fee</span>
-                    </h3>
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="card-title d-flex align-items-start flex-column mb-0">				
+                        <span class="card-label fw-bold" style="color:#343a40" data-i18n="report.overview.span4">Bookings</span>
+                        <span class="mt-1 fw-semibold fs-6 text-secondary" data-i18n="report.overview.graph.table.tb1">Top 5 with most fee</span>
+                    </h5>
+                    <a href="index.php?booking" class="btn btn-secondary d-flex align-items-center justify-content-center" style="height: 30px; width:30px">
+                        <i class="fa fa-chevron-right"></i>
+                    </a>
                 </div>
                 <!--end::Header-->
 
-                <div class="card-body pt-6">             
+                <div class="card-body pt-2">             
                     <div class="table-responsive">
-                        <table class="table table-row-dashed align-middle gs-0 gy-3 my-0">
+                        <table class="table table-row-dashed align-middle mb-1">
                             <thead>
-                                <tr class="text-center text-secondary fw-bold text-uppercase gs-0">
-                                    <th class="text-start">Order ID</th>
-                                    <th class="min-w-100px">Created</th>
-                                    <th class="min-w-125px">Customer</th>
-                                    <th class="min-w-100px">Total</th>
-                                    <th class="text-end">Status</th>
+                                <tr class="text-center text-secondary fs-base fw-bold text-uppercase">
+                                    <th class="text-start en-font"> ID</th>
+                                    <th class="en-font">Check In</th>
+                                    <th class="en-font">Check Out</th>
+                                    <th data-i18n="booking.table.total">Total</th>
+                                    <th data-i18n="booking.table.status">Status</th>
                                 </tr>
                             </thead>
 
                             <tbody>
                                 <tr class="text-center">                            
                                     <td>
-                                        <div class="d-flex align-items-center">
-                                            <div class="d-flex justify-content-start flex-column">
-                                                <div class="fw-bold fs-6">Guy Hawkins</div>
-                                                <span class="fw-semibold d-block text-body-tertiary text-start">Haiti</span>
-                                            </div>
-                                        </div>                                
+                                        <div class="d-flex justify-content-start flex-column">
+                                            <div class="fw-bold fs-6 text-start en-font">Guy Hawkins</div>
+                                            <span class="fw-semibold d-block text-body-tertiary text-start">(Unpaid)</span>
+                                        </div>
                                     </td>
-
                                     <td>
-                                        <span class="fw-bold fs-6" style="color:#6c757d">245</span>                                
+                                        <span class="fw-bold fs-6 en-font text-dark">2022-07-04</span>                                
                                     </td>
-
                                     <td>
-                                        <span class="fw-bold fs-6" style="color:#6c757d">$78.34</span>                                
+                                        <span class="fw-bold fs-6 en-font text-dark">2022-07-08</span>                                
                                     </td>
-                                    
                                     <td>
-                                        <span class="badge text-bg-success fs-base">                                
-                                            9.2%
-                                        </span>                                                                  
-                                    </td>     
-
-                                    <td class="text-end">
-                                        <button class="btn btn-small bg-primary" style="transform: scale(0.8);">
-                                            <i class="fa fa-arrow-right text-light"></i>                                
-                                        </button>
+                                        <span class="fw-bold fs-6 en-font text-dark">200,000 KIP</span>                                
                                     </td>
+                                    <td>
+                                        <span class="badge text-bg-success fs-base"> Finished </span>                                                                  
+                                    </td>  
                                 </tr>
                             </tbody>    
                         </table>
@@ -229,63 +222,59 @@
             <div class="card card-flush h-lg-100">
                 
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <h3 class="card-title d-flex align-items-start flex-column mb-0">			
-                        <span class="card-label fw-bold">Employees</span>
-                        <span class="mt-1 fw-semibold fs-6 text-secondary" >Total: 38 people &nbsp; ( Male: 18 )</span>
-                    </h3>
+                    <h5 class="card-title d-flex align-items-start flex-column mb-0">			
+                        <span class="card-label fw-bold" data-i18n="report.overview.span5">Employees</span>
+                        <span class="mt-1 fw-semibold fs-6 text-secondary">
+                            <label>
+                                <span data-i18n="report.overview.span6">Total</span>: 
+                                <span> 38 </span>
+                                <span data-i18n="report.overview.graph.table.tb2.people"> People</span>
+                            </label>
+                            ( <label>
+                                <span data-i18n="report.overview.graph.table.tb2.male">Male</span>: 
+                                <span>18</span>
+                            </label> )
+                        </span>
+                    </h5>
 
-                    <button type="button" class="btn btn-secondary d-flex align-items-start justify-content-center" style="height: 30px; width:30px">
+                    <a href="index.php?setting" class="btn btn-secondary d-flex align-items-center justify-content-center" style="height: 30px; width:30px">
                         <i class="fa fa-chevron-right"></i>
-                    </button>
+                    </a>
                 </div>
                 <!--end::Header-->
 
-                <div class="card-body pt-6">             
+                <div class="card-body pt-2">             
                     <div class="table-responsive">
-                        <table class="table table-row-dashed align-middle gs-0 gy-3 my-0">
+                        <table class="table table-row-dashed align-middle mb-1 en-font">
                             <thead>
-                                <tr class="text-secondary fw-bold text-uppercase gs-0">
-                                    <th class="text-start">Order ID</th>
-                                    <th class="text-center">Created</th>
-                                    <th class="text-center">Customer</th>
-                                    <th class="text-center">Total</th>
-                                    <th class="text-center">Status</th>
+                                <tr class="text-secondary fw-bold text-uppercase">
+                                    <th class="text-start" data-i18n="setting.staff.name">Name</th>
+                                    <th class="text-center" data-i18n="setting.staff.position">Position</th>
+                                    <th class="text-center" data-i18n="setting.staff.email">Email</th>
+                                    <th class="text-center" data-i18n="setting.staff.phone">Phone</th>
+                                    <th class="text-center" data-i18n="setting.staff.passport">ID/Passport</th>
                                 </tr>
                             </thead>
 
                             <tbody>
                                 <tr>                            
                                     <td>
-                                        <div class="d-flex align-items-center">
-                                            <div class="symbol symbol-50px me-3">                                                   
-                                                <img src="https://picsum.photos/200" style="width:50px; aspect-ratio:5/4" alt=""/>                                                   
-                                            </div>
-                                            
-                                            <div class="d-flex justify-content-start flex-column">
-                                                <div class="fw-bold fs-6">Guy Hawkins</div>
-                                                <span class="fw-semibold d-block text-start text-body-tertiary">Haiti</span>
-                                            </div>
-                                        </div>                                
+                                        <div class="d-flex justify-content-start flex-column en-font">
+                                            <div class="fw-bold fs-6 text-start">Guy Hawkins</div>
+                                            <span class="fw-semibold d-block text-start text-body-tertiary">e123i2o3</span>
+                                        </div>
                                     </td>
-
                                     <td class="text-center">
-                                        <span class="fw-bold fs-6" style="color:#6c757d">245</span>                                
+                                        <span class="fw-bold fs-6">245</span>                                
                                     </td>
-
                                     <td class="text-center">
-                                        <span class="fw-bold fs-6" style="color:#6c757d">$78.34%</span>                                
+                                        <span class="fw-bold fs-6">$78.34%</span>                                
                                     </td>
-                                    
                                     <td class="text-center">
-                                        <span class="badge bg-danger">                                
-                                            9.2%
-                                        </span>                                                                  
-                                    </td>     
-
+                                        <span class="fw-bold fs-6">245</span>                                
+                                    </td>
                                     <td class="text-center">
-                                        <button class="btn btn-small bg-primary" style="transform: scale(0.8);">
-                                            <i class="fa fa-eye text-light"></i>                                
-                                        </button>
+                                        <span class="fw-bold fs-6">$78.34%</span>                                
                                     </td>
                                 </tr>
                             </tbody>    

@@ -1,5 +1,3 @@
-let loginStopWatch;
-
 var today = new Date();
 var year = today.getFullYear();
 var month = today.getMonth() + 1;
@@ -85,7 +83,7 @@ function createCalender(rooms){
 
     var totalDays  = getTotalDays(year, month);
     
-    function insertDates(parent, element, name, id, type){
+    function insertDates(parent, element, name, id){
 
         const isTbody = element==="th"? false : true;
 
@@ -94,7 +92,7 @@ function createCalender(rooms){
         
         row_head.setAttribute("scope", !isTbody? "col" : "row");
         row_head.innerHTML=`
-            ${name} <b class="fs-base fw-medium" style="width:20px"> (${type})</b>
+            ${name} <b class="fs-base fw-medium" style="width:20px"></b>
         `;
         table_tr.appendChild(row_head);
         
@@ -122,11 +120,11 @@ function createCalender(rooms){
         parent.appendChild(table_tr);
     }
 
-   insertDates(cal_header, "th", "#", null, '');
+    insertDates(cal_header, "th", "#", null);
 
-   rooms.map((room)=>{
-    insertDates(cal_body, "td", room.name, room.id, room.type)
-   })
+    rooms.map((room)=>{
+        insertDates(cal_body, "td", room.name, room.id)
+    })
 }
 
 function createSchedule(){
@@ -312,7 +310,6 @@ function putLabelInCalender(dateIn, dateOut, booking, bookingNo){
     })
 }
 
-
 // Reserve
 
 function stepClick(value, index){
@@ -336,7 +333,7 @@ function goToSecondStep(){
         stepClick(50, 1);
         $("#collapseTwo").collapse('show');
     }else{
-        alert("please select customers");
+        alert($.t("reservation.step1.selector"));
         return;
     }
 }
@@ -433,7 +430,7 @@ function fetchFreeRoom(id){
     var dateOut = $("#check_out_date").val();
 
     if(duration === "0") {
-        alert("Please choose the dates first");
+        alert($.t("error.err5"));
         $("#reserveRoomType").val("disabled");
         return;
     }
@@ -538,6 +535,7 @@ function updateCustomerSelect(){
 
 function clickCustomerList(id){
     $('#btnCustInfoSubmit').text(editCustomerTitle);
+    $('#btnCustInfoSubmit').data('type', 'edit');
     $('#btnCustInfoSubmit').removeClass("btn-success");
     $('#btnCustInfoSubmit').addClass("btn-warning");
 
@@ -572,30 +570,34 @@ function customerManage(){
     var passport = $('#cust_id_passport').val();
     var bd = $('#cust_bd').val();
 
-    var url= cust_type === 'new' ? "./controllers/addCustomer.php" : `./controllers/editCustomer.php`;
+    if(cust_name && cust_contact && email && passport){
+        var url= cust_type === 'new' ? "./controllers/addCustomer.php" : `./controllers/editCustomer.php`;
 
-    $.ajax({
-        url:url,
-        type:"POST",
-        data:{
-            cust_id:cust_id,
-            cust_contact:cust_contact,
-            cust_name:cust_name,
-            cust_fname:cust_fname,
-            cust_email:email,
-            cust_bd:bd,
-            cust_id_passport:passport
-        },
-        success: function(data){
-            resetCustomerInfo();
-            if(data==='success'){
-                updateCustomerSelect();
-                appendAlert("Customer managed successfully", "success");
-                updateCustomerList(cust_id, cust_name + " " + cust_fname);
+        console.log(url);
+    
+        $.ajax({
+            url:url,
+            type:"POST",
+            data:{
+                cust_id:cust_id,
+                cust_contact:cust_contact,
+                cust_name:cust_name,
+                cust_fname:cust_fname,
+                cust_email:email,
+                cust_bd:bd,
+                cust_id_passport:passport
+            },
+            success: function(data){
+                resetCustomerInfo();
+                if(data==='success'){
+                    updateCustomerSelect();
+                    appendAlert("Customer managed successfully", "success");
+                    updateCustomerList(cust_id, cust_name + " " + cust_fname);
+                }
+                else appendAlert(data, "danger");
             }
-            else appendAlert(data, "danger");
-        }
-    });
+        });
+    }else alert($.t("rooms.error"))
 }
 
 function resetCustomerInfo(){
@@ -606,6 +608,7 @@ function resetCustomerInfo(){
     $('#cust_email').val('');
     $('#cust_id_passport').val('');
     $('#cust_bd').val('');
+    $('#btnCustInfoSubmit').data('type', 'new');
     $('#btnCustInfoSubmit').text(addCustomerTitle);
     $('#btnCustInfoSubmit').addClass("btn-success");
     $('#btnCustInfoSubmit').removeClass("btn-warning");
@@ -625,12 +628,12 @@ function registerBooking(event){
     var customers = [];
 
     if(!employee){
-        alert("Please select employee")
+        alert($.t("reservation.step3.select"))
         return;
     }
 
     if(customerList.children.length <= 0){
-        alert("Please select customer");
+        alert($.t("reservation.step1.selector"));
         return;
     }
 
@@ -662,7 +665,7 @@ function registerBooking(event){
                 else appendAlert(data, "danger");
             }   
         })
-    }else alert("Please choose Payment Option and Status")
+    }else alert($.t("error.err7"))
 
 }
 
@@ -680,34 +683,52 @@ function loadBooking(){
     
     function addElement(data, number){
 
-        let status = data.status;
-        var bg;
+        var status = data.status;
+        var payment = data.paymentStatus;
+        var bg, pay_lang, stat_lang;
 
         if(status==="Staying"){
             bg = "bg-primary-subtle";
+            stat_lang="booking.status.stay";
         }
         else if (status==="Confirmed"){
             bg = "bg-warning-subtle";
+            stat_lang="booking.status.confirm";
         }
         else if (status==="Cancelled"){
             bg = "bg-danger-subtle";
+            stat_lang="booking.status.cancel";
         }
         else{
             bg = "bg-success-subtle"; 
+            stat_lang="booking.status.finish";
+        }
+
+        if(payment==="Paid"){
+            pay_lang="payment.paid";
+        }
+        else if (payment==="Deposit"){
+            pay_lang="payment.deposit";
+        }
+        else{
+            pay_lang="payment.unpaid";
         }
 
         var display=`
             <tr class='${bg}'>
-                <td class="align-middle"> ${number} </td>
-                <td class="align-middle"> ${data.id} </td>
-                <td class="align-middle"><b> ${data.room} </b></td>
-                <td class="align-middle"><b> ${data.roomType} </b></td>
-                <td class="align-middle fw-bold"> ${data.checkIn} </td>
-                <td class="align-middle fw-bold"> ${data.checkOut} </td>
-                <td class="align-middle"> ${data.duration} Nights </td>
-                <td class="align-middle"> ${formatNumber(data.total)} KIP</td>
-                <td class="align-middle"> ${data.paymentStatus} </td>
-                <td class="align-middle bg-info-subtle fw-bold"> ${status} </td>
+                <td class="align-middle en-font"> ${number} </td>
+                <td class="align-middle en-font"> ${data.id} </td>
+                <td class="align-middle en-font"><b> ${data.room} </b></td>
+                <td class="align-middle en-font"><b> ${data.roomType} </b></td>
+                <td class="align-middle fw-bold en-font"> ${data.checkIn} </td>
+                <td class="align-middle fw-bold en-font"> ${data.checkOut} </td>
+                <td class="align-middle">
+                    <span class="en-font">${data.duration} </span>
+                    <span data-i18n="booking.table.night"></span> 
+                </td>
+                <td class="align-middle en-font"> ${formatNumber(data.total)} KIP</td>
+                <td class="align-middle" data-i18n=${pay_lang}> </td>
+                <td class="align-middle bg-info-subtle fw-bold" data-i18n=${stat_lang}> </td>
                 <td class="d-flex justify-content-around">
                     <button 
                         type="button" 
@@ -749,6 +770,8 @@ function loadBooking(){
             for(var i=0; i<data.length; i++){
                 addElement(data[i], i+1);
             }
+
+            $('#display_booking').localize();
         }
 
     })
@@ -832,19 +855,19 @@ function showBookingLog(id){
 
     const displayLog=(data)=>{
 
-        var room_msg = data.room;
+        var room = data.room;
 
         if(data.movement==="Moved"){
-            room_msg=`
+            room=`
                 ${data.old_room} &nbsp; <i class="fa fa-arrow-right"></i> &nbsp; ${data.room}
             `;
         }
 
         var display =`
-            <main class="log col-12 row py-2 ps-5 border-bottom border-secondary-subtle text-start">
-                <span class="col-2 fw-bold text-capitalize"> ${data.movement} </span>
+            <main class="log col-12 en-font row py-2 ps-5 border-bottom border-secondary-subtle text-start">
+                <span class="col-2 fw-bold text-capitalize text-secondary"> ${data.movement} </span>
                 <span class="col-2"> ${data.time} </span>
-                <span class="col-2 fw-semibold"> ${room_msg}</span>
+                <span class="col-2 fw-semibold"> ${room}</span>
                 <span class="col-6"> ${data.memo}</span>
             </main>
         `
@@ -887,16 +910,15 @@ function loadRooms(){
 
         var status = data.status;
         var type = data.type;
-        var color, pic;
+        var color, pic, type;
 
         var bookingBtn=`
-            <button class="btn btn-primary staff_icon" 
+            <button class="btn btn-sm btn-primary staff_icon" 
                 onclick="getRoomBookingList('${data.id}')" 
                 data-bs-toggle="offcanvas" 
                 data-bs-target="#bookingOffCanvas"
-            >
-                Booking
-            </button>
+                data-i18n="rooms.btn_booking"
+            ></button>
         `
 
         if(type==="Single Room"){
@@ -914,41 +936,39 @@ function loadRooms(){
 
         if(status==="Reserved"){
             color = "text-warning";
-        }
-        else if (status==="Maintenance"){
-            color = "text-danger";
-            bookingBtn= '';
+            type="rooms.status.reserve";
         }
         else if (status==="Occupied"){
             color = "text-primary";
+            type="rooms.status.occupy";
         }
         else{
             color = "text-success"; 
             bookingBtn= '';
+            type="rooms.status.free";
         }
 
         var display=`
             <main class="room_box p-3 rounded-10" id="room_box">
                 <div class="room_title p-0" style="background-image:${pic}">
-                    <div class="bg-dark bg-opacity-50 text-light p-2" style="width:auto">${data.name}</div>
+                    <div class="bg-dark bg-opacity-50 en-font text-light p-2" style="width:auto">${data.name}</div>
                 </div>
                 
                 <article class="border">
                     <aside class="bg-white py-2 border-bottom"> 
                         <b>
-                            ${data.type}
+                            <span class="en-font">${data.type}</span>
                             &nbsp; 
-                            <span class="${color}">(${status})</span>
+                            <span class="${color}" data-i18n=${type}></span>
                         </b>
                     </aside>
                     <div class="bg-white py-2 d-flex justify-content-around">
-                        <button class="btn btn-success" 
+                        <button class="btn btn-sm btn-success roomModalView" 
                             onclick="viewRoomInfo('${data.id}')"
                             data-bs-toggle="modal" 
                             data-bs-target="#roomModal" 
-                        >
-                            View
-                        </button>
+                            data-i18n="rooms.btn_view"
+                        ></button>
                         ${bookingBtn}
                     </div>
                 </article>
@@ -966,6 +986,7 @@ function loadRooms(){
             for(var i=0; i<res.length; i++){
                 addElement(res[i]);
             }
+            $('body').localize();
         }
 
     })
@@ -1028,8 +1049,8 @@ function delRoom(){
     var type = $("#roomModal").data('submit');
     var id = $("#roomModal").data('id');
 
-    if(status ==="Booked") alert("You can't delete the room as it is already booked");
-    else if (type === "new") alert("You can't delete the creating room");
+    if(status ==="Booked") alert($.t("error.err1"));
+    else if (type === "new") alert($.t("error.err2"));
     else{
         $.ajax({
             url:`./controllers/manageRoom.php?del=${id}`,
@@ -1047,7 +1068,9 @@ function addNewRoom(){
     document.getElementById('roomModalForm').reset();
     $('#roomModalTitle').text("Room Info -- New")
     $('#roomModal').data('submit', 'new');
-    $('#btnRoomModalSubmit').text("ADD");
+    $('#btnRoomModalSubmit').attr("data-i18n", "modal.add");
+
+    $('#roomModal').localize();
 }
 
 function getRoomBookingList(id){
@@ -1060,48 +1083,87 @@ function getRoomBookingList(id){
             offCanvas.innerHTML= '';
 
             data.map((booking)=>{
+                const payment = booking.paymentStatus;
+                const status = booking.status;
+                var payment_lang, status_lang
+
+                if(payment==="Paid") payment_lang = "payment.paid";
+                if(payment==="Unpaid") payment_lang = "payment.unpaid";
+                if(payment==="Deposit") payment_lang = "payment.deposit";
+
+                if(status==="Finished") status_lang = "booking.status.finish";
+                if(status==="Confirmed") status_lang = "booking.status.confirm";
+                if(status==="Staying") status_lang = "booking.status.stay";
+
                 var card = `
                     <div class="card w-100 border border-dark mb-4">
                         <div class="card-body">
-                            <h5 class="card-title"> <b>${booking.checkIn}  &nbsp; - &nbsp; ${booking.checkOut}</b></h5>
-                            <h6 class="card-subtitle mb-2 text-body-secondary">Booking ID: ${booking.id}</h6>
+                            <h5 class="card-title en-font"> <b>${booking.checkIn}  &nbsp; --- &nbsp; ${booking.checkOut}</b></h5>
+                            <h6 class="card-subtitle mb-2 text-body-secondary fw-semibold">
+                                <span data-i18n="sidebar.menu2"></span> 
+                                <span  class="en-font"> ID:</span>
+                                <span class="en-font">${booking.id}</span>
+                            </h6>
                             <div class="card-text row">
-                                <div class="col-6 text-start mt-2">
-                                    <Label>Duration: <span class="fw-bold">${booking.duration} Nights</span> </Label>
+                                <div class="col-6 text-start mt-2 px-0">
+                                    <span data-i18n="booking.info.duration"></span>:
+                                    <span class="fw-bold en-font">${booking.duration} </span>
+                                    <span data-i18n="booking.table.night"></span>
                                 </div>
-                                <div class="col-6 text-start mt-2">
-                                    <Label>Total: <span class="fw-bold">${formatNumber(booking.total)} K</span> </Label>
+                                <div class="col-6 text-start mt-2 px-0">
+                                    <span data-i18n="booking.info.total"></span>:
+                                    <span class="fw-bold en-font">${formatNumber(booking.total)}K </span>
                                 </div>
-                                <div class="col-6 text-start mt-2">
-                                    <Label>Status: <span class="fw-bold">${booking.status}</span> </Label>
+                                <div class="col-6 text-start mt-2 px-0">
+                                    <span data-i18n="booking.table.status"></span>:
+                                    <span class="fw-bold" data-i18n="${status_lang}"></span>
                                 </div>
-                                <div class="col-6 text-start my-2">
-                                    <Label>Payment: <span class="fw-bold">${booking.paymentStatus}</span> </Label>
+                                <div class="col-6 text-start my-2 px-0">
+                                    <span data-i18n="booking.table.payment"></span>:
+                                    <span class="fw-bold" data-i18n="${payment_lang}"></span>
                                 </div>
                             </div>
-                            <button class="btn btn-primary btn-sm w-100" onclick="viewBookingInfo('${booking.id}', 'rooms')" data-bs-toggle="modal" data-bs-target='#bookingRoomModal'> VIEW </button>
+                            <button 
+                                class="btn btn-primary btn-sm w-100" 
+                                onclick="viewBookingInfo('${booking.id}', 'rooms')" 
+                                data-bs-toggle="modal" 
+                                data-bs-target='#bookingRoomModal'
+                                data-i18n="rooms.btn_view"
+                            > 
+                            </button>
                         </div>
                     </div>
                 `
 
                 offCanvas.innerHTML += card;
             })
+
+            $('body').localize();
         }   
     })
 }
 
 function viewRoomInfo(id){
     function showRoomInfo(data){
-        let price = formatNumber(data.price);
+        var price = formatNumber(data.price);
+        var day_suffix = $("#languageSwitcher").val() === "en" ? 'Night' : "ວັນ"
+        var status_lang, status = data.status;
+
+        if(status==="Reserved") status_lang = "rooms.status.reserve";
+        if(status==="Occupied") status_lang = "rooms.status.occupy";
+        if(status==="Free") status_lang = "rooms.status.free";
 
         $('#roomModal_name').val(data.name);
         $('#roomModal_type').val(data.typeID);
-        $('#roomModal_price').val(price + " KIP / day");
-        $('#roomModal_status').val(data.status);
+        $('#roomModal_price').val(price + " KIP / " + day_suffix);
+
+        $('#roomModal_status').attr('value', $.t(status_lang));
         $('#roomModal').data('id', data.id);
         $('#roomModal').data('submit', 'edit');
         $('#roomModalTitle').text("Room Info -- Edit")
-        $('#btnRoomModalSubmit').text("EDIT");
+        $('#btnRoomModalSubmit').attr("data-i18n", "modal.edit");
+
+        $('body').localize();
     }
 
     $.ajax({
@@ -1109,7 +1171,7 @@ function viewRoomInfo(id){
         type:"GET",
         dataType:"JSON",
         success: function(data){
-            showRoomInfo(data[0])
+            showRoomInfo(data[0]);
         }   
     })
 }
@@ -1167,7 +1229,7 @@ function roomCheckIn(){
     const roomID = $("#bookedRoom").data('id');
 
     if(payOption===null) {
-        alert("Plese Deposit or fully pay the fee");
+        alert($.t("error.err3"));
         return;
     }
 
@@ -1200,7 +1262,7 @@ function roomCheckOut(){
     var url;
     
     if(paid!=="Paid"){
-        alert("Please Fully Pay The Fee");
+        alert($.t("error.err4"));
         return;
     }
 
@@ -1270,7 +1332,7 @@ function extendBookingDate(){
     totalPrice = convertStringCommaToNumber(totalPrice);
 
     if(newDateOut===''){
-        alert("please choose new Date");
+        alert($.t("error.err5"));
         return;
     }
 
@@ -1305,7 +1367,7 @@ function moveRoom(){
     var action;
 
     if(roomID===null){
-        alert("Please Choose The Moving Room");
+        alert($.t("error.err6"));
         return;
     }
 
@@ -1414,9 +1476,9 @@ function getFreeRoomForMoving(id){
                 const remainingDay = getDaysBetween(movingDate, dateOut);
                 const newPrice = data[0].price;
 
-                $("#remaining_days").text(remainingDay + " Nights");
-                $("#origin_price").text(formatNumber(newPrice) + "KIP");
-                $("#movingExtraFee").text(formatNumber((newPrice - originalprice)*remainingDay) + "KIP");
+                $("#remaining_days").text(remainingDay);
+                $("#origin_price").text(formatNumber(newPrice) + " KIP");
+                $("#movingExtraFee").text(formatNumber((newPrice - originalprice)*remainingDay) + " KIP");
 
             }else{
                 $("#movingRoomType")[0].selectedIndex = 0;
@@ -1439,7 +1501,7 @@ function calculateDuration_Total(d1, d2, price, duration, total){
 
     if(d1.value !=="" && d2.value !==""){
         let totalStay = getDaysBetween(d1.value, d2.value);
-        totalDays.innerHTML= totalStay===1? `${totalStay} Night` : `${totalStay} Nights`;
+        totalDays.innerHTML=totalStay;
         totalPrice.innerHTML = formatNumber(totalStay * parseInt(unitPrice)) + " KIP";
     }
 }
@@ -1449,7 +1511,7 @@ function getDaysBetween(d1, d2){
     let dt2 = new Date(d2).getTime();
 
     let diff = dt2 - dt1;
-    let dayDiff = Math.ceil(diff / (1000 * 3600 * 24)) + 1;
+    let dayDiff = Math.ceil(diff / (1000 * 3600 * 24));
 
     return (dayDiff);
 }
@@ -1460,7 +1522,9 @@ function openRoomTypeModal(type, id, name, price){
     $('#roomType__id').val(id);
     $('#roomType__name').val(name);
     $('#roomType__price').val(price);
-    $('#roomTypeButton').text(type);
+    $('#roomTypeButton').attr("data-i18n", "modal."+type);
+
+    $("#accordionSetting").localize();
 }
 
 function refreshRoomType(){
@@ -1569,7 +1633,9 @@ function openStaffModal(type, id, name, ID_Card, phone, email, position, salary)
     $('#staff__email').val(email);
     $('#staff__position').val(position);
     $('#staff__salary').val(salary);
-    $('#staffBtn').text(type);
+    $('#staffBtn').attr("data-i18n", "modal."+type);
+
+    $("#accordionSetting").localize();
 }
 
 function refreshStaff(){
@@ -1696,7 +1762,6 @@ function delStaff(id){
     })
 }
 
-
 // window onLoad
 
 window.onload = function() {
@@ -1706,6 +1771,7 @@ window.onload = function() {
 };
 
 $(document).ready(function() {
+
     setTimeout(function() {
         $("mainAlert").alert('close');
     }, 2000);

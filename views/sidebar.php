@@ -3,10 +3,8 @@
     <main class="profile_sidebar p-3 mb-2">
         <img src="https://cf.bstatic.com/xdata/images/hotel/max1024x768/375670158.jpg?k=aaa4a7916cf39db3b56e4ccf145773b51d6fed26534bd7409099a0355cd106c7&o=&hp=1" alt="">
         <div class="profile_name ms-3">
-            <h3 class="text-light mb-3">
-                Sisavad Guesthouse
-            </h3>
-            <figure class="d-flex align-items-center text-light mb-0">
+            <h5 class="text-light mb-2" data-i18n="sidebar.name"> </h5>
+            <figure class="d-flex align-items-center en-font text-light mb-0">
                 <span class="green__circle me-3"></span>
                 <?php 
                     date_default_timezone_set("Asia/Bangkok");
@@ -26,8 +24,8 @@
                 href="index.php?calender"
             >
                 <div>
-                    <i class="fa fa-calendar px-2">&nbsp;</i>
-                    Schedule
+                    <i class="fa fa-calendar px-2 me-3" style="width:20px">&nbsp;</i>
+                    <span data-i18n="sidebar.menu1"></span>
                 </div>
             </a>
         </li>
@@ -38,8 +36,8 @@
                 href="index.php?booking"
             >
                 <div>
-                    <i class="fa fa-book px-2">&nbsp;</i>
-                    Booking
+                    <i class="fa fa-book px-2 me-3" style="width:20px"></i>
+                    <span data-i18n="sidebar.menu2"></span>
                 </div>
             </a>
         </li>
@@ -50,8 +48,8 @@
                 href="index.php?rooms"
             >
                 <div>
-                    <i class="fa fa-hotel px-2">&nbsp;</i>
-                    Rooms
+                    <i class="fa fa-hotel px-2 me-3" style="width:20px"></i>
+                    <span data-i18n="sidebar.menu3"></span>
                 </div>
             </a>
         </li>
@@ -62,8 +60,8 @@
                 href="index.php?reserve"
             >
                 <div>
-                    <i class="fa fa-bookmark px-2">&nbsp;</i>
-                    Reserve
+                    <i class="fa fa-bookmark px-2 me-3" style="width:20px"></i>
+                    <span data-i18n="sidebar.menu4"></span>
                 </div>
             </a>
         </li>
@@ -77,8 +75,8 @@
                 role="button" 
             >
                 <div class="col-10">
-                    <i class="fa fa-bar-chart px-2">&nbsp;</i>
-                    Report
+                    <i class="fa fa-bar-chart px-2 me-3" style="width:20px"></i>
+                    <span data-i18n="sidebar.menu5.title"></span>
                 </div>
                 <i class="fa fa-chevron-right col-2 icon-rotate" aria-hidden="true"></i>
             </div>
@@ -89,8 +87,8 @@
                     href="index.php?report&overview"
                 >
                     <div>
-                        <i class="fa fa-file px-2" aria-hidden="true">&nbsp;</i>
-                        Overview
+                        <i class="fa fa-file px-2 me-3" style="width:20px"></i>
+                        <span data-i18n="sidebar.menu5.side_menu1"></span>
                     </div>
                 </a>
                 <a class="menu_list text-decoration-none row p-2 m-1 mt-2 text-white rounded-2 
@@ -98,21 +96,21 @@
                     href="index.php?report&revenue"
                 >
                     <div>
-                        <i class="fa fa-book px-2" aria-hidden="true">&nbsp;</i>
-                        Revenue
+                        <i class="fa fa-book px-2 me-3" style="width:20px"></i>
+                        <span data-i18n="sidebar.menu5.side_menu2"></span>
                     </div>
                 </a>
             </div>
         </li>
 
-        <li class="p-2" >
+        <li class="p-2">
             <a class="menu_list text-decoration-none row p-3 text-white rounded-2 
                 <?php if (isset($_GET['setting'])) echo 'active_list'?>"
                 href="index.php?setting"
             >
                 <div>
-                    <i class="fa fa-cog px-2">&nbsp;</i>
-                    Setting
+                    <i class="fa fa-cog px-2 me-3" style="width:20px"></i>
+                    <span data-i18n="sidebar.menu6"></span>
                 </div>
             </a>
         </li>

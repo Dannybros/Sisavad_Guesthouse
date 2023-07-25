@@ -1,33 +1,32 @@
-<h1 class="pt-2 pb-3 room_page_nav">
-    Booking Infomation
-</h1>
+<h1 class="pt-1 pb-3 room_page_nav" data-i18n="booking.title"></h1>
 
-<div class="d-flex justify-content-between align-items-center room_search_bar px-2 my-3">
+<div class="d-flex justify-content-between align-items-center room_search_bar px-2 mb-3">
     <select name="floor" id="bookingTypeSelector" class="floorSelector" onchange="loadBooking()">
-        <option value="all" selected="select">All</option>
-        <option value="Confirmed">Reserved</option>
-        <option value="Staying">Staying</option>
-        <option value="Finished">Finished</option>
+        <option value="all" selected data-i18n="selector.all">All</option>
+        <option value="Confirmed" data-i18n="schedule.status.reserve">Reserved</option>
+        <option value="Staying" data-i18n="schedule.status.stay">Staying</option>
+        <option value="Finished" data-i18n="schedule.status.finish">Finished</option>
     </select>
     <div class="input-group" style="width: 300px !important;">
-        <input type="text" id="bookingSearchBar" class="form-control" style="border:1px solid lightblue" placeholder="Search" value="" onkeyup="loadBooking()"/>
+        <input type="text" id="bookingSearchBar" class="form-control en-font" style="border:1px solid lightblue" 
+        placeholder="Search..." value="" onkeyup="loadBooking()"/>
     </div>
 </div> 
 
 <table class="table">
     <thead>
         <tr class="table-dark">
-            <th scope="col">#</th>
-            <th scope="col">ID</th>
-            <th scope="col">Room</th>
-            <th scope="col">Room Type</th>
-            <th scope="col">Check In</th>
-            <th scope="col">Check Out</th>
-            <th scope="col">Duration</th>
-            <th scope="col">Total</th>
-            <th scope="col">Payment</th>
-            <th scope="col">Status</th>
-            <th scope="col">Action</th>
+            <th scope="col" class="en-font">#</th>
+            <th scope="col" class="en-font">ID</th>
+            <th scope="col" data-i18n="booking.table.room">Room</th>
+            <th scope="col" data-i18n="booking.table.type">Room Type</th>
+            <th scope="col" class="en-font">Check In</th>
+            <th scope="col" class="en-font">Check Out</th>
+            <th scope="col" data-i18n="booking.table.duration">Duration</th>
+            <th scope="col" data-i18n="booking.table.total">Total</th>
+            <th scope="col" data-i18n="booking.table.payment">Payment</th>
+            <th scope="col" data-i18n="booking.table.status">Status</th>
+            <th scope="col" data-i18n="booking.table.action">Action</th>
         </tr>
     </thead>
     <tbody id="display_booking" class="table-group-divider">
@@ -40,29 +39,46 @@
 
                 if($booking['booking_status']==="Staying"){
                     $color = "bg-primary-subtle";
+                    $stat_lang="booking.status.stay";
                 }
                 else if ($booking['booking_status']==="Confirmed"){
                     $color = "bg-warning-subtle";
+                    $stat_lang="booking.status.confirm";
                 }
                 else if ($booking['booking_status']==="Cancelled"){
                     $color = "bg-danger-subtle";
+                    $stat_lang="booking.status.cancel";
                 }
                 else{
                     $color = "bg-success-subtle"; 
+                    $stat_lang="booking.status.finish";
+                }
+
+                if($booking['payment_status']==="Paid"){
+                    $pay_lang="payment.paid";
+                }
+                else if ($booking['payment_status']==="Deposit"){
+                    $pay_lang="payment.deposit";
+                }
+                else{
+                    $pay_lang="payment.unpaid";
                 }
 
             ?>
                 <tr class='<?php echo $color?> border-bottom border-dark-subtle'>
-                    <td class="align-middle"> <?php echo $index++?> </td>
-                    <td class="align-middle"> <?php echo $booking['booking_id'] ?> </td>
-                    <td class="align-middle"><b> <?php echo $booking['room_name'] ?> </b></td>
-                    <td class="align-middle"><?php echo $booking['room_type_name'] ?></td>
-                    <td class="align-middle fw-bold"> <?php echo $booking['date_in'] ?> </td>
-                    <td class="align-middle fw-bold"> <?php echo $booking['date_out'] ?> </td>
-                    <td class="align-middle"> <?php echo $booking['duration'] ?> Nights </td>
-                    <td class="align-middle"> <?php echo number_format($booking['total_payment']) ?> KIP</td>
-                    <td class="align-middle"> <?php echo $booking['payment_status'] ?> </td>
-                    <td class="fw-bold align-middle"> <?php echo $booking['booking_status'] ?> </td>
+                    <td class="align-middle en-font"> <?php echo $index++?> </td>
+                    <td class="align-middle en-font"> <?php echo $booking['booking_id'] ?> </td>
+                    <td class="align-middle en-font"><b> <?php echo $booking['room_name'] ?> </b></td>
+                    <td class="align-middle en-font"><?php echo $booking['room_type_name'] ?></td>
+                    <td class="align-middle fw-bold en-font"> <?php echo $booking['date_in'] ?> </td>
+                    <td class="align-middle fw-bold en-font"> <?php echo $booking['date_out'] ?> </td>
+                    <td class="align-middle"> 
+                        <span class="en-font"><?php echo $booking['duration'] ?> </span>
+                        <span data-i18n="booking.table.night"></span> 
+                    </td>
+                    <td class="align-middle en-font"> <?php echo number_format($booking['total_payment']) ?> KIP</td>
+                    <td class="align-middle" data-i18n=<?php echo $pay_lang ?>> </td>
+                    <td class="fw-bold align-middle bg-info-subtle" data-i18n=<?php echo $stat_lang ?>> </td>
                     <td>
                         <button 
                             type="button" 

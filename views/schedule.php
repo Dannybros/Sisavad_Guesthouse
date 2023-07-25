@@ -3,10 +3,9 @@
         <button class="btn btn-light left_month" onclick="goPrevMonth()">
             <i class="fa fa-chevron-left"></i>
         </button>
-        <h1 onclick="test()">
-            Schedule For : 
-            <span class="text-danger" id="schedule-month">
-            </span>
+        <h1>
+            <span data-i18n="schedule.title"></span>
+            <span class="text-danger en-font" id="schedule-month"></span>
         </h1>
         <button class="btn btn-light right_month" onclick="goNextMonth()">
             <i class="fa fa-chevron-right"></i>
@@ -17,19 +16,19 @@
         <figure class="d-flex m-0">
             <div class="d-flex mx-2">
                 <div class="calender-legend bg-success bg-opacity-75"></div>
-                <label>Finished</label>
+                <label data-i18n="schedule.status.finish"></label>
             </div>
             <div class="d-flex mx-2">
                 <div class="calender-legend bg-primary bg-opacity-75"></div>
-                <label>Staying</label>
+                <label data-i18n="schedule.status.stay"></label>
             </div>
             <div class="d-flex mx-2">
                 <div class="calender-legend bg-warning bg-opacity-75"></div>
-                <label>Reserved</label>
+                <label data-i18n="schedule.status.reserve"></label>
             </div>
             <div class="d-flex mx-2">
                 <div class="calender-legend bg-danger bg-opacity-75"></div>
-                <label>Maintanence</label>
+                <label data-i18n="schedule.status.maintanence"></label>
             </div>
         </figure>
 
@@ -38,32 +37,32 @@
                 <div class="calender-legend bg-success bg-opacity-75">
                     <div class="calender-sign bg-white"></div>
                 </div>
-                <label>Checked In</label>
+                <label class="en-font">Checked In</label>
             </aside>
 
             <aside class="d-flex mx-2">
                 <div class="calender-legend bg-success bg-opacity-75">
                     <div class="calender-sign bg-black"></div>
                 </div>
-                <label>Checked Out</label>
+                <labe class="en-font">Checked Out</label>
             </aside>
 
             <aside class="d-flex mx-2">
                 <div class="calender-legend bg-success bg-opacity-75">
                     <div class="calender-sign bg-warning"></div>
                 </div>
-                <label>Moved</label>
+                <label data-i18n="schedule.movement.moved">Moved</label>
             </aside>
             <aside class="d-flex mx-2">
                 <div class="calender-legend bg-success bg-opacity-75 text-white">
                     <i class="fa fa-money" style="font-size: 11px;" aria-hidden="true"></i>
                 </div>
-                <label>Not Paid</label>
+                <label data-i18n="schedule.movement.unpaid">Not Paid</label>
             </aside>
         </figure>
     </section>
     
-    <table class="table table-bordered table-group-divider" id="calender">
+    <table class="table table-bordered table-group-divider en-font" id="calender">
         <thead id="calender_header">
         </thead>
         <tbody id="calender_body">

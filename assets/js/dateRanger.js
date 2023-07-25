@@ -7,7 +7,7 @@ $(function() {
         $("#check_out_date").val(end.format('YYYY-MM-DD'));
         
         var duration = end.diff(start, 'days');
-        $('#booking_duration').text(`${duration} ${duration===1 ? "Night" : "Nights"}`); 
+        $('#booking_duration').text(duration); 
 
         $("#secondStepBtn").prop('disabled', true);
         $("#reserveRoomType")[0].selectedIndex = 0;

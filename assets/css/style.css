@@ -4,13 +4,19 @@
     box-sizing: border-box;
 }
 
+.en-font{ 
+    font-family: 'Times New Roman' !important;
+}
+.lao-font{ 
+    font-family: 'Saysettha OT' !important;
+}
+
 /* nav */
 .nav{
     background: #222 !important;
     padding: 10px 25px;
     height: 60px;
     border-bottom: 1px solid gold;
-    font-family: 'Times New Roman', Times, serif;
 }
 .nav a{
     font-size: clamp(16px, 2vw, 27px);
@@ -49,12 +55,11 @@
     width: 90%;
     aspect-ratio: 2;
     object-fit: cover;
-    margin: 24px auto;
+    margin: 12px auto;
 }
 .profile_name{
     font-weight: bold;
     font-size: 15px;
-    font-family: 'Times New Roman', Times, serif;
 }
 .profile_name span{
     font-size: 20px;
@@ -88,7 +93,6 @@
     color: white;
     padding: 20px 30px;
     font-size: 18px;
-    font-family: 'Times New Roman', Times, serif;
     letter-spacing: 3px;
     text-decoration: none;
 }
@@ -162,13 +166,12 @@
 }
 
 
-/*  */
+/* content */
 
 .main_box{
     background: #E9ECF2;
     height: calc(100vh - 60px);
     padding: 20px;
-    font-family: 'Times New Roman', Times, serif;
     text-align: center;
     position: relative;
 }
@@ -189,9 +192,6 @@
 
 .room_page_nav{
     border-bottom: 1px solid grey;
-}
-.room_search_bar{
-    font-family: 'Times New Roman', Times, serif;
 }
 .floorSelector{
     font-size: 16px;

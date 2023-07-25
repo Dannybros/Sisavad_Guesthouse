@@ -251,56 +251,19 @@ function drawApexPopularRoomPieChart(){
     chart.render();
 }
 
-// function drawPopularRoomTypePieChart(){
-//     var element = document.getElementById('booking_popularity_pie');
-//     if (!element) {
-//         return;
-//     }
-//     const data = {
-//         labels: [
-//             'Red',
-//             'Blue',
-//             'Yellow'
-//         ],
-//         datasets: [{
-//             label: 'My First Dataset',
-//             data: [300, 50, 100],
-//             backgroundColor: [
-//                 'rgba(255, 26, 104, 0.2)',
-//                 'rgba(54, 162, 235, 0.2)',
-//                 'rgba(255, 206, 86, 0.2)',
-//             ],
-//             borderColor: [
-//                 'rgba(0, 0, 0, 0.3)',
-//             ],
-//             borderWidth: 1,
-//             hoverOffset: 4
-//         }]
-//     };
+function setActiveRevenuePeriod(period){
+    var period_lang;
   
-//     const config = {
-//         type: 'pie',
-//         data: data,
-//         options: {
-//             plugins: {
-//                 legend: {
-//                     display: false
-//                 },
-//                 title: {
-//                     display: false,
-//                 },
-//                 // datalabels: {
-//                 //     formatter: (value) => {
-//                 //       return value + '%';
-//                 //     },
-//                 // },
-//             },
-//         },
-//         plugins:[ChartDataLabels]
-//     };
+    if(period==="1w") period_lang = "report.revenue.duration.week";
+    if(period==="1m") period_lang = "report.revenue.duration.month";
+    if(period==="6m") period_lang = "report.revenue.duration.half";
+    if(period==="1y") period_lang = "report.revenue.duration.year";
   
-//     new Chart(element, config);
-// }
+    $('.period_value').attr("data-i18n", period_lang);
+
+    $("#report-revenue").localize();
+}
+  
 
 drawApexBookingLineChart();
 drawApexPopularRoomBarChart();
