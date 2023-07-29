@@ -24,7 +24,7 @@
     </button>
 </div> 
 
-<div class="display_room row my-4 overflow-auto" id="display_room">
+<div class="display_room row my-4" id="display_room">
     <?php
         $room_query = "SELECT * FROM `room` NATURAL JOIN `room_type` ORDER BY room_name";
         $room_result = mysqli_query($conn, $room_query);
@@ -103,7 +103,7 @@
             <form method="post" onsubmit="manageRoom(event)" id="roomModalForm">
                 <main class="modal-body row" style="height:100%; row-gap:20px" >
                     <div class="col-6">
-                        <label class="my-2" style="float:left" data-i18n="rooms.info.name"></label>
+                        <label class="my-2 float-start" data-i18n="rooms.info.name"></label>
                         <input 
                             type="text" 
                             id="roomModal_name" 
@@ -114,8 +114,7 @@
                         />
                     </div>
                     <div class="col-6">
-                        <label class="my-2" style="float:left" data-i18n="rooms.info.type"></label>
-                        
+                        <label class="my-2 float-start" data-i18n="rooms.info.type"></label>
                         <select 
                             id="roomModal_type" 
                             class="form-control"
@@ -123,8 +122,7 @@
                             data-error="please choose the room type"
                             required
                         >
-                            <option selected disabled data-i18n="rooms.info.select">
-                            </option>
+                            <option selected disabled value='' data-i18n="rooms.info.select"></option>
                             <?php
                                 $sql ="SELECT * FROM `room_type`";
                                 $result = mysqli_query($conn, $sql);
@@ -139,11 +137,11 @@
                         </select>
                     </div>
                     <div class="col-6">
-                        <label class="my-2" style="float:left" data-i18n="rooms.info.price"></label>
+                        <label class="my-2 float-start" data-i18n="rooms.info.price"></label>
                         <input type="text" class="text-center form-control en-font" id="roomModal_price" disabled/>
                     </div>
                     <div class="col-6">
-                        <label class="my-2" style="float:left" data-i18n="rooms.info.status"></label> &nbsp;
+                        <label class="my-2 float-start" data-i18n="rooms.info.status"></label> &nbsp;
                         <input type="text" class="form-control text-center text-success" id="roomModal_status" disabled/>
                     </div>
                 </main>

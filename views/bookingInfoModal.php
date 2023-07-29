@@ -117,8 +117,8 @@
                 </button>
             </div>
             <div class="button-group en-font">
-                <button type="button" data-i18n="booking.btnList." class="btn btn-success" onclick="roomCheckIn()">Check In</button>
-                <button type="button" data-i18n="booking.btnList." class="btn btn-warning" onclick="roomCheckOut()">Check Out</button>
+                <button type="button" data-i18n="booking.btnList.checkin" class="btn btn-success" onclick="roomCheckIn()">Check In</button>
+                <button type="button" data-i18n="booking.btnList.checkout" class="btn btn-warning" onclick="roomCheckOut()">Check Out</button>
             </div>
         </div>
         </div>

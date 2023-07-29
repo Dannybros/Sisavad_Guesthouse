@@ -3,7 +3,7 @@
 <div class="d-flex justify-content-between align-items-center room_search_bar px-2 mb-3">
     <select name="floor" id="bookingTypeSelector" class="floorSelector" onchange="loadBooking()">
         <option value="all" selected data-i18n="selector.all">All</option>
-        <option value="Confirmed" data-i18n="schedule.status.reserve">Reserved</option>
+        <option value="Reserved" data-i18n="schedule.status.reserve">Reserved</option>
         <option value="Staying" data-i18n="schedule.status.stay">Staying</option>
         <option value="Finished" data-i18n="schedule.status.finish">Finished</option>
     </select>
@@ -41,9 +41,9 @@
                     $color = "bg-primary-subtle";
                     $stat_lang="booking.status.stay";
                 }
-                else if ($booking['booking_status']==="Confirmed"){
+                else if ($booking['booking_status']==="Reserved"){
                     $color = "bg-warning-subtle";
-                    $stat_lang="booking.status.confirm";
+                    $stat_lang="booking.status.reserve";
                 }
                 else if ($booking['booking_status']==="Cancelled"){
                     $color = "bg-danger-subtle";
@@ -112,7 +112,3 @@
         ?>
     </tbody>
 </table>
-
-
-<!-- data-bs-toggle="collapse" 
-                            data-bs-target="#bookingLog<?php echo $booking['booking_id'] ?>" -->

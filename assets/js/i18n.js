@@ -72,7 +72,7 @@ const en={
         },
         status:{
             finish:"Finished",
-            confirm:"Reserved",
+            reserve:"Reserved",
             stay:"Staying",
             cancel:"Cancelled"
         },
@@ -86,7 +86,7 @@ const en={
                 charge:"Additional Charge",
             },
             extend:{
-                value:"Extend the Duration",
+                value:"Extend Duration",
                 title:"Extend Details",
                 old_checkout:"Old Check Out Date",
                 new_checkout:"New Check Out Date",
@@ -167,11 +167,11 @@ const en={
             span3:"Cusotmers",
             span4:"Bookings",
             span5:"Employees",
-            span6:"Total",
+            span6:"Revenue (KIP)",
             graph:{
                 donut:"Current Room Status",
                 pie:"Room Type Percentage",
-                line:"Annual Incom",
+                line:"Weekly Income",
                 radar:"Room Statistics",
                 bar:"Room Popularity",
                 table:{
@@ -195,13 +195,12 @@ const en={
             graph:{
                 bar:"Top 5 Popular Rooms",
                 pie:"Popular Rooms Types",
-                table1:"(Only For Reserved)",
-                table2:"(Only For Finished)",
+                table:"(Top 10 bookings)",
             },
             statistics:{
                 title:"Statistics",
                 stat1:"Earned In",
-                stat2:"Bookings A",
+                stat2:"Booking In",
                 stat3:"Popular Room",
                 stat4:"Popular Type"
             }
@@ -228,7 +227,10 @@ const en={
                 email:"Email",
                 position:"Position",
                 salary:"Salary",
-                passport:"ID Card/Passport",
+                id_card:"ID Card",
+                gender:"Gender",
+                male:"Male",
+                female:"Female"
             }
         }
     },
@@ -259,6 +261,7 @@ const en={
         err5:"please choose Date",
         err6:"Please Choose The Moving Room",
         err7:"Please choose Payment Option and Status",
+        err8:"Please Select Room Type",
     }
 }
 
@@ -331,7 +334,7 @@ const lao={
         },
         status:{
             finish:"ສໍາເລັດແລ້ວ",
-            confirm:"ຈອງແລ້ວ",
+            reserve:"ຈອງແລ້ວ",
             stay:"ພັກຢູ່",
             cancel:"ຍົກເລີກແລ້ວ"
         },
@@ -427,7 +430,7 @@ const lao={
             span3:"ລູກຄ້າ",
             span4:"ການຈອງ",
             span5:"ພະນັກງານ",
-            span6:"ລວມທັງໝົດ",
+            span6:"ລາຍຮັບ (KIP)",
             graph:{
                 donut:"ສະຖານະຫ້ອງພັກປັດຈຸບັນ",
                 pie:"ເປີເຊັນປະເພດຫ້ອງ",
@@ -455,8 +458,7 @@ const lao={
             graph:{
                 bar:"5 ອັນດັບຫ້ອງຍອດນິຍົມ",
                 pie:"ປະເພດຫ້ອງຍອດນິຍົມ",
-                table1:"(ສຳລັບການຈອງເທົ່ານັ້ນ)",
-                table2:"(ສຳລັບຈ່າຍແລ້ວ)",
+                table:"(10 ການຈອງລາຍໄດ້ສູງສຸດ)",
             },
             statistics:{
                 title:"ສະຖິຕິ",
@@ -483,12 +485,15 @@ const lao={
             value:"ພະນັກງານ",
             new:"ເພີ່ມ",
             info:{
-                name:"ຊື່",
+                name:"ຊື່ພະນັກງານ",
                 phone:"ເບີໂທ",
                 email:"ອີເມວ",
                 position:"ຕຳແໜ່ງ",
                 salary:"ເງິນເດືອນ",
-                passport:"ID/Passport",
+                id_card:"ID Card",
+                gender:"ເພດ",
+                male:"ເພດ​ຊາຍ",
+                female:"ເພດຍິງ"
             }
         }
     },
@@ -519,6 +524,7 @@ const lao={
         err5:"ກະລຸນາເລືອກວັນທີ",
         err6:"ກະລຸນາເລືອກຫ້ອງທີ່ຍ້າຍ",
         err7:"ກະລຸນາເລືອກທາງການຈ່າຍເງິນ ແລະ ສະຖານະ",
+        err8:"ກະລຸນາເລືອກປະເພດຫ້ອງ",
     }
 }
   

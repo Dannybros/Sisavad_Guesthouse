@@ -206,10 +206,10 @@
                     </div>
                 </div>
                 <div class="d-flex justify-content-end w-100 pe-2 mt-3 gap-3">
-                    <button type="button" id="btnStepOne" class="btn btn-secondary text-uppercase" onclick="stepClick(0, 0)" data-bs-toggle="collapse" data-bs-target="#collapseOne" data-i18n="reservation.step2.btn_back">
+                    <button type="button" id="btnStepOne" class="btn btn-secondary text-uppercase" onclick="stepClick(0, 0)" data-bs-toggle="collapse" data-bs-target="#collapseOne" data-i18n="reservation.progress.btn_back">
                         BACK
                     </button>
-                    <button disabled id="secondStepBtn" type="button" class="btn btn-primary text-uppercase" onclick="goToFinalStep()" data-bs-toggle="collapse" data-bs-target="#collapseThree" data-i18n="reservation.step2.btn_next">
+                    <button disabled id="secondStepBtn" type="button" class="btn btn-primary text-uppercase" onclick="goToFinalStep()" data-bs-toggle="collapse" data-bs-target="#collapseThree" data-i18n="reservation.progress.btn_next">
                         NEXT
                     </button>
                 </div>

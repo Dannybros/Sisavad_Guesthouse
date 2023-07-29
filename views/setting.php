@@ -103,6 +103,7 @@
                                 while($emp=mysqli_fetch_array($result)){
                                     $id = $emp['emp_ID'];
                                     $name = $emp['emp_Name'];
+                                    $gender = $emp['gender'];
                                     $idCard = $emp['emp_ID_Card'];
                                     $position = $emp['position'];
                                     $salary = $emp['salary'];
@@ -110,7 +111,7 @@
                                     $phone = $emp['phone'];
                                 ?>
 
-                                <tr class="text-center en-font">                            
+                                <tr class="text-center en-font">   
                                     <td>
                                         <div class="d-flex justify-content-start flex-column">
                                             <div class="fw-bold fs-6 text-capitalize text-start">
@@ -150,7 +151,7 @@
                                         <button class="btn btn-primary" 
                                             data-bs-toggle="modal" 
                                             data-bs-target="#staffModal" 
-                                            onclick="openStaffModal('edit', '<?php echo $id?>', '<?php echo $name?>', '<?php echo $idCard?>', '<?php echo $phone?>', '<?php echo $email?>', '<?php echo $position?>', '<?php echo $salary?>')" 
+                                            onclick="openStaffModal('edit', '<?php echo $id?>', '<?php echo $name?>', '<?php echo $gender?>', '<?php echo $idCard?>', '<?php echo $phone?>', '<?php echo $email?>', '<?php echo $position?>', '<?php echo $salary?>')" 
                                         >
                                             <i class="fa fa-pencil"></i>
                                         </button>
@@ -228,10 +229,17 @@
             <div class="modal-body row" style="height: auto; row-gap:20px;">
                 <div class="col-6">
                     <label class="fw-bold mb-1" data-i18n="setting.staff.info.name">Name</label>
-                    <input type="text" class="form-control text-center text-capitalize en-font" id="staff__name" />
+                    <input type="text" class="form-control text-center en-font" id="staff__name" />
                 </div>
                 <div class="col-6">
-                    <label class="fw-bold mb-1 en-font" data-i18n="setting.staff.info.passport">ID Card</label>
+                    <label class="fw-bold mb-1" data-i18n="setting.staff.info.gender">Gender</label>
+                    <select id="genderSelect" class="form-select">
+                        <option value="Male" selected data-i18n="setting.staff.info.male"></option>
+                        <option value="Female" data-i18n="setting.staff.info.female"></option>
+                    </select>
+                </div>
+                <div class="col-6">
+                    <label class="fw-bold mb-1 en-font" data-i18n="setting.staff.info.id_card">ID Card</label>
                     <input type="text" class="form-control text-center en-font" id="staff__id_card" />
                 </div>
                 <div class="col-6">

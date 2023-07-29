@@ -79,8 +79,7 @@
     <!-- app js -->
     <script src="./assets/js/i18n.js"></script>
     <script src="./assets/js/app.js"></script>
-    <script src="./assets/js/report_overview.js"></script>
-    <script src="./assets/js/report_booking.js"></script>
+    <script src="./assets/js/report.js"></script>
     <script src="./assets/js/dateRanger.js"></script>
 
 </body>

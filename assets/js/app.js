@@ -133,6 +133,7 @@ function createSchedule(){
         type:"GET",
         dataType:"JSON",
         success: function(data){
+            console.log(data);
             let roomNames = data.map(a => ({id: a.id, name:a.name, type:a.type}));
             createCalender(roomNames);
             getBookingSchedule();
@@ -381,22 +382,6 @@ function goToFinalStep(){
     stepClick(100, 2);
 }
 
-function resetBooking(){
-    customerList.innerHTML='';
-    $('#booking_duration').text('');
-    $('#booking_room_price').text('');
-    $('#booking_total').text('');
-    $('#check_in_date').val('');
-    $('#check_out_date').val('');
-    $("#reserveRoomType")[0].selectedIndex = 0;
-    $("#availableRooms")[0].selectedIndex = 0;
-    $("#paymentStatusSelector")[0].selectedIndex = 0;
-    $("#paymentOptionSelector")[0].selectedIndex = 0;
-
-    stepClick(0,0)
-    $("#collapseOne").collapse('show');
-}
-
 function formatDate(date) {
     var d = new Date(date),
         month = '' + (d.getMonth() + 1),
@@ -601,17 +586,41 @@ function customerManage(){
 }
 
 function resetCustomerInfo(){
-    $('#btnCustInfoSubmit').data('id', 'new');
     $('#cust_contact').val('');
     $('#cust_name').val('');
     $('#cust_fname').val('');
     $('#cust_email').val('');
     $('#cust_id_passport').val('');
     $('#cust_bd').val('');
+    $('#btnCustInfoSubmit').data('id', 'new');
     $('#btnCustInfoSubmit').data('type', 'new');
     $('#btnCustInfoSubmit').text(addCustomerTitle);
     $('#btnCustInfoSubmit').addClass("btn-success");
     $('#btnCustInfoSubmit').removeClass("btn-warning");
+   
+}
+
+function resetBooking(){
+    customerList.innerHTML='';
+    $('#booking_duration').text('');
+    $('#booking_room_price').text('');
+    $('#booking_total').text('');
+    $('#check_in_date').val('');
+    $('#check_out_date').val('');
+    $("#reserveRoomType")[0].selectedIndex = 0;
+    $("#availableRooms")[0].selectedIndex = 0;
+    $("#paymentStatusSelector")[0].selectedIndex = 0;
+    $("#paymentOptionSelector")[0].selectedIndex = 0;
+    $("#employeeSelector")[0].selectedIndex = 0;
+    $('input[name="datefilter"]').daterangepicker({
+        value:null
+    })
+    $('input[name="datefilter"]').val("")
+    $('#check_in_date').val("");
+    $('#check_out_date').val("");
+
+    stepClick(0,0)
+    $("#collapseOne").collapse('show');
 }
 
 function registerBooking(event){
@@ -637,36 +646,45 @@ function registerBooking(event){
         return;
     }
 
+    if(!paymentStatus){
+        alert($.t("error.err7"));
+        return;
+    }
+
+    if(paymentStatus!=="Unpaid"){
+        if(!paymentOption){
+            alert($.t("error.err7"));
+            return;
+        }
+    }
+
     for (const list of customerList.children) {
         customers.push(list.dataset.id);
     }
 
-    if(paymentStatus!== null){
-        $.ajax({
-            url:`./controllers/registerBooking.php?register`,
-            type:"POST",
-            data:{
-                roomID:roomID,
-                checkOut:checkOut,
-                checkIn:checkIn,
-                duration:duration,
-                total:total,
-                paymentOption:paymentOption,
-                paymentStatus:paymentStatus,
-                customer:JSON.stringify(customers),
-                employee:employee
-            },
-            success: function(data){
-                
-                if(data==='success'){
-                    resetBooking();
-                    appendAlert("Room reserved successfully", 'success')
-                }
-                else appendAlert(data, "danger");
-            }   
-        })
-    }else alert($.t("error.err7"))
-
+    $.ajax({
+        url:`./controllers/registerBooking.php?register`,
+        type:"POST",
+        data:{
+            roomID:roomID,
+            checkOut:checkOut,
+            checkIn:checkIn,
+            duration:duration,
+            total:total,
+            paymentOption:paymentOption,
+            paymentStatus:paymentStatus,
+            customer:JSON.stringify(customers),
+            employee:employee
+        },
+        success: function(data){
+            
+            if(data==='success'){
+                resetBooking();
+                appendAlert("Room reserved successfully", 'success')
+            }
+            else appendAlert(data, "danger");
+        }   
+    })
 }
 
 // Booking
@@ -691,9 +709,9 @@ function loadBooking(){
             bg = "bg-primary-subtle";
             stat_lang="booking.status.stay";
         }
-        else if (status==="Confirmed"){
+        else if (status==="Reserved"){
             bg = "bg-warning-subtle";
-            stat_lang="booking.status.confirm";
+            stat_lang="booking.status.reserve";
         }
         else if (status==="Cancelled"){
             bg = "bg-danger-subtle";
@@ -1028,20 +1046,22 @@ function manageRoom(event){
         url = `./controllers/manageRoom.php?edit`;
         roomID = $('#roomModal').data('id');
     }
-    
-    $.ajax({
-        url:url,
-        type:"POST",
-        data:{
-            roomID:roomID,
-            roomName:roomName,
-            roomType:roomType
-        },
-        success: function(data){
-            if(data==='success') clearRoomModal();
-            else appendAlert(data.error, "danger");
-        }   
-    })
+
+    if(roomType){
+        $.ajax({
+            url:url,
+            type:"POST",
+            data:{
+                roomID:roomID,
+                roomName:roomName,
+                roomType:roomType
+            },
+            success: function(data){
+                if(data==='success') clearRoomModal();
+                else appendAlert(data.error, "danger");
+            }   
+        })
+    }
 }
 
 function delRoom(){
@@ -1092,7 +1112,7 @@ function getRoomBookingList(id){
                 if(payment==="Deposit") payment_lang = "payment.deposit";
 
                 if(status==="Finished") status_lang = "booking.status.finish";
-                if(status==="Confirmed") status_lang = "booking.status.confirm";
+                if(status==="Reserved") status_lang = "booking.status.reserve";
                 if(status==="Staying") status_lang = "booking.status.stay";
 
                 var card = `
@@ -1371,7 +1391,7 @@ function moveRoom(){
         return;
     }
 
-    if(bookingStatus==="Confirmed" || time <= CID){
+    if(bookingStatus==="Reserved" || time <= CID){
         action = "re-book" 
     }else{
         action = "move"
@@ -1624,10 +1644,11 @@ function delRoomType(id){
     })
 }
 
-function openStaffModal(type, id, name, ID_Card, phone, email, position, salary){
+function openStaffModal(type, id, name, gender, ID_Card, phone, email, position, salary){
     $("#staffModal").data('type', type);
     $("#staffModal").data('id', id);
     $('#staff__name').val(name);
+    $('#genderSelect').val(gender);
     $('#staff__id_card').val(ID_Card);
     $('#staff__phone').val(phone);
     $('#staff__email').val(email);
@@ -1688,7 +1709,7 @@ function refreshStaff(){
                 <button class="btn btn-primary" 
                     data-bs-toggle="modal" 
                     data-bs-target="#staffModal" 
-                    onclick="openStaffModal('edit', '${data.id}', '${data.name}', '${data.ID_Card}', '${data.phone}', '${data.email}', '${data.position}', '${data.salary}')" 
+                    onclick="openStaffModal('edit', '${data.id}', '${data.name}', '${data.gender}', '${data.ID_Card}', '${data.phone}', '${data.email}', '${data.position}', '${data.salary}')" 
                 >
                     <i class="fa fa-pencil"></i>
                 </button>
@@ -1718,6 +1739,7 @@ function staffManage(){
     const type = $("#staffModal").data('type');
     const id = $("#staffModal").data('id');
     const name = $("#staff__name").val();
+    const gender = $("#genderSelect").val();
     const ID_Card = $("#staff__id_card").val();
     const phone = $('#staff__phone').val();
     const email = $('#staff__email').val();
@@ -1730,6 +1752,7 @@ function staffManage(){
         data:{
             id:id,
             name:name,
+            gender:gender,
             ID_Card:ID_Card,
             phone:phone,
             email:email,
@@ -1741,7 +1764,7 @@ function staffManage(){
                 refreshStaff();
                 $("#staffModal").modal('hide');
                 appendAlert(`Staff ${type}ed Successfully`, "success");
-            }else appendAlert(data.error, "danger");
+            }else appendAlert(data, "danger");
         }   
     })
 }

@@ -20,7 +20,8 @@
             $status = "";
         }
 
-        $query = "SELECT * FROM booking JOIN room ON booking.booked_room = room.room_id JOIN room_type ON room.room_type_id = room_type.room_type_id WhERE `room_name` LIKE '%$search%' AND `booking_status` LIKE '%$status%' ORDER BY `date_in` DESC";
+        $query = "SELECT * FROM booking JOIN room ON booking.booked_room = room.room_id JOIN room_type ON room.room_type_id = room_type.room_type_id WHERE `room_name` LIKE '%$search%' OR `booking_id` LIKE '%$search%' AND `booking_status` LIKE '%$status%' ORDER BY `date_in` DESC";
+
     }
 
     if(isset($_GET['room'])){

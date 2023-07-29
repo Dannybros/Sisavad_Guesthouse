@@ -11,7 +11,7 @@
         $s = $search_qqq[1];
 
         if($t==="all"){
-            $query = "SELECT * FROM `room` NATURAL JOIN `room_type` WHERE `room_name` LIKE '%$s%' OR `room_status` LIKE '%$s%' ORDER BY room_name;";
+            $query = "SELECT * FROM `room` NATURAL JOIN `room_type` WHERE `room_name` LIKE '%$s%' OR `room_status` LIKE '%$s%' ORDER BY room_name ASC;";
         }else{
             $query = "SELECT * FROM `room` NATURAL JOIN `room_type` WHERE `room_type_id` = '$t' AND (`room_name` LIKE '%$s%' OR `room_status` LIKE '%$s%')"; 
         }
@@ -26,7 +26,7 @@
     if(isset($_GET['typeID'])){
 
         $id = $_GET['typeID'];
-        $query = "SELECT * FROM `room` NATURAL JOIN `room_type` WHERE `room_type_id` = '$id' AND `room_status` = 'Free'";
+        $query = "SELECT * FROM `room` NATURAL JOIN `room_type` WHERE `room_type_id` = '$id' AND `room_status` = 'Free' ORDER BY room.room_name ASC;";
     }
 
     if(isset($_GET['free'])){
@@ -35,11 +35,11 @@
         $checkIn = $_POST['checkIn'];
         $checkOut = $_POST['checkOut'];
         
-        $query = "SELECT * FROM `room` NATURAL JOIN `room_type` WHERE `room_id` NOT IN (SELECT `booked_room` FROM `booking` WHERE `date_in` BETWEEN '$checkIn' AND '$checkOut') AND `room_type_id` = '$id'";
+        $query = "SELECT * FROM `room` NATURAL JOIN `room_type` WHERE `room_id` NOT IN (SELECT `booked_room` FROM `booking` WHERE `date_in` BETWEEN '$checkIn' AND '$checkOut') AND `room_type_id` = '$id' ORDER BY room.room_name ASC;";
     }
 
     if(isset($_GET['all'])){
-        $query = "SELECT * FROM `room` NATURAL JOIN `room_type`";
+        $query = "SELECT * FROM `room` NATURAL JOIN `room_type` ORDER BY room.room_name ASC";
     }
 
     $result = mysqli_query($conn, $query);

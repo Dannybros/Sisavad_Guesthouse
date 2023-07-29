@@ -10,6 +10,7 @@
     while ($staff = mysqli_fetch_array($result)) {
         $id=$staff['emp_ID'];
         $name=$staff['emp_Name'];
+        $gender=$staff['gender'];
         $ID_Card=$staff['emp_ID_Card'];
         $phone=$staff['phone'];
         $email=$staff['email'];
@@ -19,6 +20,7 @@
         $return_arr[] = array(
             "id" => $id,
             "name" => $name,
+            "gender" => $gender,
             "phone" => $phone,
             "email" => $email,
             "position" => $position,

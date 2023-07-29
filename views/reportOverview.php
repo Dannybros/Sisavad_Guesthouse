@@ -1,106 +1,132 @@
-<section class="container" >
-    <div class="row gy-5 gx-5">
-        <div class="col-sm-6 col-xl-2 mb-xl-10 " >
-            <div class="card px-3 py-2 h-lg-100 bg-white card-shadow overflow-hidden">
-                <div class="card-body d-flex justify-content-between align-items-start flex-column">
-                    <div class="m-0">
-                        <i class="text-body-tertiary fs-4 fa fa-hotel" ></i>
-                    </div>
-                    <div class="d-flex flex-column mt-3 text-secondary text-start">
-                        <span class="fw-semibold fs-1 lh-1 counter" style="color: #3F4254; font-family:Helvetica"> 37 </span>
-                        <div class="m-0">
-                            <span class="fw-semibold fs-6" data-i18n="report.overview.span1">Total Rooms</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-6 col-xl-2 mb-xl-10" >
-            <div class="card px-3 py-2 h-lg-100 bg-white card-shadow overflow-hidden">
-                <div class="card-body d-flex justify-content-between align-items-start flex-column">
-                    <div class="m-0">
-                        <i class="text-body-tertiary fs-4 fa fa-th" ></i>
-                    </div>
-                    <div class="d-flex flex-column mt-3 text-secondary text-start">
-                        <span class="fw-semibold fs-1 lh-1 counter" style="color: #3F4254; font-family:Helvetica"> 5 </span>
-                        <div class="m-0">
-                            <span class="fw-semibold fs-6" data-i18n="report.overview.span2">Room Types</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-6 col-xl-2 mb-xl-10" >
-            <div class="card px-3 py-2 h-lg-100 bg-white card-shadow overflow-hidden">
-                <div class="card-body d-flex justify-content-between align-items-start flex-column">
-                    <div class="m-0">
-                        <i class="text-body-tertiary fs-4 fa fa-user" ></i>
-                    </div>
-                    <div class="d-flex flex-column mt-3 text-secondary text-start">
-                        <span class="fw-semibold fs-1 lh-1 counter" style="color: #3F4254; font-family:Helvetica"> 20 </span>
-                        <div class="m-0">
-                            <span class="fw-semibold fs-6" data-i18n="report.overview.span3">Customers</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-6 col-xl-2 mb-xl-10" >
-            <div class="card px-3 py-2 h-lg-100 bg-white card-shadow overflow-hidden">
-                <div class="card-body d-flex justify-content-between align-items-start flex-column">
-                    <div class="m-0">
-                        <i class="text-body-tertiary fs-4 fa fa-book" ></i>
-                    </div>
-                    <div class="d-flex flex-column mt-3 text-secondary text-start">
-                        <span class="fw-semibold fs-1 lh-1 counter" style="color: #3F4254; font-family:Helvetica"> 220 </span>
-                        <div class="m-0">
-                            <span class="fw-semibold fs-6" data-i18n="report.overview.span4">Bookings</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-6 col-xl-2 mb-xl-10" >
-            <div class="card px-3 py-2 h-lg-100 bg-white card-shadow overflow-hidden">
-                <div class="card-body d-flex justify-content-between align-items-start flex-column">
-                    <div class="m-0">
-                        <i class="text-body-tertiary fs-4 fa fa-users" ></i>
-                    </div>
-                    <div class="d-flex flex-column mt-3 text-secondary text-start">
-                        <span class="fw-semibold fs-1 lh-1 counter" style="color: #3F4254; font-family:Helvetica"> 9 </span>
-                        <div class="m-0">
-                            <span class="fw-semibold fs-6" data-i18n="report.overview.span5">Employees</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-6 col-xl-2 mb-xl-10">
-            <div class="card px-3 py-2 h-lg-100 bg-white card-shadow overflow-hidden">
-                <div class="card-body d-flex justify-content-between align-items-start flex-column">
-                    <div class="m-0">
-                        <i class="text-body-tertiary fs-4 fa fa-money" ></i>
-                    </div>
-                    <div class="d-flex flex-column mt-3 text-secondary text-start">
-                        <div class="fw-semibold fs-1 lh-1" style="color: #3F4254; font-family:Helvetica"><span class="counter text-decoration-none">21</span>M </div>
-                        <div class="m-0">
-                            <span class="fw-semibold fs-6" data-i18n="report.overview.span6">Total</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+<section class="container" id="overview_report">
+    <?php
+        $sql = "SELECT 
+        ( SELECT COUNT(*) FROM customer ) AS customers, 
+        ( SELECT COUNT(*) FROM employee ) AS employees, 
+        ( SELECT COUNT(*) FROM room ) AS rooms, 
+        ( SELECT COUNT(*) FROM room_type ) AS room_types, 
+        ( SELECT COUNT(*) FROM booking WHERE booking_status <> 'Cancelled' ) AS bookings,
+        ( SELECT SUM(total_payment) FROM booking WHERE booking_status <> 'Cancelled' ) AS total
+        ";
 
-    </div>
+        $result = mysqli_query($conn, $sql);
+        while($row = mysqli_fetch_assoc($result)) { ?>
+            <div class="row gy-5 gx-5">
+                <div class="col-sm-6 col-xl-2 mb-xl-10 " >
+                    <div class="card px-3 py-2 h-lg-100 bg-white card-shadow overflow-hidden">
+                        <div class="card-body d-flex justify-content-between align-items-start flex-column">
+                            <div class="m-0">
+                                <i class="text-body-tertiary fs-4 fa fa-hotel" ></i>
+                            </div>
+                            <div class="d-flex flex-column mt-3 text-secondary text-start">
+                                <span class="fw-semibold fs-1 lh-1 counter" style="color: #3F4254; font-family:Helvetica">
+                                    <?php echo $row["rooms"]?>
+                                </span>
+                                <div class="m-0">
+                                    <span class="fw-semibold fs-6" data-i18n="report.overview.span1">Total Rooms</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-xl-2 mb-xl-10" >
+                    <div class="card px-3 py-2 h-lg-100 bg-white card-shadow overflow-hidden">
+                        <div class="card-body d-flex justify-content-between align-items-start flex-column">
+                            <div class="m-0">
+                                <i class="text-body-tertiary fs-4 fa fa-th" ></i>
+                            </div>
+                            <div class="d-flex flex-column mt-3 text-secondary text-start">
+                                <span class="fw-semibold fs-1 lh-1 counter" style="color: #3F4254; font-family:Helvetica">
+                                    <?php echo $row["room_types"]?>
+                                </span>
+                                <div class="m-0">
+                                    <span class="fw-semibold fs-6" data-i18n="report.overview.span2">Room Types</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-xl-2 mb-xl-10" >
+                    <div class="card px-3 py-2 h-lg-100 bg-white card-shadow overflow-hidden">
+                        <div class="card-body d-flex justify-content-between align-items-start flex-column">
+                            <div class="m-0">
+                                <i class="text-body-tertiary fs-4 fa fa-user" ></i>
+                            </div>
+                            <div class="d-flex flex-column mt-3 text-secondary text-start">
+                                <span class="fw-semibold fs-1 lh-1 counter" style="color: #3F4254; font-family:Helvetica"> 
+                                    <?php echo $row["customers"]?>    
+                                </span>
+                                <div class="m-0">
+                                    <span class="fw-semibold fs-6" data-i18n="report.overview.span3">Customers</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-xl-2 mb-xl-10" >
+                    <div class="card px-3 py-2 h-lg-100 bg-white card-shadow overflow-hidden">
+                        <div class="card-body d-flex justify-content-between align-items-start flex-column">
+                            <div class="m-0">
+                                <i class="text-body-tertiary fs-4 fa fa-users" ></i>
+                            </div>
+                            <div class="d-flex flex-column mt-3 text-secondary text-start">
+                                <span class="fw-semibold fs-1 lh-1 counter" style="color: #3F4254; font-family:Helvetica">
+                                    <?php echo $row["employees"]?>
+                                </span>
+                                <div class="m-0">
+                                    <span class="fw-semibold fs-6" data-i18n="report.overview.span5">Employees</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-xl-2 mb-xl-10" >
+                    <div class="card px-3 py-2 h-lg-100 bg-white card-shadow overflow-hidden">
+                        <div class="card-body d-flex justify-content-between align-items-start flex-column">
+                            <div class="m-0">
+                                <i class="text-body-tertiary fs-4 fa fa-book" ></i>
+                            </div>
+                            <div class="d-flex flex-column mt-3 text-secondary text-start">
+                                <span class="fw-semibold fs-1 lh-1 counter" style="color: #3F4254; font-family:Helvetica"> 
+                                    <?php echo $row["bookings"]?>
+                                </span>
+                                <div class="m-0">
+                                    <span class="fw-semibold fs-6" data-i18n="report.overview.span4">Bookings</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-xl-2 mb-xl-10">
+                    <div class="card px-3 py-2 h-lg-100 bg-white card-shadow overflow-hidden">
+                        <div class="card-body d-flex justify-content-between align-items-start flex-column">
+                            <div class="m-0">
+                                <i class="text-body-tertiary fs-4 fa fa-money" ></i>
+                            </div>
+                            <div class="d-flex flex-column mt-3 text-secondary text-start">
+                                <div class="fw-semibold fs-1 lh-1" style="color: #3F4254; font-family:Helvetica">
+                                    <span class="counter text-decoration-none">
+                                        <?php echo substr(round($row["total"], -6), 0, 2);?>
+                                    </span>M 
+                                </div>
+                                <div class="m-0">
+                                    <span class="fw-semibold fs-6" data-i18n="report.overview.span6">Total</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <?php }
+    ?>    
 
     <div class="row g-5 gx-2"> 
-
         <div class="col-xl-3">
-            <div class="card card-shadow h-100">
+            <div class="card card-shadow">
                 <div class="card-header bg-white">
-                    <h4 class="fw-bold py-2 mb-0" data-i18n="report.overview.graph.donut">
+                    <h5 class="fw-bold py-2 mb-0" data-i18n="report.overview.graph.donut">
                         Current Room Status
-                    </h4>
+                    </h5>
                 </div>
                 <div class="card-body d-flex">
                     <canvas id="room_status_donut"></canvas>
@@ -108,59 +134,53 @@
             </div>
         </div>
         <div class="col-xl-3">
-            <div class="card card-shadow h-100">
+            <div class="card card-shadow">
                 <div class="card-header bg-white">
-                    <h4 class="fw-bold py-2 mb-0" data-i18n="report.overview.graph.pie">
+                    <h5 class="fw-bold py-2 mb-0" data-i18n="report.overview.graph.pie">
                         Room Type Percentage
-                    </h4>
+                    </h5>
                 </div>
                 <div class="card-body">
-                    <canvas id="room_type_pie"></canvas>
+                    <div id="room_type_pie" ></div>
                 </div>
             </div>
-        </div>       
+        </div>  
         <div class="col-xl-6">
-            <div class="card card-shadow h-100">
+            <div class="card card-shadow" style="height: 325px;">
                 <div class="card-header bg-white">
-                    <h4 class="fw-bold py-2 mb-0" data-i18n="report.overview.graph.line">
-                        Annual Income
-                    </h4>
+                    <h5 class="fw-bold py-2 mb-0" data-i18n="report.overview.graph.line">
+                        Income
+                    </h5>
                 </div>
                 <div class="card-body">
                     <canvas id="annual_revenue_line"></canvas>
                 </div>
             </div>
         </div>
+       
+       
     </div>
 
-    <div class="row g-5 g-xl-10">        
-        <div class="col-xl-4">
-            <div class="card card-shadow h-100">
-                <div class="card-header bg-white">
-                    <h4 class="fw-bold py-2 mb-0" data-i18n="report.overview.graph.radar">
-                        Room Popularity
-                    </h4>
-                </div>
-                <div class="card-body">
-                    <canvas id="popularity_radar"></canvas>
-                </div>
-            </div>
-        </div>
-        <div class="col-xl-8">
-            <div class="card card-shadow h-100">
-                <div class="card-header bg-white">
-                    <h4 class="fw-bold py-2 mb-0" data-i18n="report.overview.graph.bar">
+    <div class="row g-5"> 
+        <div class="col-12">
+            <div class="card card-shadow">
+                <div class="card-header bg-white  d-flex justify-content-between align-items-center">
+                    <h4 class="fw-bold py-2 mb-0 mt-2 " data-i18n="report.overview.graph.bar">
                         Most Popular Room
                     </h4>
+                    <select class="form-select form-select-sm" style="width: 150px; height:40px" onchange="reportRoomsPopular(this.value)">
+                        <option selected value="count" style="font-size: 15px;">Booking Numbers</option>
+                        <option value="revenue" style="font-size: 15px;">Booking Revenue</option>
+                    </select>
                 </div>
                 <div class="card-body">
-                    <canvas id="popular_room_bar"></canvas>
+                    <canvas id="popular_room_bar" style="height: 400px;"></canvas>
                 </div>
             </div>
-        </div>
+        </div> 
     </div>
 
-    <div class="row g-5 g-xl-10">        
+    <div class="row g-5">        
         <div class="col-xl-6">
             <div class="card card-flush h-lg-100">
 
@@ -189,32 +209,42 @@
                             </thead>
 
                             <tbody>
-                                <tr class="text-center">                            
-                                    <td>
-                                        <div class="d-flex justify-content-start flex-column">
-                                            <div class="fw-bold fs-6 text-start en-font">Guy Hawkins</div>
-                                            <span class="fw-semibold d-block text-body-tertiary text-start">(Unpaid)</span>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <span class="fw-bold fs-6 en-font text-dark">2022-07-04</span>                                
-                                    </td>
-                                    <td>
-                                        <span class="fw-bold fs-6 en-font text-dark">2022-07-08</span>                                
-                                    </td>
-                                    <td>
-                                        <span class="fw-bold fs-6 en-font text-dark">200,000 KIP</span>                                
-                                    </td>
-                                    <td>
-                                        <span class="badge text-bg-success fs-base"> Finished </span>                                                                  
-                                    </td>  
-                                </tr>
+                                <?php
+                                    $sql = "SELECT * FROM booking NATURAL JOIN employee ORDER BY total_payment DESC LIMIT 5";
+                                    $result = mysqli_query($conn, $sql);
+                                    while($row = mysqli_fetch_assoc($result)) { 
+                                        $status = $row['booking_status'];
+
+                                        if($status=="Finished") $bg="bg-success";
+                                        if($status=="Staying") $bg="bg-primary";
+                                        if($status=="Reserved") $bg="bg-warning";
+                                ?>
+
+                                    <tr class="text-center" style="font-size: 14px;">                            
+                                        <td class="d-flex justify-content-start flex-column">
+                                            <div class="fw-bold text-start en-font"><?php echo $row['booking_id']?></div>
+                                            <span class="fw-semibold d-block text-body-tertiary text-start">(<?php echo $row['emp_Name']?>)</span>
+                                        </td>
+                                        <td>
+                                            <span class="fw-bold en-font text-dark"><?php echo $row['date_in']?></span>                                
+                                        </td>
+                                        <td>
+                                            <span class="fw-bold en-font text-dark"><?php echo $row['date_out']?></span>                                
+                                        </td>
+                                        <td>
+                                            <span class="fw-bold en-font text-dark"><?php echo number_format($row['total_payment'])?> KIP</span>                                
+                                        </td>
+                                        <td>
+                                            <span class="badge <?php echo $bg?> pt-1" style="font-size: 13px;"> <?php echo $status?> </span>                                                                  
+                                        </td>  
+                                    </tr>
+                                <?php } ?>
                             </tbody>    
                         </table>
                     </div>
                     <!--end::Table--> 
                 </div>
-                 <!--end: Card Body-->
+                <!--end: Card Body-->
             </div>
         </div>
         
@@ -225,15 +255,29 @@
                     <h5 class="card-title d-flex align-items-start flex-column mb-0">			
                         <span class="card-label fw-bold" data-i18n="report.overview.span5">Employees</span>
                         <span class="mt-1 fw-semibold fs-6 text-secondary">
-                            <label>
-                                <span data-i18n="report.overview.span6">Total</span>: 
-                                <span> 38 </span>
-                                <span data-i18n="report.overview.graph.table.tb2.people"> People</span>
-                            </label>
-                            ( <label>
-                                <span data-i18n="report.overview.graph.table.tb2.male">Male</span>: 
-                                <span>18</span>
-                            </label> )
+                            <?php
+                                $sql = "SELECT COUNT(*) AS Total,
+                                    COUNT(CASE WHEN gender = 'Female' THEN 1 END) AS female,
+                                    COUNT(CASE WHEN gender = 'Male' THEN 1 END) AS male
+                                    FROM employee
+                                ";
+                                $result = mysqli_query($conn, $sql);
+                                while($row = mysqli_fetch_assoc($result)) { 
+                            ?>
+                                <label>
+                                    <span data-i18n="booking.table.total">Total</span>: 
+                                    <span> <?php echo $row['Total']?> </span>
+                                    <span data-i18n="report.overview.graph.table.tb2.people"> People</span>
+                                </label>
+                                ( <label>
+                                    <span data-i18n="setting.staff.info.male">Male</span>: 
+                                    <span><?php echo $row['male']?></span>
+                                </label> )
+                                ( <label>
+                                    <span data-i18n="setting.staff.info.female">Male</span>: 
+                                    <span><?php echo $row['female']?></span>
+                                </label> )
+                            <?php } ?>
                         </span>
                     </h5>
 
@@ -245,46 +289,54 @@
 
                 <div class="card-body pt-2">             
                     <div class="table-responsive">
-                        <table class="table table-row-dashed align-middle mb-1 en-font">
+                        <table class="table table-row-dashed align-middle mb-1">
                             <thead>
                                 <tr class="text-secondary fw-bold text-uppercase">
-                                    <th class="text-start" data-i18n="setting.staff.name">Name</th>
-                                    <th class="text-center" data-i18n="setting.staff.position">Position</th>
-                                    <th class="text-center" data-i18n="setting.staff.email">Email</th>
-                                    <th class="text-center" data-i18n="setting.staff.phone">Phone</th>
-                                    <th class="text-center" data-i18n="setting.staff.passport">ID/Passport</th>
+                                    <th class="text-start" data-i18n="setting.staff.info.name">Name</th>
+                                    <th class="text-center" data-i18n="setting.staff.info.position">Position</th>
+                                    <th class="text-center" data-i18n="setting.staff.info.email">Email</th>
+                                    <th class="text-center" data-i18n="setting.staff.info.phone">Phone</th>
+                                    <th class="text-center en-font">ID Card</th>
                                 </tr>
                             </thead>
 
-                            <tbody>
-                                <tr>                            
-                                    <td>
-                                        <div class="d-flex justify-content-start flex-column en-font">
-                                            <div class="fw-bold fs-6 text-start">Guy Hawkins</div>
-                                            <span class="fw-semibold d-block text-start text-body-tertiary">e123i2o3</span>
-                                        </div>
-                                    </td>
-                                    <td class="text-center">
-                                        <span class="fw-bold fs-6">245</span>                                
-                                    </td>
-                                    <td class="text-center">
-                                        <span class="fw-bold fs-6">$78.34%</span>                                
-                                    </td>
-                                    <td class="text-center">
-                                        <span class="fw-bold fs-6">245</span>                                
-                                    </td>
-                                    <td class="text-center">
-                                        <span class="fw-bold fs-6">$78.34%</span>                                
-                                    </td>
-                                </tr>
+                            <tbody class="en-font">
+                                <?php
+                                    $sql = "SELECT * FROM employee LIMIT 5";
+                                    $result = mysqli_query($conn, $sql);
+                                    while($row = mysqli_fetch_assoc($result)) { 
+                                ?>
+                                    <tr style="font-size: 14px;">                            
+                                        <td class="d-flex justify-content-start flex-column en-font">
+                                            <div class="fw-bold text-start text-capitalize">
+                                                <?php echo $row['emp_Name']?>
+                                            </div>
+                                            <div class="fw-semibold d-block text-start text-body-tertiary">
+                                                Emloyee ID: <span> (<?php echo $row['emp_ID']?>)</span>
+                                            </div>
+                                        </td>
+                                        <td class="text-center">
+                                            <span class="fw-bold"><?php echo $row['position']?></span>                                
+                                        </td>
+                                        <td class="text-center">
+                                            <span class="fw-bold"><?php echo $row['email']?></span>                                
+                                        </td>
+                                        <td class="text-center">
+                                            <span class="fw-bold"><?php echo $row['phone']?></span>                                
+                                        </td>
+                                        <td class="text-center">
+                                            <span class="fw-bold"><?php echo $row['emp_ID_Card']?></span>                                
+                                        </td>
+                                    </tr>
+                                <?php }
+                                ?>
                             </tbody>    
                         </table>
                     </div>
                     <!--end::Table--> 
                 </div>
-                 <!--end: Card Body-->
+                <!--end: Card Body-->
             </div>
         </div>
     </div>
-    
 </section>
