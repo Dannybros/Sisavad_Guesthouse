@@ -158,6 +158,7 @@ const en={
             subtitle:"Bill To",
             employee:"Employee:",
             select:"Select the Employee",
+            ref_code:"OnePay Reference Codes"
         }
     },
     report:{
@@ -174,6 +175,8 @@ const en={
                 line:"Weekly Income",
                 radar:"Room Statistics",
                 bar:"Room Popularity",
+                choice1:"Rooms by Popularity",
+                choice2:"Rooms by Profit",
                 table:{
                     tb1:"Top 5 With Most Fee",
                     tb2:{
@@ -258,10 +261,11 @@ const en={
         err2:"You can't delete the creating room",
         err3:"Plese Deposit or fully pay the fee",
         err4:"Please Fully Pay The Fee",
-        err5:"please choose Date",
+        err5:"please Choose Date",
         err6:"Please Choose The Moving Room",
         err7:"Please choose Payment Option and Status",
         err8:"Please Select Room Type",
+        err9:"Please input reference code",
     }
 }
 
@@ -390,7 +394,7 @@ const lao={
         surname:"ນາມສະກຸນ",
         bd:"ວັນເດືອນປີເກີດ",
         phone:"ເບີຕິດຕໍ່",
-        mail:"Email",
+        email:"ອີເມວ",
         passport:"ID/Passport",
         btn_add:"ເພີ່ມລູກຄ້າໃໝ່"
     },
@@ -421,6 +425,7 @@ const lao={
             subtitle:"ສົ່ງບິນໄປທີ່",
             employee:"ພະນັກງານ:",
             select:"ເລືອກພະນັກງານ",
+            ref_code:"OnePay ​ເລກ​ອ້າງ​ອີງ"
         }
     },
     report:{
@@ -437,6 +442,8 @@ const lao={
                 line:"ລາຍໄດ້ຕໍ່ປີ",
                 radar:"ສະຖິຕິຫ້ອງພັກ",
                 bar:"ຫ້ອງພັກທີ່ນິຍົມ",
+                choice1:"ຫ້ອງທີ່ມີການຈອງຫຼາຍສຸດ",
+                choice2:"ຫ້ອງທີ່ມີລາຍຮັບຫຼາຍສຸດ",
                 table:{
                     tb1:"5 ອັນດັບຫ້ອງທີ່ພັກສູງສຸດ",
                     tb2:{
@@ -525,15 +532,14 @@ const lao={
         err6:"ກະລຸນາເລືອກຫ້ອງທີ່ຍ້າຍ",
         err7:"ກະລຸນາເລືອກທາງການຈ່າຍເງິນ ແລະ ສະຖານະ",
         err8:"ກະລຸນາເລືອກປະເພດຫ້ອງ",
+        err9:"ກະລຸນາໃສ່ເລກອ້າງອີງ"
     }
 }
   
 const rerender = () => {
-    // start localizing, details:
-    // https://github.com/i18next/jquery-i18next#usage-of-selector-function
     $('body').localize();
 }
-  
+
 $(function () {
     // use plugins and options as needed, for options, detail see
     // https://www.i18next.com
@@ -564,6 +570,11 @@ $(function () {
         // fill language switcher when reloading and persists the chosen language
         Object.keys(lngs).map((lng) => {
             const opt = new Option(lngs[lng].nativeName, lng);
+
+            if (lng==="en") {
+                opt.classList.add("en-font");
+            }else opt.classList.add("lao-font");
+            
             if (lng === i18next.resolvedLanguage) {
                 opt.setAttribute("selected", "selected");
                 opt.setAttribute("class", `${lng}-font`);

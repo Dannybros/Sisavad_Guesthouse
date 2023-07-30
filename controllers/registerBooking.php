@@ -12,11 +12,12 @@
         $paymentOption = $_POST['paymentOption'];
         $paymentStatus = $_POST['paymentStatus'];
         $employee = $_POST['employee'];
+        $codes = $_POST['codes'];
 
         $time = date('Y-m-d');
 
-        $sql="INSERT INTO `booking`(`booking_id`, `customer_id`, `emp_ID`, `booked_room`, `date_in`, `date_out`, `duration`, `booking_status`, `total_payment`, `payment_option`, `payment_status`)
-        VALUES ('$booking_ID','$customer', '$employee', '$roomID', '$checkIn','$checkOut','$duration', 'Reserved', '$total', '$paymentOption', '$paymentStatus');
+        $sql="INSERT INTO `booking`(`booking_id`, `customer_id`, `emp_ID`, `booked_room`, `date_in`, `date_out`, `duration`, `booking_status`, `total_payment`, `payment_option`, `payment_status`, `onepay_ref_code`)
+        VALUES ('$booking_ID','$customer', '$employee', '$roomID', '$checkIn','$checkOut','$duration', 'Reserved', '$total', '$paymentOption', '$paymentStatus', '$codes');
         
         UPDATE `room` SET `room_status`='Reserved' WHERE `room_id`='$roomID';
         
@@ -28,13 +29,18 @@
     if (isset($_GET['extend'])){
     
         $id = $_GET['id'];
+        $roomID = $_POST['roomID'];
         $newDate = $_POST['newDate'];
         $duration = $_POST['duration'];
         $total = $_POST['total'];
+        $total_comma = number_format($total);
+        $time = $_POST['time'];
 
-        $query = "UPDATE `booking` SET `date_out` = '$newDate', `duration` = `duration` + '$duration', `total_payment` = `total_payment` + '$total' WHERE `booking_id` = '$id'";
+        $query = "UPDATE `booking` SET `date_out` = '$newDate', `duration` = `duration` + '$duration', `total_payment` = `total_payment` + '$total', `payment_status`='Deposit' WHERE `booking_id` = '$id';
+        INSERT INTO `service`(`booking_id`, `room_id`, `time`, `action`, `memo`) VALUES ('$id', '$roomID', '$time', 'Extended', 'Extend The Hotel Duration By $duration Days With Total Of $total_comma KIP');
+        ";
     
-        $result = mysqli_query($conn, $query);
+        $result = mysqli_multi_query($conn, $query);
     }
 
     if ($result){

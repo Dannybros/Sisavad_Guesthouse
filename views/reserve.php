@@ -24,7 +24,7 @@
                 </div>
                 <div class="step-item">
                     <button class="step-button text-center en-font collapsed" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree" disabled>
+                        data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
                         3
                     </button>
                     <div class="step-title" data-i18n="reservation.progress.step3">
@@ -84,7 +84,7 @@
                                 placeholder="Email..." 
                             />
                         </div>
-                        <div class="col-6 mb-4">
+                        <div class="col-6 mb-4 en-font">
                             <label class="float-start fw-bold mb-1" data-i18n="customer.passport"></label>
                             <input 
                                 type="text" 
@@ -153,7 +153,7 @@
 
                         <article class="col-6">
                             <label class="float-start fw-bold" data-i18n="reservation.step2.ranger"> Date Ranger </label>
-                            <input type="text" class="col-6 form-control en-font" name="datefilter" value="" placeholder="CHOOSE DATES" data-error="Please choose dates"/>
+                            <input type="text" role="button" class="col-6 form-control en-font" name="datefilter" value="" placeholder="CHOOSE DATES" data-error="Please choose dates"/>
                         </article>
 
                         <article class="col-6 mt-4">
@@ -226,9 +226,9 @@
                         <div class="bg-warning-subtle w-100" style="height: 10px;"></div>
                         <div class="bg-primary-subtle w-100" style="height: 10px;"></div>
 
-                        <h3 class="d-flex justify-content-between align-items-center p-0 pb-2 mt-4 border-bottom border-dark">
+                        <h4 class="d-flex justify-content-between align-items-center p-0 pb-2 mt-4 border-bottom border-dark">
                             <div class="col-3 bg-warning py-2 bg-opacity-50" data-i18n="reservation.step3.subtitle">Bill To</div>
-                            <div class="d-flex align-items-center">
+                            <div class="d-flex align-items-center me-3">
                                 <span class="fs-6 fw-bold me-3" data-i18n="reservation.step3.employee"> Employee </span>
                                 <select id="employeeSelector" class="form-control fs-6">
                                     <option selected disabled data-i18n="reservation.step3.select"> Select the Employee</option>
@@ -245,21 +245,24 @@
                                     <?php } ?>
                                 </select>
                             </div>
-                        </h3>
+                        </h4>
 
-                        <section class="col-4">
+                        <section class="col-4 border-end">
                             <article class="w-100 px-4 py-3 text-start ">
                                 <label class="mb-2 fw-bold" data-i18n="customer.name">Name</label>
                                 <h6 class="mb-0 border-bottom en-font" id="bill_customer_name"></h6>
                             </article>
+
                             <article class="w-100 px-4 py-3 text-start">
                                 <label class="mb-2 fw-bold" data-i18n="customer.email"> Email </label>
                                 <h6 class="mb-0 border-bottom en-font" id="bill_customer_email"></h6>
                             </article>
+                            
                             <article class="w-100 px-4 py-3 text-start ">
                                 <label class="mb-2 fw-bold" data-i18n="customer.phone"> Phone </label>
                                 <h6 class="mb-0 border-bottom en-font" id="bill_customer_phone"></h6>
                             </article>
+
                             <article class="w-100 px-4 py-3 text-start ">
                                 <label class="mb-2 fw-bold" data-i18n="customer.passport"> ID / Passport </label>
                                 <h6 class="mb-0 border-bottom en-font" id="bill_customer_passport"></h6>
@@ -271,16 +274,19 @@
                                 <label class="mb-2"><b> Check In Date </b> </label>
                                 <h6 class="mb-0 border-bottom" id="bill_check_in"></h6>
                             </article>
+
                             <article class="col-6 px-4 py-3 text-start en-font">
                                 <label class="mb-2"><b> Check Out Date </b> </label>
                                 <h6 class="mb-0 border-bottom" id="bill_check_out"></h6>
                             </article>
+
                             <article class="col-6 px-4 py-2">
                                 <label style="float:left" class="mb-2 fw-bold" data-i18n="booking.info.payment.status.title"> Payment Status </label>
                                 <select 
                                     class="form-control" 
                                     id="paymentStatusSelector"
                                     data-error="Select Payment Option" 
+                                    onchange="payStatusChange(this.value)"
                                     required
                                 >
                                     <option selected disabled data-i18n="booking.info.payment.status.default"> --- Choose Status --- </option>
@@ -289,19 +295,33 @@
                                     <option value="Deposit" data-i18n="payment.deposit"> Deposit</option>
                                 </select>
                             </article>
+
                             <article class="col-6 px-4 py-2">
                                 <label style="float:left" class="mb-2 fw-bold" data-i18n="booking.info.payment.option.title">Payment Option </label>
                                 <select 
                                     class="form-control" 
                                     id="paymentOptionSelector"
+                                    onchange="payOptionChange(this.value)"
                                 >
                                     <option selected disabled data-i18n="booking.info.payment.option.default"> --- Choose Payment Option --- </option>
                                     <option value="Cash" class="en-font"> Cash</option>
                                     <option value="OnePay" class="en-font"> OnePay </option>
                                 </select>
                             </article>
-
-                            <table class="table table-info col-12">
+                            
+                            <article class="col-12 invisible p-0" id="onePayBill">
+                                <div class="px-4 py-3 text-start">
+                                    <label class="mb-2 fw-bold" data-i18n="reservation.step3.ref_code"></label>
+                                    <div class="refCodeBox form-control en-font">
+                                        <ul id="refCodes" onclick="refListClick(event)"></ul>
+                                        <input type="text" id="refCodeInput" onkeydown="fillCode(event)" placeholder="OnePay codes...">
+                                    </div>
+                                </div>
+                            </article>
+                        </section>
+                         
+                        <section class="col-12 px-4">
+                            <table class="table table-info">
                                 <thead>
                                     <tr>
                                         <th scope="col" data-i18n="rooms.info.name">Room Number</th>
@@ -311,7 +331,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
+                                    <tr class="en-font">
                                         <td id="bill_room"></td>
                                         <td id="bill_room_duration"></td>
                                         <td id="bill_room_price"></td>
@@ -319,7 +339,7 @@
                                     </tr>
                                     <tr>
                                         <th colspan="3 text-uppercase" data-i18n="booking.info.total">TOTAL:</th>:
-                                        <td id="bill_total"></td>
+                                        <td id="bill_total" class="en-font"></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -327,13 +347,14 @@
                     </div>
                 </div>  
                 <div class="d-flex justify-content-end w-100 pe-2 mt-3 gap-3">
-                    <button type="button" data-i18n="reservation.progress.btn_back" class="btn btn-secondary text-uppercase" onclick="stepClick(50, 1)" data-bs-toggle="collapse" data-bs-target="#collapseTwo">
+                    <button type="button" 
+                        data-i18n="reservation.progress.btn_back" class="btn btn-secondary text-uppercase" onclick="stepClick(50, 1)" data-bs-toggle="collapse" data-bs-target="#collapseTwo"
+                    >
                         BACK
                     </button>
                     <button type="submit" class="btn btn-success text-uppercase mx-2" data-i18n="modal.submit">Submit</button>
                 </div>
             </section>
-
         </div>
     </main>
 </form>

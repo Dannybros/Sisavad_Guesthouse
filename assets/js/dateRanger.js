@@ -1,6 +1,7 @@
 $(function() {
     $('input[name="datefilter"]').daterangepicker({
         autoUpdateInput: false,
+        minDate: new Date(),
         opens: 'left'
     }, function(start, end, label) {
         $("#check_in_date").val(start.format('YYYY-MM-DD'));

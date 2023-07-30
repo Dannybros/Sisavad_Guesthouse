@@ -13,6 +13,9 @@ var editCustomerTitle = "Edit Customer";
 const customerList = document.querySelector('.booking-customer-list');
 const customerSelector = document.getElementById("customerSelector");
 
+const ref_list = document.getElementById('refCodes');
+const ref_input = document.getElementById('refCodeInput');
+
 // alert 
 
 function appendAlert(message, type){
@@ -133,7 +136,6 @@ function createSchedule(){
         type:"GET",
         dataType:"JSON",
         success: function(data){
-            console.log(data);
             let roomNames = data.map(a => ({id: a.id, name:a.name, type:a.type}));
             createCalender(roomNames);
             getBookingSchedule();
@@ -420,8 +422,6 @@ function fetchFreeRoom(id){
         return;
     }
 
-    console.log(dateIn, dateOut);
-
     $.ajax({
         url:`./controllers/getRoom.php?free`,
         type:"POST",
@@ -432,6 +432,7 @@ function fetchFreeRoom(id){
         },
         dataType:"JSON",
         success: function(data){
+            console.log(data);
             if(data.length >0){
                 $("#secondStepBtn").prop('disabled', false);
                 roomSelector.innerHTML="<option selected disabled> Please select the room no. </option>";
@@ -585,6 +586,58 @@ function customerManage(){
     }else alert($.t("rooms.error"))
 }
 
+function payStatusChange(val){
+    if(val==="Unpaid"){
+        $("#paymentOptionSelector").val($("#paymentOptionSelector option:first").val());
+    }
+}
+
+function payOptionChange(val){
+    if(val==="OnePay"){
+        $("#onePayBill").removeClass("invisible");
+    }else{
+        $("#onePayBill").addClass("invisible");
+    }
+}
+
+function fillCode(event){
+
+    if (event.key === 'Enter') {
+        event.preventDefault();
+
+        const ref_code = document.createElement('li');
+        const ref_code_content = ref_input.value.trim();
+
+        if (ref_code_content !== '') {
+              
+            // Set the text content of the tag to 
+            // the trimmed value
+            ref_code.innerText = ref_code_content;
+
+            // Assign data-id 
+            ref_code.setAttribute("data-id", ref_code_content);
+
+            // Add a delete button to the tag
+            ref_code.innerHTML += '<button type="button" class="delete-button">X</button>';
+              
+            // Append the tag to the tags list
+            ref_list.appendChild(ref_code);
+              
+            // Clear the input element's value
+            ref_input.value = '';
+        }
+    }
+}
+
+function refListClick(event){
+    // If the clicked element has the class 'delete-button'
+    if (event.target.classList.contains('delete-button')) {
+      
+        // Remove the parent element (the tag)
+        event.target.parentNode.remove();
+    }
+}
+
 function resetCustomerInfo(){
     $('#cust_contact').val('');
     $('#cust_name').val('');
@@ -625,6 +678,8 @@ function resetBooking(){
 
 function registerBooking(event){
     event.preventDefault();
+    var customers = [];
+    var codes = [];
 
     var roomID = $('#availableRooms').val();
     var duration = $('#booking_duration').text().replace(/\D/g, "");
@@ -634,7 +689,6 @@ function registerBooking(event){
     var paymentOption = $('#paymentOptionSelector').val();
     var paymentStatus = $('#paymentStatusSelector').val();
     var employee = $('#employeeSelector').val();
-    var customers = [];
 
     if(!employee){
         alert($.t("reservation.step3.select"))
@@ -651,10 +705,17 @@ function registerBooking(event){
         return;
     }
 
-    if(paymentStatus!=="Unpaid"){
-        if(!paymentOption){
-            alert($.t("error.err7"));
-            return;
+    if(paymentStatus!=="Unpaid" && !paymentOption){
+        alert($.t("error.err7"));
+        return;
+    }
+
+    if(paymentOption==="OnePay" && ref_list.children.length <= 0){
+        alert($.t("error.err9"));
+        return;
+    }else{
+        for (const list of ref_list.children) {
+            codes.push(list.dataset.id);
         }
     }
 
@@ -674,9 +735,11 @@ function registerBooking(event){
             paymentOption:paymentOption,
             paymentStatus:paymentStatus,
             customer:JSON.stringify(customers),
+            codes:JSON.stringify(codes),
             employee:employee
         },
         success: function(data){
+            $("#main_box").animate({ scrollTop: 0 }, "slow");
             
             if(data==='success'){
                 resetBooking();
@@ -746,7 +809,7 @@ function loadBooking(){
                 </td>
                 <td class="align-middle en-font"> ${formatNumber(data.total)} KIP</td>
                 <td class="align-middle" data-i18n=${pay_lang}> </td>
-                <td class="align-middle bg-info-subtle fw-bold" data-i18n=${stat_lang}> </td>
+                <td class="align-middle bg-info-subtle fw-bold after-bottom" data-i18n=${stat_lang}> </td>
                 <td class="d-flex justify-content-around">
                     <button 
                         type="button" 
@@ -763,7 +826,6 @@ function loadBooking(){
                         onclick="viewBookingInfo('${data.id}')" 
                         data-bs-toggle="modal" 
                         data-bs-target='#bookingRoomModal'
-                        ${status==="Finished" || status==="Cancelled" ? 'disabled' : ''}
                     >
                         <i class="fa fa-pencil" aria-hidden="true"></i>
                     </button>
@@ -771,7 +833,7 @@ function loadBooking(){
             </tr>
             <td colspan="11" class="p-0 ">
                 <div class="collapse" id="bookingLog${data.id}">
-                    <div class="card card-body row ${bg} border-0 px-0 py-2">
+                    <div class="card card-body row ${bg} px-5 py-2" style="border:none !important">
                     </div>
                 </div>
             </td>
@@ -795,74 +857,115 @@ function loadBooking(){
     })
 }
 
+function getCustomer(id, handleData){
+    return $.ajax({
+        url:`./controllers/getCustomer.php?id=${id}`,
+        type:"GET",
+        dataType:"JSON",
+        success: function(data){
+           handleData(data);
+        }   
+    })
+}
+
+function fillInTable(booking, tableBody){
+    const customers = JSON.parse(booking.customers);
+    customers.map((customer, i)=>{
+        getCustomer(customer, function(data){
+            var display = `
+                <tr>
+                    <td>${data.cust_name + "  " + data.cust_firstname}</td>
+                    <td>${data.cust_bd}</td>
+                    <td>${data.contact}123421232321 12312</td>
+                    <td>${data.email}</td>
+                    <td>${data.passport}</td>
+                </tr>
+            `;
+
+            tableBody.innerHTML += display;
+        });
+
+    })
+}
+
+function fillBookingModal(booking, id, form){
+    const codes = JSON.parse(booking.codes);
+
+    // fill in the input form, change button values, inserting data-attributes to modal
+    $('#bookingRoomModal').data('id', id);
+    $('#booking_ID_Title').text(id);
+    $('#bookingRoomModal').data('form', form);
+    $('#bookingCID').val(booking.checkIn);
+    $('#bookingCOD').val(booking.checkOut);
+    $('#bookingStatus').val(booking.status);
+    $('#bookedRoom').val(booking.room);
+    $('#bookedRoom').data('id', booking.roomID);
+    $('#bookingModalDuration').val(booking.duration + " days");
+    $('#bookingModalTotal').val(formatNumber(booking.total) + " KIP");
+    $('#bookingModalPayment').val(booking.paymentStatus);
+
+    // fill the ref codes below pay option div
+    if(booking.paymentOption==="OnePay"){
+        codes.map(code=>{
+            var btn = `
+                <button type="button" style="font-size:12px" 
+                    class="btn border-secondary mt-2 py-1 w-100"
+                >
+                    ${code}
+                </button>
+            `;
+            $("#refCodeList").append(btn);
+        })
+    }
+
+    // disable pay option if it is paid
+    if(booking.paymentStatus==="Unpaid"){
+        $('#bookingPaymentOption').prop('disabled', false);
+        $('#btn_full_pay').prop('disabled', false);
+        $('#btn_pay_deposit').prop('disabled', false);
+        $("#bookingPaymentOption").val($("#bookingPaymentOption option:first").val());
+    }
+    else {
+        $("#bookingPaymentOption").prop('disabled', 'disabled');
+        $('#bookingPaymentOption').val(booking.paymentOption);
+        $('#btn_full_pay').prop('disabled', true);
+        $('#btn_pay_deposit').prop('disabled', true);
+
+        if(booking.paymentStatus==="Deposit") $('#btn_full_pay').prop('disabled', false);
+    }
+
+    // disable all the buttons if booking is finished
+    if(booking.status==="Finished"){
+        $(".btn-booking-modal").prop('disabled', true);
+    }else{
+        $(".btn-booking-modal").prop('disabled', false);
+        if(booking.status==="Staying"){
+            $("#btn_booking_ci").prop('disabled', true);
+            $("#btn_booking_co").prop('disabled', false);
+        }
+        if(booking.status==="Reserved"){
+            $("#btn_booking_ci").prop('disabled', false);
+            $("#btn_booking_co").prop('disabled', true);
+        }
+    }
+
+    // warning to change color to red if fee isn't paid yet
+    if(booking.payment === "false") $('#bookingModalPayment').addClass('text-danger');
+    else $('#bookingModalPayment').removeClass('text-danger');
+} 
+
 function viewBookingInfo(id, form){
     var tableBody = document.getElementById('bookedCustomerTb');
     tableBody.innerHTML="";
-
-    function getCustomer(id, handleData){
-        return $.ajax({
-            url:`./controllers/getCustomer.php?id=${id}`,
-            type:"GET",
-            dataType:"JSON",
-            success: function(data){
-               handleData(data);
-            }   
-        })
-    }
-    
-    function fillInTable(booking){
-        const customers = JSON.parse(booking.customers);
-        customers.map((customer, i)=>{
-            getCustomer(customer, function(data){
-                var display = `
-                    <tr>
-                        <td>${data.cust_name + "  " + data.cust_firstname}</td>
-                        <td>${data.cust_bd}</td>
-                        <td>${data.contact}123421232321 12312</td>
-                        <td>${data.email}</td>
-                        <td>${data.passport}</td>
-                    </tr>
-                `;
-    
-                tableBody.innerHTML += display;
-            });
-
-        })
-    }
-
-    function fillBookingModal(booking){
-        $('#bookingRoomModal').data('id', id);
-        $('#booking_ID_Title').text(id);
-        $('#bookingRoomModal').data('form', form);
-        $('#bookingCID').val(booking.checkIn);
-        $('#bookingCOD').val(booking.checkOut);
-        $('#bookingStatus').val(booking.status);
-        $('#bookedRoom').val(booking.room);
-        $('#bookedRoom').data('id', booking.roomID);
-        $('#bookingModalDuration').val(booking.duration + " days");
-        $('#bookingModalTotal').val(formatNumber(booking.total) + " KIP");
-        $('#bookingModalPayment').val(booking.paymentStatus);
-
-        if(booking.paymentStatus==="Unpaid"){
-            $('#bookingPaymentOption').prop('disabled', false);
-            $("#bookingPaymentOption").val($("#bookingPaymentOption option:first").val());
-        }
-        else {
-            $("#bookingPaymentOption").prop('disabled', 'disabled');
-            $('#bookingPaymentOption').val(booking.paymentOption);
-        }
-        
-        if(booking.payment === "false") $('#bookingModalPayment').addClass('text-danger');
-        else $('#bookingModalPayment').removeClass('text-danger');
-    } 
+    $("#refCodeList").html('');
 
     $.ajax({
         url:`./controllers/manageBooking.php?single&id=${id}`,
         type:"GET",
         dataType:"JSON",
         success: function(data){
-            fillInTable(data[0]);
-            fillBookingModal(data[0]);
+            fillInTable(data[0], tableBody);
+            fillBookingModal(data[0], id, form);
         }   
     })
 }
@@ -871,7 +974,7 @@ function showBookingLog(id){
 
     var log_container = document.getElementById(`bookingLog${id}`).children[0];
 
-    const displayLog=(data)=>{
+    const displayLog=(data, index)=>{
 
         var room = data.room;
 
@@ -882,11 +985,11 @@ function showBookingLog(id){
         }
 
         var display =`
-            <main class="log col-12 en-font row py-2 ps-5 border-bottom border-secondary-subtle text-start">
+            <main class="log col-12 en-font row py-2 ps-5 ${index===0 && 'border-top'} border-bottom border-secondary text-start">
                 <span class="col-2 fw-bold text-capitalize text-secondary"> ${data.movement} </span>
                 <span class="col-2"> ${data.time} </span>
                 <span class="col-2 fw-semibold"> ${room}</span>
-                <span class="col-6"> ${data.memo}</span>
+                <span class="col-6 fw-bold fs-6"> ${data.memo}</span>
             </main>
         `
         log_container.innerHTML+=display;
@@ -903,7 +1006,7 @@ function showBookingLog(id){
             dataType:"JSON",
             success: function(data){
                 for(var i=0; i<data.length; i++){
-                    displayLog(data[i]);
+                    displayLog(data[i], i);
                 }
             }   
         })
@@ -1215,24 +1318,71 @@ function reloadAfterRoomAction(form){
     }
 }
 
-function payBooking(status){
+function payBooking(value){
+    const payOption = $('#bookingPaymentOption').val();
+    $('#bookingRoomModal').data('pay-stat', value);
+
+    if(payOption===null) {
+        alert($.t("error.err7"))
+        return;
+    }
+
+    if(payOption==="OnePay"){
+        $("#onePayRefModal").modal('toggle');
+        $("#bookingRoomModal").modal('toggle');
+
+        const codes = document.getElementById("refCodeList");
+    
+        for(var i = 0; i< codes.children.length; i++){
+            const code = codes.children[i]
+    
+            const tag_code = document.createElement('li');
+    
+            tag_code.setAttribute("data-id", code.innerText);
+    
+            tag_code.innerText = code.innerText;
+    
+            // Add a delete button to the tag
+            tag_code.innerHTML += '<button type="button" class="delete-button">X</button>';
+                
+            // Append the tag to the tags list
+            ref_list.appendChild(tag_code);
+                
+            // Clear the input element's value
+            ref_input.value = '';
+        }
+    }else{
+        updatePayment();
+    }
+}
+
+function updatePayment(){
     const id = $('#bookingRoomModal').data('id');
     const form = $('#bookingRoomModal').data('form');
+    const status = $('#bookingRoomModal').data('pay-stat');
     const option = $('#bookingPaymentOption').val();
+    var codes=[];
 
-    if(option===null) return;
+    if(option==="OnePay"){
+        for (const list of ref_list.children) {
+            codes.push(list.dataset.id);
+        }
+    }
 
     $.ajax({
         url:`./controllers/updatePaymentStatus.php?id=${id}`,
         type:"POST",
         data:{
             status:status,
-            option:option
+            option:option,
+            codes:codes.length > 0 ? JSON.stringify(codes) : null
         },
         success: function(data){
             if(data==='success'){
-                $('#bookingModalPayment').val(status);
-                $('#bookingPaymentOption').prop('disabled', true);
+                $("#refCodes").html("");
+                $('#bookingRoomModal').data('pay-data', '');
+                $('#bookingRoomModal').modal('hide');
+                $('#onePayRefModal').modal('hide');
                 reloadAfterRoomAction(form);
                 appendAlert(`Payment status has been updated`, "success");
             }
@@ -1344,9 +1494,11 @@ function openExtendDateModal(){
 function extendBookingDate(){
     const id = $('#bookingRoomModal').data('id');
     const form = $('#bookingRoomModal').data('form');
-    let newDateOut = $('#new_check_out_date').val();
+    const newDateOut = $('#new_check_out_date').val();
     let duration = $('#extend_duration').text();
     let totalPrice = $('#extend_total').text();
+    const roomID = $("#bookedRoom").data('id');
+    const time =  moment(new Date()).format("YYYY-MM-DD");
 
     duration = convertStringCommaToNumber(duration);
     totalPrice = convertStringCommaToNumber(totalPrice);
@@ -1360,9 +1512,11 @@ function extendBookingDate(){
         url:`./controllers/registerBooking.php?extend&id=${id}`,
         type:"POST",
         data:{
+            roomID:roomID,
+            time:time,
             newDate:newDateOut,
             duration:duration,
-            total:totalPrice
+            total:totalPrice,
         },
         success: function(data){
             if(data==='success'){
@@ -1459,6 +1613,8 @@ function backToBookingModal(){
     $("#remaining_days").text("0 Night");
     $("#origin_price").text("0 KIP");
     $("#movingExtraFee").text("0 KIP");
+    $("#refCodes").html("");
+    $("#refCodeInput").val("");
 }
 
 function getFreeRoomForMoving(id){
@@ -1803,7 +1959,6 @@ window.onload = function() {
 };
 
 $(document).ready(function() {
-
     setTimeout(function() {
         $("mainAlert").alert('close');
     }, 2000);

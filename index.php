@@ -28,7 +28,7 @@
         <?php include "./views/sidebar.php"; ?>
 
         <div class="col-sm-10 main_box overflow-y-auto" style="background-color: #F5F8FA;" id="main_box">
-            <main id="alert-box" style="z-index: 10;"></main>
+            <main id="alert-box" class="en-font" style="z-index: 10;"></main>
             <?php
                 if (isset($_GET['calender']) || empty($_GET)){
                     include_once("views/schedule.php");

@@ -1,126 +1,138 @@
 <div class="modal fade" id="bookingRoomModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-xl">
         <div class="modal-content">
-        <div class="modal-header">
-            <h5 class="modal-title" id="staticBackdropLabel">
-                <span data-i18n="booking.info.title"></span> 
-                (<span id="booking_ID_Title"></span>)
-            </h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-            <h4 class="text-start mb-3 text-success" data-i18n="customer.title">Client Info</h4>
-            <table class="table table-striped border border-dark border-2">
-                <thead>
-                    <tr>
-                        <th scope="col" data-i18n="customer.fullname">Full Name</th>
-                        <th scope="col" data-i18n="customer.bd">Birthday</th>
-                        <th scope="col" data-i18n="customer.phone">Contact</th>
-                        <th scope="col email" data-i18n="customer.email"></th>
-                        <th scope="col email" data-i18n="customer.passport">ID/Passport</th>
-                    </tr>
-                </thead>
-                <tbody id="bookedCustomerTb" class="table-group-divider"></tbody>
-            </table>
-            
-            <section class="row mt-3">
-                <figure class="col-3 text-primary">
-                    <span data-i18n="booking.table.room"></span>:
-                    <input type="text" class="form-control text-center en-font" disabled id="bookedRoom" style="font-weight: bold;" value=""/>
-                </figure> 
-                <figure class="col-3 text-primary en-font">
-                    <span data-i18n="booking.info.checkin"></span>:
-                    <input type="text" class="form-control text-center" disabled id="bookingCID" style="font-weight: bold;" value=""/>
-                </figure>
-                <figure class="col-3 text-primary en-font">
-                    <span data-i18n="booking.info.checkout"></span>:
-                    <input type="text" class="form-control text-center" disabled id="bookingCOD" style="font-weight: bold;" value=""/>
-                </figure>
-                <figure class="col-3 text-primary">
-                    <span data-i18n="booking.info.status"></span>:
-                    <input type="text" class="form-control text-center en-font" disabled id="bookingStatus" style="font-weight: bold;" value=""/>
-                </figure>
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">
+                    <span data-i18n="booking.info.title"></span> 
+                    (<span id="booking_ID_Title"></span>)
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h4 class="text-start mb-3 text-success" data-i18n="customer.title">Client Info</h4>
+                <table class="table table-striped border border-dark border-2">
+                    <thead>
+                        <tr>
+                            <th scope="col" data-i18n="customer.fullname">Full Name</th>
+                            <th scope="col" data-i18n="customer.bd">Birthday</th>
+                            <th scope="col" data-i18n="customer.phone">Contact</th>
+                            <th scope="col" data-i18n="customer.email">Email</th>
+                            <th scope="col" class="en-font" data-i18n="customer.passport">ID/Passport</th>
+                        </tr>
+                    </thead>
+                    <tbody id="bookedCustomerTb" class="table-group-divider en-font"></tbody>
+                </table>
+                
+                <section class="row mt-3">
+                    <figure class="col-3 text-primary">
+                        <span data-i18n="booking.table.room"></span>:
+                        <input type="text" class="form-control text-center en-font" disabled id="bookedRoom" style="font-weight: bold;" value=""/>
+                    </figure> 
+                    <figure class="col-3 text-primary en-font">
+                        <span data-i18n="booking.info.checkin"></span>:
+                        <input type="text" class="form-control text-center" disabled id="bookingCID" style="font-weight: bold;" value=""/>
+                    </figure>
+                    <figure class="col-3 text-primary en-font">
+                        <span data-i18n="booking.info.checkout"></span>:
+                        <input type="text" class="form-control text-center" disabled id="bookingCOD" style="font-weight: bold;" value=""/>
+                    </figure>
+                    <figure class="col-3 text-primary">
+                        <span data-i18n="booking.info.status"></span>:
+                        <input type="text" class="form-control text-center en-font" disabled id="bookingStatus" style="font-weight: bold;" value=""/>
+                    </figure>
 
-                <div class="my-2 border"></div>
+                    <div class="my-2 border"></div>
 
-                <figure class="col-3 text-success">
-                    <span data-i18n="booking.info.duration"></span>:
-                    <input type="text" class="form-control text-center en-font" disabled id="bookingModalDuration" style="font-weight: bold;" value=""/>
-                </figure>
-                <figure class="col-3 text-success">
-                    <span data-i18n="booking.info.total"></span>:
-                    <input type="text" class="form-control text-center en-font" disabled id="bookingModalTotal" style="font-weight: bold;" value=""/>
-                </figure>
-                <figure class="col-3 text-success"> 
-                    <span data-i18n="booking.info.payment.status.title"></span>:
-                    <input type="text" class="form-control text-center en-font text-capitalize" disabled id="bookingModalPayment" style="font-weight: bold;" value=""/>
-                </figure>
-                <figure class="col-3 text-success"> 
-                    <span data-i18n="booking.info.payment.option.title"></span>:
-                    <select 
-                        class="form-control text-center text-capitalize fw-bold en-font" 
-                        id="bookingPaymentOption"
-                        disabled
+                    <figure class="col-3 text-success">
+                        <span data-i18n="booking.info.duration"></span>:
+                        <input type="text" class="form-control text-center en-font" disabled id="bookingModalDuration" style="font-weight: bold;" value=""/>
+                    </figure>
+                    <figure class="col-3 text-success">
+                        <span data-i18n="booking.info.total"></span>:
+                        <input type="text" class="form-control text-center en-font" disabled id="bookingModalTotal" style="font-weight: bold;" value=""/>
+                    </figure>
+                    <figure class="col-3 text-success"> 
+                        <span data-i18n="booking.info.payment.status.title"></span>:
+                        <input type="text" class="form-control text-center en-font text-capitalize" disabled id="bookingModalPayment" style="font-weight: bold;" value=""/>
+                    </figure>
+                    <figure class="col-3 text-success"> 
+                        <span data-i18n="booking.info.payment.option.title"></span>:
+                        <select 
+                            class="form-control text-center text-capitalize fw-bold en-font" 
+                            id="bookingPaymentOption"
+                            disabled
+                        >
+                            <option selected disabled data-i18n="booking.info.payment.option.default"> -- Choose --</option>
+                            <option value="Cash"> Cash</option>
+                            <option value="OnePay" class="en-font"> OnePay </option>
+                        </select>
+                        <div class="mt-1 fs-base" id="refCodeList"></div>
+                    </figure>
+                </section>
+            </div>
+            <div class="modal-footer d-flex justify-content-between" id="bookingModal_footer">
+                <div class="button-group">
+                    <button 
+                        type="button" 
+                        data-i18n="payment.full_pay" 
+                        class="btn btn-success"
+                        id="btn_full_pay"
+                        onclick="payBooking('Paid')"
                     >
-                        <option selected disabled data-i18n="booking.info.payment.option.default"> -- Choose --</option>
-                        <option value="Cash"> Cash</option>
-                        <option value="OnePay" class="en-font"> OnePay </option>
-                    </select>
-                </figure>
-            </section>
-        </div>
-        <div class="modal-footer d-flex justify-content-between" id="bookingModal_footer">
-            <div class="button-group">
-                <button 
-                    type="button" 
-                    data-i18n="payment.full_pay" 
-                    class="btn btn-primary"    
-                    onclick="payBooking('Paid')"
-                >
-                    Full Pay
-                </button>
-                <button 
-                    type="button" 
-                    data-i18n="payment.deposit" 
-                    class="btn btn-secondary" 
-                    onclick="payBooking('Deposit')"
-                ></button>
+                        Full Pay
+                    </button>
+                    <button 
+                        type="button" 
+                        data-i18n="payment.deposit" 
+                        class="btn text-white"
+                        id="btn_pay_deposit"
+                        style="background: #6610f2;" 
+                        onclick="payBooking('Deposit')"
+                    >
+                        Deposit
+                    </button>
+                </div>
+                <div class="button-group">
+                    <button 
+                        type="button" 
+                        data-i18n="booking.btnList.cancel" 
+                        class="btn btn-danger btn-booking-modal" 
+                        data-bs-target="#cancelModal" 
+                        data-bs-toggle="modal"
+                    >   
+                        Cancel Booking
+                    </button>
+                    <button 
+                        type="button" 
+                        data-i18n="booking.btnList.move.value" 
+                        class="btn btn-info btn-booking-modal" 
+                        data-bs-target="#moveRoomModal" 
+                        data-bs-toggle="modal"
+                    >  
+                        Move Room
+                    </button>
+                    <button 
+                        type="button" 
+                        data-i18n="booking.btnList.extend.value" 
+                        class="btn btn-dark btn-booking-modal" 
+                        onclick="openExtendDateModal()"
+                        data-bs-target="#extendBookingModal" 
+                        data-bs-toggle="modal"
+                    >
+                        Extend Booking
+                    </button>
+                </div>
+                <div class="button-group en-font">
+                    <button type="button" id="btn_booking_ci" data-i18n="booking.btnList.checkin" 
+                        class="btn btn-primary btn-booking-modal" onclick="roomCheckIn()">
+                        Check In
+                    </button>
+                    <button type="button" id="btn_booking_co" data-i18n="booking.btnList.checkout" 
+                        class="btn btn-warning btn-booking-modal" onclick="roomCheckOut()">
+                        Check Out
+                    </button>
+                </div>
             </div>
-            <div class="button-group">
-                <button 
-                    type="button" 
-                    data-i18n="booking.btnList.cancel" 
-                    class="btn btn-danger" 
-                    data-bs-target="#cancelModal" 
-                    data-bs-toggle="modal"
-                >   
-                    Cancel Booking
-                </button>
-                <button 
-                    type="button" 
-                    data-i18n="booking.btnList.move.value" 
-                    class="btn btn-info" 
-                    data-bs-target="#moveRoomModal" 
-                    data-bs-toggle="modal"
-                >  
-                    Move Room
-                </button>
-                <button 
-                    type="button" 
-                    data-i18n="booking.btnList.extend.value" 
-                    class="btn btn-dark" 
-                    onclick="openExtendDateModal()"
-                    data-bs-target="#extendBookingModal" 
-                    data-bs-toggle="modal"
-                >
-                    Extend Booking
-                </button>
-            </div>
-            <div class="button-group en-font">
-                <button type="button" data-i18n="booking.btnList.checkin" class="btn btn-success" onclick="roomCheckIn()">Check In</button>
-                <button type="button" data-i18n="booking.btnList.checkout" class="btn btn-warning" onclick="roomCheckOut()">Check Out</button>
-            </div>
-        </div>
         </div>
     </div>
 </div>
@@ -270,4 +282,32 @@
       </div>
     </div>
   </div>
+</div>
+
+<div class="modal fade" id="onePayRefModal" aria-hidden="true" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h1 class="modal-title fs-5" data-i18n="reservation.step3.ref_code">Modal title</h1>
+            <button type="button" class="btn-close" onclick="backToBookingModal()" data-bs-target="#bookingRoomModal" data-bs-toggle="modal"></button>
+        </div>
+        <div class="modal-body">
+            <label class="mb-2 fw-bold" data-i18n="reservation.step3.ref_code"></label>
+            <div class="refCodeBox form-control en-font">
+                <ul id="refCodes" onclick="refListClick(event)"></ul>
+                <input type="text" class="w-100" id="refCodeInput" onkeydown="fillCode(event)" placeholder="OnePay codes...">
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button 
+                class="btn btn-secondary" 
+                data-i18n="reservation.progress.btn_back" 
+                data-bs-target="#bookingRoomModal" 
+                data-bs-toggle="modal" 
+                onclick="backToBookingModal()"
+            ></button>
+            <button type="button" class="btn btn-primary" data-i18n="modal.submit" onclick="updatePayment()">Submit</button>
+        </div>
+        </div>
+    </div>
 </div>

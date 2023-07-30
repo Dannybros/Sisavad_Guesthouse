@@ -168,9 +168,9 @@
                     <h4 class="fw-bold py-2 mb-0 mt-2 " data-i18n="report.overview.graph.bar">
                         Most Popular Room
                     </h4>
-                    <select class="form-select form-select-sm" style="width: 150px; height:40px" onchange="reportRoomsPopular(this.value)">
-                        <option selected value="count" style="font-size: 15px;">Booking Numbers</option>
-                        <option value="revenue" style="font-size: 15px;">Booking Revenue</option>
+                    <select class="form-select form-select-sm" style="width: 200px; height:40px; font-size: 15px;" onchange="reportRoomsPopular(this.value)">
+                        <option selected value="count" data-i18n="report.overview.graph.choice1"></option>
+                        <option value="revenue" data-i18n="report.overview.graph.choice2"></option>
                     </select>
                 </div>
                 <div class="card-body">

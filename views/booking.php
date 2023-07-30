@@ -13,7 +13,7 @@
     </div>
 </div> 
 
-<table class="table">
+<table class="table table-borderless">
     <thead>
         <tr class="table-dark">
             <th scope="col" class="en-font">#</th>
@@ -65,7 +65,7 @@
                 }
 
             ?>
-                <tr class='<?php echo $color?> border-bottom border-dark-subtle'>
+                <tr class='<?php echo $color?>'>
                     <td class="align-middle en-font"> <?php echo $index++?> </td>
                     <td class="align-middle en-font"> <?php echo $booking['booking_id'] ?> </td>
                     <td class="align-middle en-font"><b> <?php echo $booking['room_name'] ?> </b></td>
@@ -78,7 +78,7 @@
                     </td>
                     <td class="align-middle en-font"> <?php echo number_format($booking['total_payment']) ?> KIP</td>
                     <td class="align-middle" data-i18n=<?php echo $pay_lang ?>> </td>
-                    <td class="fw-bold align-middle bg-info-subtle" data-i18n=<?php echo $stat_lang ?>> </td>
+                    <td class="fw-bold align-middle bg-info-subtle after-bottom" data-i18n=<?php echo $stat_lang ?>> </td>
                     <td>
                         <button 
                             type="button" 
@@ -96,7 +96,6 @@
                             onclick="viewBookingInfo('<?php echo $booking['booking_id']?>', 'booking')" 
                             data-bs-toggle="modal" 
                             data-bs-target="#bookingRoomModal"
-                            <?php if($booking['booking_status']==="Finished" || $booking['booking_status']==="Cancelled") echo 'disabled'?>
                         >
                             <i class="fa fa-pencil" aria-hidden="true"></i>
                         </button>
@@ -104,7 +103,7 @@
                 </tr>
                 <td colspan="11" class="p-0 ">
                     <div class="collapse" id="bookingLog<?php echo $booking['booking_id'] ?>">
-                        <div class="card card-body row <?php echo $color?> border-0 px-5 py-2">
+                        <div class="card card-body row <?php echo $color?> px-5 py-2" style="border:none !important">
                         </div>
                     </div>
                 </td>

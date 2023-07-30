@@ -26,7 +26,7 @@
 
     if(isset($_GET['room'])){
         $id = $_GET['id'];
-        $query = "SELECT * FROM booking JOIN room ON booking.booked_room = room.room_id JOIN room_type ON room.room_type_id = room_type.room_type_id WHERE `booked_room` = '$id'";
+        $query = "SELECT * FROM booking JOIN room ON booking.booked_room = room.room_id JOIN room_type ON room.room_type_id = room_type.room_type_id WHERE `booked_room` = '$id' AND `booking_status` <> 'Finished'";
     }
     
     $result = mysqli_query($conn, $query);
@@ -45,10 +45,12 @@
         $status = $booking['booking_status'];
         $paymentStatus=$booking['payment_status'];
         $paymentOption=$booking['payment_option'];
+        $codes=$booking['onepay_ref_code'];
         
         $return_arr[] = array(
             "id" => $id,
             "customers" => $customers,
+            "codes" => $codes,
             "room"=>$room,
             "roomType"=>$roomType,
             "roomID"=>$roomID,
