@@ -1644,11 +1644,12 @@ function delRoomType(id){
     })
 }
 
-function openStaffModal(type, id, name, gender, ID_Card, phone, email, position, salary){
+function openStaffModal(type, id, name, gender, bd, ID_Card, phone, email, position, salary){
     $("#staffModal").data('type', type);
     $("#staffModal").data('id', id);
     $('#staff__name').val(name);
     $('#genderSelect').val(gender);
+    $('#staff__bd').val(bd);
     $('#staff__id_card').val(ID_Card);
     $('#staff__phone').val(phone);
     $('#staff__email').val(email);
@@ -1675,10 +1676,16 @@ function refreshStaff(){
                             ${data.name}
                         </div>
                         <span class="fw-semibold d-block text-body-tertiary text-start">
-                            (${data.ID_Card})
+                            (${data.gender})
                         </span>
                     </div>
                 </div>                                
+            </td>
+
+            <td>
+                <span class="fw-bold fs-6" style="color:#6c757d">
+                    ${data.bd}
+                </span>                                
             </td>
 
             <td>
@@ -1709,7 +1716,7 @@ function refreshStaff(){
                 <button class="btn btn-primary" 
                     data-bs-toggle="modal" 
                     data-bs-target="#staffModal" 
-                    onclick="openStaffModal('edit', '${data.id}', '${data.name}', '${data.gender}', '${data.ID_Card}', '${data.phone}', '${data.email}', '${data.position}', '${data.salary}')" 
+                    onclick="openStaffModal('edit', '${data.id}', '${data.name}', '${data.gender}', '${data.bd}', '${data.ID_Card}', '${data.phone}', '${data.email}', '${data.position}', '${data.salary}')" 
                 >
                     <i class="fa fa-pencil"></i>
                 </button>
@@ -1745,6 +1752,7 @@ function staffManage(){
     const email = $('#staff__email').val();
     const position = $('#staff__position').val();
     const salary = $('#staff__salary').val();
+    const bd = $('#staff__bd').val();
 
     $.ajax({
         url:`./controllers/manageStaff.php?${type}`,
@@ -1753,6 +1761,7 @@ function staffManage(){
             id:id,
             name:name,
             gender:gender,
+            bd:bd,
             ID_Card:ID_Card,
             phone:phone,
             email:email,

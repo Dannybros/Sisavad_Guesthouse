@@ -54,7 +54,7 @@
                     <div class="col-6 px-2">
                         <figure class="rounded p-3 mb-0" style="border: 1px dashed rgba(255, 255, 255, 0.4)">
                             <div class="fs-5 fw-bold en-font">
-                                <span class="counter" id="revenue_total">100</span> KIP
+                                <span class="counter" id="revenue_total">100</span> (K)
                             </div>
                             <div class="text-capitalize">
                                 <span data-i18n="report.revenue.statistics.stat1"> Earned In </span>

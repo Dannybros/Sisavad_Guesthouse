@@ -87,6 +87,7 @@
                         <thead>
                             <tr class="text-center text-secondary fw-bold text-uppercase gs-0">
                                 <th class="text-start" data-i18n="setting.staff.info.name">Name</th>
+                                <th data-i18n="customer.bd">BD</th>
                                 <th data-i18n="setting.staff.info.phone">Phone</th>
                                 <th data-i18n="setting.staff.info.email">Email</th>
                                 <th data-i18n="setting.staff.info.position">Position</th>
@@ -104,6 +105,7 @@
                                     $id = $emp['emp_ID'];
                                     $name = $emp['emp_Name'];
                                     $gender = $emp['gender'];
+                                    $bd = $emp['emp_bd'];
                                     $idCard = $emp['emp_ID_Card'];
                                     $position = $emp['position'];
                                     $salary = $emp['salary'];
@@ -118,9 +120,14 @@
                                                 <?php echo $name?>
                                             </div>
                                             <span class="fw-semibold d-block text-body-tertiary text-start">
-                                                (<?php echo $idCard?>)
+                                                (<?php echo $gender?>)
                                             </span>
                                         </div>
+                                    </td>
+                                    <td>
+                                        <span class="fw-bold fs-6" style="color:#6c757d">
+                                            <?php echo $bd?>
+                                        </span>                                
                                     </td>
 
                                     <td>
@@ -151,7 +158,7 @@
                                         <button class="btn btn-primary" 
                                             data-bs-toggle="modal" 
                                             data-bs-target="#staffModal" 
-                                            onclick="openStaffModal('edit', '<?php echo $id?>', '<?php echo $name?>', '<?php echo $gender?>', '<?php echo $idCard?>', '<?php echo $phone?>', '<?php echo $email?>', '<?php echo $position?>', '<?php echo $salary?>')" 
+                                            onclick="openStaffModal('edit', '<?php echo $id?>', '<?php echo $name?>', '<?php echo $gender?>', '<?php echo $bd?>', '<?php echo $idCard?>', '<?php echo $phone?>', '<?php echo $email?>', '<?php echo $position?>', '<?php echo $salary?>')" 
                                         >
                                             <i class="fa fa-pencil"></i>
                                         </button>
@@ -168,7 +175,7 @@
                     <p class="text-start mt-3">
                         <span data-i18n="setting.staff.new">Click here to create new </span>
                         <a href="#" 
-                            onclick="openStaffModal('save', null, '', '', '', '', '', '')" 
+                            onclick="openStaffModal('save', null)" 
                             data-bs-toggle="modal"  
                             data-bs-target="#staffModal"
                             data-i18n="setting.staff.value"
@@ -237,6 +244,10 @@
                         <option value="Male" selected data-i18n="setting.staff.info.male"></option>
                         <option value="Female" data-i18n="setting.staff.info.female"></option>
                     </select>
+                </div>
+                <div class="col-6">
+                    <label class="fw-bold mb-1 en-font" data-i18n="customer.bd">Birthday</label>
+                    <input type="date" class="form-control text-center en-font" id="staff__bd" />
                 </div>
                 <div class="col-6">
                     <label class="fw-bold mb-1 en-font" data-i18n="setting.staff.info.id_card">ID Card</label>

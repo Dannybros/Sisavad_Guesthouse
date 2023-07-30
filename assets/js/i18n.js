@@ -502,14 +502,14 @@ const lao={
         edit:"ແກ້້ໄຂ",
         save:"ບັນທຶກ",
         cancel:"ຍົກເລີກ",
-        reset:"ເຮັດໃໝ່",
+        reset:"ເລີ່ມໃໝ່",
         delete:"ລົບ",
         submit:"ບັນທຶກ",
         add:"ເພີ່ມ",
     },
     payment:{
         paid:"ຈ່າຍແລ້ວ",
-        deposit:"ຝາກເງິນ",
+        deposit:"ຈ່າຍເຄິ່ງລາຄາ",
         unpaid:"ຍັງບໍ່ໄດ້ຈ່າຍ",
         full_pay:"ຈ່າຍເຕັມ"
     },

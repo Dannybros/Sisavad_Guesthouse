@@ -11,6 +11,7 @@
         $id=$staff['emp_ID'];
         $name=$staff['emp_Name'];
         $gender=$staff['gender'];
+        $bd=$staff['emp_bd'];
         $ID_Card=$staff['emp_ID_Card'];
         $phone=$staff['phone'];
         $email=$staff['email'];
@@ -21,6 +22,7 @@
             "id" => $id,
             "name" => $name,
             "gender" => $gender,
+            "bd" => $bd,
             "phone" => $phone,
             "email" => $email,
             "position" => $position,
