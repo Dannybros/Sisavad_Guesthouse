@@ -266,6 +266,11 @@ const en={
         err7:"Please choose Payment Option and Status",
         err8:"Please Select Room Type",
         err9:"Please input reference code",
+    },
+    confirm:{
+        1:"Do you really wish to log out?",
+        2:"If You Are Checking Out Early, You Won't Get Refund Of Remaining Days",
+        3:"If you cancel the room, you won't get the money back",
     }
 }
 
@@ -533,6 +538,11 @@ const lao={
         err7:"ກະລຸນາເລືອກທາງການຈ່າຍເງິນ ແລະ ສະຖານະ",
         err8:"ກະລຸນາເລືອກປະເພດຫ້ອງ",
         err9:"ກະລຸນາໃສ່ເລກອ້າງອີງ"
+    },
+    confirm:{
+        1:"ເຈົ້າຢາກອອກຈາກລະບົບແທ້ບໍ?",
+        2:"ຖ້າເຈົ້າກວດເຊັກກ່ອນໄວ, ເຈົ້າຈະບໍ່ໄດ້ຮັບເງິນຄືນຈາກມື້ທີ່ຍັງເຫຼືອ",
+        3:"ຖ້າທ່ານຍົກເລີກຫ້ອງ, ທ່ານຈະບໍ່ໄດ້ຮັບເງິນຄືນ",
     }
 }
   
@@ -569,17 +579,25 @@ $(function () {
 
         // fill language switcher when reloading and persists the chosen language
         Object.keys(lngs).map((lng) => {
-            const opt = new Option(lngs[lng].nativeName, lng);
+            const li = document.createElement('li');
 
+            li.classList.add('dropdown-menu-list');
+            li.setAttribute("onclick", `changeLang('${lng}')`);
+
+            li.innerHTML=`
+                <img src="assets/img/${lng}-flag.png" height="20" alt="" />
+                ${lngs[lng].nativeName}
+            `;
+            
             if (lng==="en") {
-                opt.classList.add("en-font");
-            }else opt.classList.add("lao-font");
+                li.classList.add("en-font");
+            }else li.classList.add("lao-font");
             
             if (lng === i18next.resolvedLanguage) {
-                opt.setAttribute("selected", "selected");
-                opt.setAttribute("class", `${lng}-font`);
+                $("#curr_lang").attr('src', `assets/img/${lng}-flag.png`);
             }
-            $('#languageSwitcher').append(opt);
+
+            $('#language-list').append(li);
         });
 
         if(i18next.resolvedLanguage==='en'){
@@ -594,9 +612,15 @@ $(function () {
     });
 });
 
-function switchLang(value){
 
-    if(value==='en'){
+function changeLang(lng){
+    $("#curr_lang").attr('src', `assets/img/${lng}-flag.png`);
+
+    if (lng === i18next.resolvedLanguage) {
+        return;
+    }
+
+    if(lng==='en'){
         document.body.classList.remove('lao-font');
         document.body.classList.add('en-font');
     }else{
@@ -604,8 +628,7 @@ function switchLang(value){
         document.body.classList.remove('en-font');
     }
 
-    i18next.changeLanguage(value, () => {
+    i18next.changeLanguage(lng, () => {
         rerender();
     });
-    
 }

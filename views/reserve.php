@@ -24,7 +24,7 @@
                 </div>
                 <div class="step-item">
                     <button class="step-button text-center en-font collapsed" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                        data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree" disabled>
                         3
                     </button>
                     <div class="step-title" data-i18n="reservation.progress.step3">

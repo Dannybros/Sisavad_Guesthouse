@@ -1,0 +1,26 @@
+body{
+    margin: 0;
+    padding: 0;
+}
+.login__page{
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background: linear-gradient(rgba(0,0,50,0.5), rgba(0,0,50,0.5)), url('https://villa-sisavad-guesthouse-vientiane.booked.net/data/Photos/OriginalPhoto/7097/709781/709781209/Villa-Sisavad-Guesthouse-Vientiane-Exterior.JPEG');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.login_Form{
+    min-width: 500px;
+    background: rgba(255, 255, 255, 0.4);
+    font-family: 'playball';
+    border-radius: 10px;
+}
+.login_box{
+    display: flex;
+    flex-direction: column;
+}

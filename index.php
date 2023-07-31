@@ -20,6 +20,14 @@
 <body class="lao-font">
     <?php 
         session_start(); 
+
+        if(isset($_SESSION['username'])){
+            if($_SESSION['username'] == 'admin') $admin = true;
+            else $admin = false;
+        }else{
+            header("Location: login.php");
+        }
+
         include_once("config/dbconnect.php");
         include "./views/nav.php"
     ?>
@@ -43,13 +51,16 @@
                     include_once "views/room.php";
                     
                 }else if(isset($_GET['overview'])){
-                    include_once "views/reportOverview.php";
+                    if($admin) include_once("views/reportOverview.php");
+                    else include_once("views/404.php");
                     
                 }else if(isset($_GET['revenue'])){
-                    include_once("views/reportRevenue.php");
+                    if($admin) include_once("views/reportRevenue.php");
+                    else include_once("views/404.php");
                 }
                 else if(isset($_GET['setting'])){
-                    include_once("views/setting.php");
+                    if($admin) include_once("views/setting.php");
+                    else include_once("views/404.php");
                 }
             
                 include_once("./views/bookingInfoModal.php")

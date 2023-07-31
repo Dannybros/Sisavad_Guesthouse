@@ -35,7 +35,7 @@
         $checkIn = $_POST['checkIn'];
         $checkOut = $_POST['checkOut'];
         
-        $query = "SELECT * FROM `room` NATURAL JOIN `room_type` WHERE `room_id` NOT IN  (SELECT `booked_room` FROM `booking` WHERE ('$checkIn' BETWEEN `date_in` AND `date_out`) OR ('$checkOut' BETWEEN `date_in` AND `date_out`)) AND `room_type_id` = '$id' ORDER BY room.room_name ASC;";
+        $query = "SELECT * FROM `room` NATURAL JOIN `room_type` WHERE `room_id` NOT IN  (SELECT `booked_room` FROM `booking` WHERE booking_status <> 'Cancelled' AND (('$checkIn' BETWEEN `date_in` AND `date_out`) OR ('$checkOut' BETWEEN `date_in` AND `date_out`))) AND `room_type_id` = '$id' ORDER BY room.room_name ASC;";
 
     }
 

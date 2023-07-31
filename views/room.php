@@ -18,10 +18,18 @@
     <div class="input-group" style="width: 300px !important;">
         <input type="text" id="roomSearchBar" class="form-control en-font" style="border:1px solid lightblue" placeholder="Search..." value="" onkeyup="loadRooms()"/>
     </div>
-    <button class="btn btn-primary d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#roomModal" onclick="addNewRoom()">
-        <i class="fa fa-plus me-2"></i>
-        <span data-i18n="rooms.btn_add"></span>
-    </button>
+
+    <?php
+        if($admin){
+        echo'
+            <button class="btn btn-primary d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#roomModal" onclick="addNewRoom()">
+                <i class="fa fa-plus me-2"></i>
+                <span data-i18n="rooms.btn_add"></span>
+            </button>
+        ';
+        }
+    ?>
+   
 </div> 
 
 <div class="display_room row my-4" id="display_room">

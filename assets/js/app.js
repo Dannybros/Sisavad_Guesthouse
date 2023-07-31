@@ -16,6 +16,16 @@ const customerSelector = document.getElementById("customerSelector");
 const ref_list = document.getElementById('refCodes');
 const ref_input = document.getElementById('refCodeInput');
 
+// log out
+
+function logOut(){
+    const check = confirm($.t("confirm.1"));
+
+    if(check){
+        window.location.href='logout.php'
+    }
+}
+
 // alert 
 
 function appendAlert(message, type){
@@ -355,7 +365,7 @@ function goToFinalStep(){
         $("#bill_check_in").text(check_in);
         $("#bill_check_out").text(check_out);
         $("#bill_room").text(room);
-        $("#bill_room_duration").text(duration);
+        $("#bill_room_duration").text(duration + " " + $.t("booking.table.night"));
         $("#bill_room_price").text(price);
         $("#bill_room_total").text(total);
         $("#bill_total").text(total);
@@ -432,7 +442,6 @@ function fetchFreeRoom(id){
         },
         dataType:"JSON",
         success: function(data){
-            console.log(data);
             if(data.length >0){
                 $("#secondStepBtn").prop('disabled', false);
                 roomSelector.innerHTML="<option selected disabled> Please select the room no. </option>";
@@ -558,8 +567,6 @@ function customerManage(){
 
     if(cust_name && cust_contact && email && passport){
         var url= cust_type === 'new' ? "./controllers/addCustomer.php" : `./controllers/editCustomer.php`;
-
-        console.log(url);
     
         $.ajax({
             url:url,
@@ -578,7 +585,7 @@ function customerManage(){
                 if(data==='success'){
                     updateCustomerSelect();
                     appendAlert("Customer managed successfully", "success");
-                    updateCustomerList(cust_id, cust_name + " " + cust_fname);
+                    cust_type !== 'new' && updateCustomerList(cust_id, cust_name + " " + cust_fname);
                 }
                 else appendAlert(data, "danger");
             }
@@ -668,7 +675,7 @@ function resetBooking(){
     $('input[name="datefilter"]').daterangepicker({
         value:null
     })
-    $('input[name="datefilter"]').val("")
+    $('input[name="datefilter"]').val(" ")
     $('#check_in_date').val("");
     $('#check_out_date').val("");
 
@@ -1436,13 +1443,13 @@ function roomCheckOut(){
         return;
     }
 
-     if(currentTime < time){
-        const earlyCheckOut= confirm("If You Are Checking Out Early, You Won't Get Refund Of Remaining Days");
+    if(currentTime < time){
+        const earlyCheckOut= confirm($.t("confirm.2"));
 
         if(earlyCheckOut){
             url = `./controllers/manageRoomLog.php?earlyCheckOut&id=${id}`
-        }
-
+        }else return
+        
     }else {
         url = `./controllers/manageRoomLog.php?checkOut&id=${id}`;
     }
@@ -1581,7 +1588,7 @@ function cancelBooking(){
     const payStatus = $("#bookingModalPayment").val();
 
     if(payStatus!=="Unpaid"){
-       if( confirm("If you cancel the room, you won't get the money back") === false) return;
+       if( confirm($.t("confirm.3")) === false) return;
     }
 
     $.ajax({
@@ -1693,6 +1700,7 @@ function getDaysBetween(d1, d2){
 }
 
 // setting
+
 function openRoomTypeModal(type, id, name, price){
     $("#roomTypeModal").data('type', type);
     $('#roomType__id').val(id);
