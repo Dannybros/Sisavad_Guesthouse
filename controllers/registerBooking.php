@@ -2,7 +2,7 @@
     include_once ("../config/dbconnect.php");
 
     if (isset($_GET['register'])){
-        $booking_ID = uniqid('b');
+        $booking_ID = $_POST['bookingID'];
         $roomID = $_POST['roomID'];
         $customer = $_POST['customer'];
         $total = $_POST['total'];

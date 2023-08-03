@@ -10,6 +10,9 @@ var schedulePage = document.getElementById('schedule');
 var addCustomerTitle = "Add New Customer";
 var editCustomerTitle = "Edit Customer";
 
+var activePage= 1;
+const pageLinks = document.querySelectorAll('.page-link');
+
 const customerList = document.querySelector('.booking-customer-list');
 const customerSelector = document.getElementById("customerSelector");
 
@@ -325,6 +328,23 @@ function putLabelInCalender(dateIn, dateOut, booking, bookingNo){
 
 // Reserve
 
+function uniqid(prefix = "", random = false) {
+    const sec = Date.now() * 1000 + Math.random() * 1000;
+    const id = sec.toString(14).replace(/\./g, "").padEnd(14, "0");
+    return `${prefix}${id}${random ? `.${Math.trunc(Math.random() * 100000000)}`:""}`;
+};
+
+function createPDFfromHTML(id) {
+    const {jsPDF} = window.jspdf;
+
+    html2canvas($("#booking_bill")[0]).then(function (canvas) {
+        var imgData = canvas.toDataURL("image/jpeg", 1.0);
+        var pdf = new jsPDF('p', 'mm');
+        pdf.addImage(imgData, 'JPEG', 5, 10, 200, 120);
+        pdf.save(`bill(${id}).pdf`);
+    });
+}
+
 function stepClick(value, index){
     const stepButtons = document.querySelectorAll('.step-button');
     const progress = document.querySelector('#progress');
@@ -360,7 +380,8 @@ function goToFinalStep(){
         var total = $("#booking_total").text();
         var check_in = $("#check_in_date").val();
         var check_out = $("#check_out_date").val();
-        var room = $("#availableRooms").val();
+        var room = $("#availableRooms > option:selected").text();
+        var booking_id = uniqid('b');
 
         $("#bill_check_in").text(check_in);
         $("#bill_check_out").text(check_out);
@@ -369,6 +390,7 @@ function goToFinalStep(){
         $("#bill_room_price").text(price);
         $("#bill_room_total").text(total);
         $("#bill_total").text(total);
+        $("#booking_id").text(booking_id);
     }
 
     function getCustomerInfo(){
@@ -662,22 +684,36 @@ function resetCustomerInfo(){
 
 function resetBooking(){
     customerList.innerHTML='';
+    $("#reserveForm")[0].reset();
+
     $('#booking_duration').text('');
     $('#booking_room_price').text('');
     $('#booking_total').text('');
-    $('#check_in_date').val('');
-    $('#check_out_date').val('');
-    $("#reserveRoomType")[0].selectedIndex = 0;
-    $("#availableRooms")[0].selectedIndex = 0;
-    $("#paymentStatusSelector")[0].selectedIndex = 0;
-    $("#paymentOptionSelector")[0].selectedIndex = 0;
-    $("#employeeSelector")[0].selectedIndex = 0;
+
+    $("#bill_customer_name").text("");
+    $("#bill_customer_email").text("");
+    $("#bill_customer_phone").text("");
+    $("#bill_customer_passport").text("");
+    $("#refCodes").html("");
+    $("#onePayBill").addClass('invisible');
+    $("#booking_id").text("");
+
     $('input[name="datefilter"]').daterangepicker({
-        value:null
-    })
-    $('input[name="datefilter"]').val(" ")
-    $('#check_in_date').val("");
-    $('#check_out_date').val("");
+        autoUpdateInput: false,
+        minDate: new Date(),
+        opens: 'left'
+    }, function(start, end, label) {
+        $("#check_in_date").val(start.format('YYYY-MM-DD'));
+        $("#check_out_date").val(end.format('YYYY-MM-DD'));
+        
+        var duration = end.diff(start, 'days');
+        $('#booking_duration').text(duration); 
+
+        $("#secondStepBtn").prop('disabled', true);
+        $("#reserveRoomType")[0].selectedIndex = 0;
+        $("#availableRooms")[0].selectedIndex = 0;
+    });
+    $('input[name="datefilter"]').attr("placeholder", "CHOOSE DATES");
 
     stepClick(0,0)
     $("#collapseOne").collapse('show');
@@ -688,6 +724,7 @@ function registerBooking(event){
     var customers = [];
     var codes = [];
 
+    var bookingID = $('#booking_id').text();
     var roomID = $('#availableRooms').val();
     var duration = $('#booking_duration').text().replace(/\D/g, "");
     var total = $('#booking_total').text().replace(/\D/g, "");
@@ -734,6 +771,7 @@ function registerBooking(event){
         url:`./controllers/registerBooking.php?register`,
         type:"POST",
         data:{
+            bookingID:bookingID,
             roomID:roomID,
             checkOut:checkOut,
             checkIn:checkIn,
@@ -750,7 +788,8 @@ function registerBooking(event){
             
             if(data==='success'){
                 resetBooking();
-                appendAlert("Room reserved successfully", 'success')
+                appendAlert("Room reserved successfully", 'success');
+                createPDFfromHTML(bookingID);
             }
             else appendAlert(data, "danger");
         }   
@@ -807,7 +846,7 @@ function loadBooking(){
                 <td class="align-middle en-font"> ${number} </td>
                 <td class="align-middle en-font"> ${data.id} </td>
                 <td class="align-middle en-font"><b> ${data.room} </b></td>
-                <td class="align-middle en-font"><b> ${data.roomType} </b></td>
+                <td class="align-middle en-font">${data.roomType} </td>
                 <td class="align-middle fw-bold en-font"> ${data.checkIn} </td>
                 <td class="align-middle fw-bold en-font"> ${data.checkOut} </td>
                 <td class="align-middle">
@@ -850,7 +889,7 @@ function loadBooking(){
     }
 
     $.ajax({
-        url:`./controllers/manageBooking.php?all&search=${query}`,
+        url:`./controllers/manageBooking.php?all&search=${query}&page=${activePage}`,
         type:"GET",
         dataType:"JSON",
         success: function(data){
@@ -858,10 +897,81 @@ function loadBooking(){
                 addElement(data[i], i+1);
             }
 
+            loadPagination(query);
+
             $('#display_booking').localize();
         }
 
     })
+}
+
+function loadPagination(query){
+    $.ajax({
+        url:`./controllers/countBooking.php?search=${query}`,
+        type:"GET",
+        dataType:"JSON",
+        success: function(data){
+            $("#pageNumbers").html("");
+
+            const length = Math.ceil(data/10);
+
+            console.log(length);
+
+            for(var i=1; i<=length; i++){
+
+                if(i===activePage) var active = "active";
+                else active = "";
+
+                const page = `
+                    <li class='page-item' role='button'>
+                        <a class='page-link ${active}' data-page='${i}' onclick='setActivePage(this, ${i})'>${i}</a>
+                    </li>
+                `
+                $("#pageNumbers").append(page);
+            }
+
+            if(activePage > length){
+                activePage = 1;
+
+                pageLinks.forEach((page, index) => {
+                    if (index !== 0) {
+                        page.classList.remove('active');
+                    }
+                });
+
+                pageLinks[0].classList.add("active");
+            }
+        }
+    })
+}
+
+function setActivePage(el, page){
+    el.classList.add('active');
+    activePage = page;
+
+    pageLinks.forEach((otherLink, index) => {
+        if (index+1 !== page) {
+            otherLink.classList.remove('active');
+        }
+    });
+
+    loadBooking();
+}
+
+function arrowPageClick(el){
+    const type = el.getAttribute("aria-label");
+
+    if(type==="Previous"){
+        if(activePage > 1){
+            prevPage = activePage - 1;
+            pageLinks[prevPage - 1].click();
+        }
+    }else{
+        if(activePage < pageLinks.length) {
+            nextPage = activePage + 1;
+            pageLinks[nextPage - 1].click();
+        }
+    }
 }
 
 function getCustomer(id, handleData){

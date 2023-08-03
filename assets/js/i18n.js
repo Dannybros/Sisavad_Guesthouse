@@ -155,7 +155,7 @@ const en={
         },
         step3:{
             title:"Hotel Receipt",
-            subtitle:"Bill To",
+            subtitle:"Booking ID",
             employee:"Employee:",
             select:"Select the Employee",
             ref_code:"OnePay Reference Codes"
@@ -427,7 +427,7 @@ const lao={
         },
         step3:{
             title:"ໃບເກັບເງີນໂຮງແຮມ",
-            subtitle:"ສົ່ງບິນໄປທີ່",
+            subtitle:"Booking ID",
             employee:"ພະນັກງານ:",
             select:"ເລືອກພະນັກງານ",
             ref_code:"OnePay ​ເລກ​ອ້າງ​ອີງ"

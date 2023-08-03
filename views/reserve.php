@@ -1,4 +1,4 @@
-<form class="container my-4" onsubmit="registerBooking(event)" method="post">
+<form class="container my-4" onsubmit="registerBooking(event)" method="post" id="reserveForm">
     <main class="bg-white shadow h-100 p-3">
         <h2 class="reservation_title pb-2 mb-4 fw-bold" data-i18n="reservation.title">
         </h2>
@@ -216,7 +216,7 @@
             </section>
 
             <section id="collapseThree" class="collapse" data-bs-parent="#accordionExample">
-                <div class="card ">
+                <div class="card" id="booking_bill">
                     <div class="card-body row px-5 ">
                         <div class="bg-success text-light p-3">
                             <h1 class="mb-4 text-uppercase" data-i18n="reservation.step3.title">HOTEL RECEIPT</h1> 
@@ -226,8 +226,11 @@
                         <div class="bg-warning-subtle w-100" style="height: 10px;"></div>
                         <div class="bg-primary-subtle w-100" style="height: 10px;"></div>
 
-                        <h4 class="d-flex justify-content-between align-items-center p-0 pb-2 mt-4 border-bottom border-dark">
-                            <div class="col-3 bg-warning py-2 bg-opacity-50" data-i18n="reservation.step3.subtitle">Bill To</div>
+                        <div class="d-flex justify-content-between align-items-center p-0 pb-2 mt-4 border-bottom border-dark">
+                            <div class="px-3 bg-warning fs-4 py-2 bg-opacity-50 en-font">
+                                <span data-i18n="reservation.step3.subtitle"> Booking ID</span>
+                                (<span id="booking_id"> b39203d820e </span>)
+                            </div>
                             <div class="d-flex align-items-center me-3">
                                 <span class="fs-6 fw-bold me-3" data-i18n="reservation.step3.employee"> Employee </span>
                                 <select id="employeeSelector" class="form-control fs-6">
@@ -245,7 +248,7 @@
                                     <?php } ?>
                                 </select>
                             </div>
-                        </h4>
+                        </div>
 
                         <section class="col-4 border-end">
                             <article class="w-100 px-4 py-3 text-start ">
@@ -338,7 +341,7 @@
                                         <td id="bill_room_total"></td>
                                     </tr>
                                     <tr>
-                                        <th colspan="3 text-uppercase" data-i18n="booking.info.total">TOTAL:</th>:
+                                        <th colspan="3 text-uppercase" data-i18n="booking.info.total">TOTAL:</th>
                                         <td id="bill_total" class="en-font"></td>
                                     </tr>
                                 </tbody>

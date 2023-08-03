@@ -10,6 +10,7 @@
 
     if (isset($_GET['all'])){
 
+        $page = ($_GET['page'] -1) * 10;
         $q = $_GET['search'];
         $search_qqq = explode("*", $q);
 
@@ -19,8 +20,8 @@
         if ($status==="all") {
             $status = "";
         }
-
-        $query = "SELECT * FROM booking JOIN room ON booking.booked_room = room.room_id JOIN room_type ON room.room_type_id = room_type.room_type_id WHERE `room_name` LIKE '%$search%' OR `booking_id` LIKE '%$search%' AND `booking_status` LIKE '%$status%' ORDER BY `date_in` DESC";
+        
+        $query = "SELECT * FROM booking JOIN room ON booking.booked_room = room.room_id JOIN room_type ON room.room_type_id = room_type.room_type_id WHERE (`room_name` LIKE '%$search%' OR `booking_id` LIKE '%$search%') AND `booking_status` LIKE '%$status%' ORDER BY `date_in` DESC LIMIT 10 OFFSET $page";
 
     }
 

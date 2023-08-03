@@ -31,7 +31,7 @@
     </thead>
     <tbody id="display_booking" class="table-group-divider">
         <?php
-            $booking_query = "SELECT * FROM booking JOIN room ON booking.booked_room = room.room_id JOIN room_type ON room.room_type_id = room_type.room_type_id ORDER BY date_in DESC";
+            $booking_query = "SELECT * FROM booking JOIN room ON booking.booked_room = room.room_id JOIN room_type ON room.room_type_id = room_type.room_type_id ORDER BY date_in DESC LIMIT 10 OFFSET 0";
 
             $booking_result = mysqli_query($conn, $booking_query);
             $index = 1;
@@ -111,3 +111,39 @@
         ?>
     </tbody>
 </table>
+
+
+<nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center">
+        <li class="page-item">
+            <a class="previous-btn btn-arrow" role="button" aria-label="Previous" onclick="arrowPageClick(this)">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+        <div class="d-flex" id="pageNumbers">
+        <?php
+            $sql = "SELECT COUNT(*) AS count FROM booking";
+
+            $result = mysqli_query($conn, $sql);
+            while($row = mysqli_fetch_assoc($result)) { 
+                for ($x = 1; $x <= ceil($row["count"] / 10); $x++) {
+
+                    if($x==1) $active="active";
+                    else $active ="";
+
+                    echo "
+                        <li class='page-item' role='button'>
+                            <a class='page-link $active' data-page='$x' onclick='setActivePage(this, $x)'>$x</a>
+                        </li>
+                    ";
+                }
+            } 
+        ?>
+        </div>
+        <li class="page-item next-page-btn">
+            <a class="next-btn btn-arrow" role="button" aria-label="Next" onclick="arrowPageClick(this)">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+    </ul>
+</nav >
