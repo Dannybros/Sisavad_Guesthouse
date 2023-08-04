@@ -19,12 +19,10 @@
         </div>
     </main>
 
-   
-
     <div class="menu_box">
         <ul class="menu_lists">
             <li class="p-2" >
-                <a class="menu_list text-decoration-none row p-3 text-white rounded-2 
+                <a class="menu_list text-decoration-none row px-1 py-3 text-white rounded-2 
                 <?php if (isset($_GET['calender']) || empty($_GET)) echo 'active_list'?>"
                     href="index.php?calender"
                 >
@@ -36,7 +34,7 @@
             </li>
 
             <li class="p-2" >
-                <a class="menu_list text-decoration-none row p-3 text-white rounded-2 
+                <a class="menu_list text-decoration-none row px-1 py-3 text-white rounded-2 
                     <?php if (isset($_GET['booking'])) echo 'active_list'?>"
                     href="index.php?booking"
                 >
@@ -48,7 +46,7 @@
             </li>
             
             <li class="p-2" >
-                <a class="menu_list text-decoration-none row p-3 text-white rounded-2 
+                <a class="menu_list text-decoration-none row px-1 py-3 text-white rounded-2 
                     <?php if (isset($_GET['rooms'])) echo 'active_list'?>"
                     href="index.php?rooms"
                 >
@@ -60,7 +58,7 @@
             </li>
 
             <li class="p-2" >
-                <a class="menu_list text-decoration-none row p-3 text-white rounded-2 
+                <a class="menu_list text-decoration-none row px-1 py-3 text-white rounded-2 
                     <?php if (isset($_GET['reserve'])) echo 'active_list'?>"
                     href="index.php?reserve"
                 >
@@ -81,7 +79,7 @@
 
                     echo "
                         <li class='p-2'>
-                            <div class='row d-flex align-items-center p-3 text-white rounded-2 menu_list $active' 
+                            <div class='row d-flex align-items-center px-1 py-3 text-white rounded-2 menu_list $active' 
                                 data-bs-toggle='collapse' 
                                 data-bs-target='#reportSubmenu' 
                                 aria-expanded='false' 
@@ -125,7 +123,7 @@
 
                     echo ("
                     <li class='p-2'>
-                        <a class='menu_list text-decoration-none row p-3 text-white rounded-2 $active'
+                        <a class='menu_list text-decoration-none row px-1 py-3 text-white rounded-2 $active'
                             href='index.php?setting'
                         >
                             <div>
