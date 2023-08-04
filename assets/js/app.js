@@ -787,9 +787,9 @@ function registerBooking(event){
             $("#main_box").animate({ scrollTop: 0 }, "slow");
             
             if(data==='success'){
+                createPDFfromHTML(bookingID);
                 resetBooking();
                 appendAlert("Room reserved successfully", 'success');
-                createPDFfromHTML(bookingID);
             }
             else appendAlert(data, "danger");
         }   
@@ -1942,7 +1942,7 @@ function refreshStaff(){
     function showStaff(data){
 
         var display=`
-        <tr class="text-center">                            
+        <tr class="text-center en-font">                            
             <td>
                 <div class="d-flex align-items-center">
                     <div class="d-flex justify-content-start flex-column">

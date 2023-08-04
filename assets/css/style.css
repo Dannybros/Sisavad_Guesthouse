@@ -64,7 +64,7 @@
     height:calc(100vh - 60px);
     position: sticky;
     top: 60px;
-    overflow: hidden;
+    overflow-y: scroll
 }
 .profile_sidebar{
     width: 100%;
@@ -92,7 +92,9 @@
     background: chartreuse;
     margin-right: 5px;
 }
-.menu__box{
+.menu_lists{
+    width: 100%;
+    height: calc(100vh - 350px);
     list-style: none;
     padding: 0px;
     margin: 0px;

@@ -19,8 +19,7 @@
         </div>
     </main>
 
-    <ul class="menu__box">
-
+    <ul class="menu_lists">
         <li class="p-2" >
             <a class="menu_list text-decoration-none row p-3 text-white rounded-2 
                 <?php if (isset($_GET['calender']) || empty($_GET)) echo 'active_list'?>"
@@ -138,5 +137,4 @@
         ?>
         
     </ul>
-
 </section>

@@ -26,10 +26,6 @@
                 <div class="calender-legend bg-warning bg-opacity-75"></div>
                 <label data-i18n="schedule.status.reserve"></label>
             </div>
-            <div class="d-flex mx-2">
-                <div class="calender-legend bg-danger bg-opacity-75"></div>
-                <label data-i18n="schedule.status.maintanence"></label>
-            </div>
         </figure>
 
         <figure class="d-flex m-0">

@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="./assets/css/style.css"></link>
     <title>Hotel Management</title>
 </head>
-<body class="lao-font">
+<body class="lao-font overflow-hidden">
     <?php 
         session_start(); 
 
@@ -32,7 +32,7 @@
         include "./views/nav.php"
     ?>
 
-    <div class="d-flex">
+    <div class="d-flex overflow-hidden">
         <?php include "./views/sidebar.php"; ?>
 
         <div class="col-sm-10 main_box overflow-y-auto" style="background-color: #F5F8FA;" id="main_box">
