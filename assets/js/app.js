@@ -107,9 +107,8 @@ function createCalender(rooms){
         const row_head = document.createElement("th");
         
         row_head.setAttribute("scope", !isTbody? "col" : "row");
-        row_head.innerHTML=`
-            ${name} <b class="fs-base fw-medium" style="width:20px"></b>
-        `;
+        row_head.style.width="70px";
+        row_head.innerText=name;
         table_tr.appendChild(row_head);
         
         for (let i = 1; i <= totalDays; i++){

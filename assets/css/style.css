@@ -64,7 +64,7 @@
     height:calc(100vh - 60px);
     position: sticky;
     top: 60px;
-    overflow-y: scroll
+    overflow:hidden
 }
 .profile_sidebar{
     width: 100%;
@@ -92,12 +92,22 @@
     background: chartreuse;
     margin-right: 5px;
 }
+
+.menu_box{
+    width: 100%;
+    height: calc(100vh - 330px);
+    overflow: hidden;
+    padding: 10px;
+}
 .menu_lists{
     width: 100%;
-    height: calc(100vh - 350px);
+    height: 100%;
+    overflow: auto;
+    margin: 0;
+    padding-left: 2px;
+    padding-right: 27px;
     list-style: none;
-    padding: 0px;
-    margin: 0px;
+    box-sizing: content-box;
 }
 .main-menu {
     text-align: left;
@@ -114,7 +124,7 @@
 .menu__list{
     display: block;
     color: white;
-    padding: 20px 30px;
+    padding: 10px 20px;
     font-size: 18px;
     letter-spacing: 3px;
     text-decoration: none;
@@ -389,3 +399,4 @@
     background-color: #013A6B;
     background-image: -webkit-linear-gradient(40deg, #013A6B 50%, #004a8f 50.5%);
 }
+
