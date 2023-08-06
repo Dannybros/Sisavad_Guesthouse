@@ -6,6 +6,7 @@
         <option value="Reserved" data-i18n="schedule.status.reserve">Reserved</option>
         <option value="Staying" data-i18n="schedule.status.stay">Staying</option>
         <option value="Finished" data-i18n="schedule.status.finish">Finished</option>
+        <option value="Cancelled" data-i18n="booking.status.cancel">Cancelled</option>
     </select>
     <div class="input-group" style="width: 300px !important;">
         <input type="text" id="bookingSearchBar" class="form-control en-font" style="border:1px solid lightblue" 
@@ -114,7 +115,7 @@
 
 
 <nav aria-label="Page navigation example">
-    <ul class="pagination justify-content-center">
+    <ul class="pagination justify-content-center en-font">
         <li class="page-item">
             <a class="previous-btn btn-arrow" role="button" aria-label="Previous" onclick="arrowPageClick(this)">
                 <span aria-hidden="true">&laquo;</span>

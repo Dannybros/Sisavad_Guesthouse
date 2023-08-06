@@ -19,9 +19,16 @@
 
         if ($status==="all") {
             $status = "";
+            $order = 'date_in DESC';
+        }else{
+            if($status==="Staying"){
+                $order = 'date_out ASC';
+            }else{
+                $order = 'date_in ASC';
+            }
         }
         
-        $query = "SELECT * FROM booking JOIN room ON booking.booked_room = room.room_id JOIN room_type ON room.room_type_id = room_type.room_type_id WHERE (`room_name` LIKE '%$search%' OR `booking_id` LIKE '%$search%') AND `booking_status` LIKE '%$status%' ORDER BY `date_in` DESC LIMIT 10 OFFSET $page";
+        $query = "SELECT * FROM booking JOIN room ON booking.booked_room = room.room_id JOIN room_type ON room.room_type_id = room_type.room_type_id WHERE (`room_name` LIKE '%$search%' OR `booking_id` LIKE '%$search%') AND `booking_status` LIKE '%$status%' ORDER BY $order LIMIT 10 OFFSET $page";
 
     }
 

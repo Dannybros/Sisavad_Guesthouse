@@ -9,7 +9,7 @@ const en={
         span2: 'Management System',
     },
     sidebar:{
-        name:"Sisavad Guesthouse",
+        name:"Sisavad Hotel",
         menu1:'Schedule',
         menu2:'Booking',
         menu3:'Rooms',
@@ -190,7 +190,7 @@ const en={
         revenue:{
             title:"Revenue Info",
             duration:{
-                week:"Week",
+                weekly:"Week",
                 month:"Month",
                 half:"6 Months",
                 year:"Year"
@@ -462,7 +462,7 @@ const lao={
         revenue:{
             title:"ຂໍ້ມູນລາຍຮັບ",
             duration:{
-                week:"ອາທິດ",
+                weekly:"ອາທິດ",
                 month:"ເດືອນ",
                 half:"6 ເດືອນ",
                 year:"ປີ"

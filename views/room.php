@@ -154,9 +154,13 @@
                     </div>
                 </main>
                 <div class="modal-footer">
-                    <button type="submit" id="btnRoomModalSubmit" class="btn btn-primary"></button>
-                    <button type="reset" class="btn btn-warning" data-i18n="modal.reset"></button>
-                    <button type="button" onclick="delRoom()" class="btn btn-danger" data-i18n="modal.delete"></button>
+                    <?php
+                        echo '
+                            <button type="submit" id="btnRoomModalSubmit" class="btn btn-primary"></button>
+                            <button type="reset" class="btn btn-warning" data-i18n="modal.reset"></button>
+                            <button type="button" onclick="delRoom()" class="btn btn-danger" data-i18n="modal.delete"></button>
+                        ';
+                    ?>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-i18n="modal.close"></button> 
                 </div>
             </form>

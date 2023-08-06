@@ -1063,6 +1063,13 @@ function fillBookingModal(booking, id, form){
             $("#btn_booking_ci").prop('disabled', false);
             $("#btn_booking_co").prop('disabled', true);
         }
+        if(booking.status==="Cancekked"){
+            $(".btn-booking-modal").prop('disabled', true);
+            $("#btn_booking_ci").prop('disabled', true);
+            $("#btn_booking_co").prop('disabled', true);
+            $("#btn_full_pay").prop('disabled', true);
+            $("#btn_pay_deposit").prop('disabled', true);
+        }
     }
 
     // warning to change color to red if fee isn't paid yet

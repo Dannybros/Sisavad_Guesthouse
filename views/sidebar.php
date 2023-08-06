@@ -5,7 +5,7 @@
         <div class="profile_name ms-3">
             <div class="fs-5 text-light mb-2">
                 <span class="mb-0" data-i18n="sidebar.name"></span>
-                (<span class="fs-6 text-capitalize"><?php echo $_SESSION['username'] ?></span>)
+                (<span class="fs-6 text-capitalize en-font"><?php echo $_SESSION['username'] ?></span>)
             </div>
             <figure class="d-flex align-items-center en-font text-light mb-0">
                 <span class="green__circle me-3"></span>

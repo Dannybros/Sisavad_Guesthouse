@@ -111,7 +111,7 @@ function drawDonutRoomStats(){
 
                   labels.map((item, index)=>{
                     let value = chart.data.datasets[0].data[index];
-                    item.text +=`::   ${value} Rooms   (${(value / total * 100).toFixed(0)}%)`;
+                    item.text +=`:: (${(value / total * 100).toFixed(0)}%)`;
                   })
 
                   return labels
@@ -476,7 +476,7 @@ function drawApexBookingLineChart(){
             formatter: function(value) {
               var val = Math.abs(value)
               if (val >= 1000000) {
-                val = formatNumber((val / 1000)) + ' K'
+                val = formatNumber((val / 1000000)) + ' M'
               }
               return val
             }
