@@ -1240,7 +1240,7 @@ function getRoomTypePrice(roomTypeId){
     var price = document.getElementById('roomModal_price');
 
     $.ajax({
-        url:`./controllers/getRoomPrice.php?id=${roomTypeId}`,
+        url:`./controllers/getRoomPrice.php?one&id=${roomTypeId}`,
         type:"GET",
         dataType:"JSON",
         success: function(res){
@@ -1295,7 +1295,7 @@ function delRoom(){
     var type = $("#roomModal").data('submit');
     var id = $("#roomModal").data('id');
 
-    if(status ==="Booked") alert($.t("error.err1"));
+    if(status ===$.t("rooms.status.reserve") || status === $.t("rooms.status.occupy")) alert($.t("error.err1"));
     else if (type === "new") alert($.t("error.err2"));
     else{
         $.ajax({
@@ -1303,7 +1303,7 @@ function delRoom(){
             type:"POST",
             success: function(data){
                 if(data==='success') clearRoomModal();
-                else appendAlert(data.error, "danger");
+                else appendAlert(data, "danger");
             }   
         })
     }
@@ -1581,6 +1581,7 @@ function roomCheckOut(){
         },
         success: function(data){
             if(data==='success'){
+                generateBill();
                 $("#bookingRoomModal").modal('hide');
                 reloadAfterRoomAction(form);
                 appendAlert(`Room has been Checked Out`, "success");
@@ -1661,6 +1662,8 @@ function moveRoom(){
     const memo = $('#movingRoomMemo').val();
     const roomID = $('#availableRooms').val();
     const prevRoomID = $("#bookedRoom").data('id');
+    const charge = parseInt($("#movingExtraFee").text().replace(",", ""));
+
     var action;
 
     if(roomID===null){
@@ -1680,6 +1683,7 @@ function moveRoom(){
         data:{
             roomID:roomID,
             status:'Moved',
+            charge:charge,
             time:time,
             prevRoom:prevRoomID,
             memo:memo
@@ -2073,6 +2077,188 @@ function delStaff(id){
         }   
     })
 }
+
+function formatInvoiceTime(date) {
+    function padTo2Digits(num) {
+        return num.toString().padStart(2, '0');
+    }
+
+    return (
+        [
+            date.getFullYear(),
+            padTo2Digits(date.getMonth() + 1),
+            padTo2Digits(date.getDate()),
+        ].join('-') +
+        ' ' +
+        [
+            padTo2Digits(date.getHours()),
+            padTo2Digits(date.getMinutes()),
+            padTo2Digits(date.getSeconds()),
+        ].join(':')
+    );
+}
+
+function formatStringCommaToNumber(string){
+    var value ="";
+    let strings = string.split(',');
+
+    for (const item of strings) {
+        value += item;
+    }
+    
+    return parseInt(value)
+}
+
+function generateBill(){
+    $.ajax({
+        url:`./controllers/getRoomLog.php?one-booking-logs`,
+        type:"POST",
+        data:{
+            id:$("#booking_ID_Title").text(),
+        },
+        dataType:"JSON",
+        success: function(data){
+            let billData = [];
+
+            const total = formatStringCommaToNumber($("#bookingModalTotal").val());
+            const duration = parseInt($("#bookingModalDuration").val());
+
+            const movedActions = data.filter(action=> action.movement==="Moved");
+
+            if(movedActions.length > 0){
+                let start_day = $("#bookingCID").val();
+                let leftCharge = total;
+                let price;
+
+                movedActions.map((action)=>{
+
+                    const new_duration = getDaysBetween(start_day, action.time);
+
+                    // $.ajax({
+                    //     url:`./controllers/getRoomPrice.php?room=${action.old_room}`,
+                    //     type:"GET",
+                    //     dataType:"JSON",
+                    //     success: function(res){    
+                    //         price = res.price;  
+                    //     }   
+                    // })
+                    
+                    billData.push([
+                        action.old_room,
+                        start_day,
+                        action.time,
+                        new_duration + " Days",
+                        // price + " KIP",
+                        // price * new_duration + " KIP"
+                    ]);
+                    
+                    start_day = action.time;
+                    leftCharge = leftCharge - price * new_duration;
+                    
+                    billData.push([
+                        $("#bookedRoom").val(),
+                        start_day,
+                        $("#bookingCOD").val(),
+                        getDaysBetween(start_day, $("#bookingCOD").val()) + " Days",
+                        // leftCharge / getDaysBetween(start_day, $("#bookingCOD").val()) + " KIP",
+                        // leftCharge + " KIP"
+                    ]);
+                })
+
+            }else{
+                
+                const prices = total / duration;
+                
+                billData = [[
+                    $("#bookedRoom").val(), 
+                    $("#bookingCID").val(), 
+                    $("#bookingCOD").val(), 
+                    $("#bookingModalDuration").val(), 
+                    // prices + " KIP", 
+                    // $("#bookingModalTotal").val()
+                ]];
+            }
+
+            const customer = $("#bookedCustomerTb").children().children().first().text();
+            pdf_props.contact.name = customer;
+            pdf_props.invoice.additionalRows[0].col2 = $("#bookingModalTotal").val();
+            pdf_props.invoice.table = billData;
+            pdf_props.invoice.num = $("#booking_ID_Title").text();
+            pdf_props.fileName = "Bill - " + $("#booking_ID_Title").text();
+
+            jsPDFInvoiceTemplate.default(pdf_props);
+        }   
+    })
+
+   
+}
+
+var pdf_props = {
+    outputType: "save",
+    returnJsPDFDocObject: true,
+    fileName: "Invoice 2023",
+    orientationLandscape: false,
+    compress: true,
+    logo: {
+        src: "https://raw.githubusercontent.com/edisonneza/jspdf-invoice-template/demo/images/logo.png",
+        width: 53.33, //aspect ratio = width/height
+        height: 26.66,
+        margin: {
+            top: 0, //negative or positive num, from the current position
+            left: 0 //negative or positive num, from the current position
+        }
+    },
+    business: {
+        name: "Sisavad Hotel",
+        address: "Albania, Tirane ish-Dogana, Durres 2001",
+        phone: "(+856) 021 289 3824",
+        email: "sisavad@gmail.com",
+        email_1: "www.sisavad_hotel.com",
+    },
+    contact: {
+        label: "Invoice issued for:",
+        name: "Client Name",
+        phone: "(+355) 069 22 22 222",
+        email: "client@website.al",
+    },
+    invoice: {
+        label: "Booking ID: ",
+        num: 'b1223223',
+        invGenDate: `Invoice Date: ${formatInvoiceTime(new Date())}`,
+        headerBorder: true,
+        tableBodyBorder: true,
+        header: [
+        { title: "Room Name"},
+        { title: "Check-In"},
+        { title: "Check-Out"},
+        { title: "Duration"},
+        // { title: "Price"},
+        // { title: "Total"}
+        ],
+        additionalRows: [{
+            col1: 'Subtotal:',
+            col2: '145,250.50',
+            style: {
+                fontSize: 14
+            }
+        }],
+        table: Array.from(Array(9), (item, index)=>([
+            index + 1,
+            "2023-08-07",
+            "2023-08-15",
+            '3 nights',
+            200.5,
+            400.5
+        ])),
+        invDescLabel: "Invoice Note",
+        invDesc: "There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary.",
+    },
+    footer: {
+        text: "The invoice is created on a computer and is valid without the signature and stamp.",
+    },
+    pageEnable: true,
+    pageLabel: "Page ",
+};
 
 // window onLoad
 

@@ -90,6 +90,7 @@
     <!-- jsPDF and html2canvas -->    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script type="text/javascript" src="https://html2canvas.hertzen.com/dist/html2canvas.js"></script>
+    <script src="https://unpkg.com/jspdf-invoice-template@1.4.3/dist/index.js"></script>
 
     <!-- app js -->
     <script src="./assets/js/i18n.js"></script>

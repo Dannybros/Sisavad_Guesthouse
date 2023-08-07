@@ -11,8 +11,9 @@
         room2.room_name AS old_room 
         FROM service
         INNER JOIN room AS room1 ON service.room_id = room1.room_id
-        LEFT JOIN room AS room2 ON service.old_room_id = room2.room_id
+        LEFT JOIN room AS room2 ON service.old_room_id = room2.room_id 
         WHERE service.booking_id = '$id'";
+
         $result = mysqli_query($conn, $query);
 
         while ($log = mysqli_fetch_array($result)) {

@@ -35,9 +35,10 @@
     }
     else if(isset($_GET['move'])) {
         $prevRoomID = $_POST['prevRoom'];
+        $charge = $_POST['charge'];
         $memo = $_POST['memo'];
         $sql="INSERT INTO `service`(`booking_id`, `room_id`, `old_room_id`, `time`, `action`, `memo`) VALUES ('$booking_ID', '$roomID', '$prevRoomID', '$time', '$status', '$memo');
-            UPDATE `booking` SET `booked_room` = '$roomID' WHERE `booking_id`='$booking_ID';
+            UPDATE `booking` SET `booked_room` = '$roomID', total_payment = total_payment + $charge WHERE `booking_id`='$booking_ID';
             UPDATE `room` SET `room_status`='Occupied' WHERE `room_id`='$roomID';
             UPDATE `room` SET `room_status`='Free' WHERE `room_id`='$prevRoomID';
         ";
