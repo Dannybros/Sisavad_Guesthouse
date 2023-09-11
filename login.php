@@ -59,7 +59,7 @@
     <script>
         $(".alert").fadeTo(2000, 500).slideUp(500, function(){
             $(this).alert('close');
-            window.history.replaceState({}, document.title, "/hotel/login.php");
+            window.history.pushState('', '', 'login.php');
         });
     </script>
 </html>

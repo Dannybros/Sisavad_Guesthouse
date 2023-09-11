@@ -2121,61 +2121,40 @@ function generateBill(){
             let billData = [];
 
             const total = formatStringCommaToNumber($("#bookingModalTotal").val());
-            const duration = parseInt($("#bookingModalDuration").val());
 
             const movedActions = data.filter(action=> action.movement==="Moved");
 
             if(movedActions.length > 0){
                 let start_day = $("#bookingCID").val();
-                let leftCharge = total;
-                let price;
 
                 movedActions.map((action)=>{
 
                     const new_duration = getDaysBetween(start_day, action.time);
 
-                    // $.ajax({
-                    //     url:`./controllers/getRoomPrice.php?room=${action.old_room}`,
-                    //     type:"GET",
-                    //     dataType:"JSON",
-                    //     success: function(res){    
-                    //         price = res.price;  
-                    //     }   
-                    // })
-                    
                     billData.push([
                         action.old_room,
                         start_day,
                         action.time,
-                        new_duration + " Days",
-                        // price + " KIP",
-                        // price * new_duration + " KIP"
+                        new_duration + " Days"
                     ]);
                     
                     start_day = action.time;
-                    leftCharge = leftCharge - price * new_duration;
                     
                     billData.push([
                         $("#bookedRoom").val(),
                         start_day,
                         $("#bookingCOD").val(),
-                        getDaysBetween(start_day, $("#bookingCOD").val()) + " Days",
-                        // leftCharge / getDaysBetween(start_day, $("#bookingCOD").val()) + " KIP",
-                        // leftCharge + " KIP"
+                        getDaysBetween(start_day, $("#bookingCOD").val()) + " Days"
                     ]);
                 })
 
             }else{
-                
-                const prices = total / duration;
-                
+                            
                 billData = [[
                     $("#bookedRoom").val(), 
                     $("#bookingCID").val(), 
                     $("#bookingCOD").val(), 
-                    $("#bookingModalDuration").val(), 
-                    // prices + " KIP", 
-                    // $("#bookingModalTotal").val()
+                    $("#bookingModalDuration").val()
                 ]];
             }
 

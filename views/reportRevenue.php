@@ -58,7 +58,7 @@
                             </div>
                             <div class="text-capitalize">
                                 <span data-i18n="report.revenue.statistics.stat1"> Earned In </span>
-                                <span class="period_value" data-i18n="report.revenue.duration.week"> WEEK </span>
+                                <span class="period_value" data-i18n="report.revenue.duration.weekly"> WEEK </span>
                             </div>
                         </figure>
                     </div>
@@ -69,7 +69,7 @@
                             </div>
                             <div class="text-capitalize">
                                 <span data-i18n="report.revenue.statistics.stat2">Bookings In</span>
-                                <span class="period_value" data-i18n="report.revenue.duration.week">Week</span>
+                                <span class="period_value" data-i18n="report.revenue.duration.weekly">Week</span>
                             </div>
                         </figure>
                     </div>
@@ -107,8 +107,8 @@
                         </span>
                         <label class="fs-5 text-secondary pe-none text-uppercase">
                             (
-                            <span class="period_value" data-i18n="report.revenue.duration.week">
-                                (WEEK)
+                            <span class="period_value" data-i18n="report.revenue.duration.weekly">
+                                WEEK
                             </span>
                             )
                         </label>
@@ -130,8 +130,8 @@
                         </div>
                         <label class="fs-5 text-secondary pe-none text-uppercase">
                             (
-                            <span class="period_value" data-i18n="report.revenue.duration.week">
-                                (WEEK)
+                            <span class="period_value" data-i18n="report.revenue.duration.weekly">
+                                WEEK
                             </span>
                             )
                         </label>

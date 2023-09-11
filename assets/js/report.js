@@ -534,6 +534,25 @@ function drawApexPopularRoomBarChart(){
     dataType:"JSON",
     success: function(data){
 
+      if(data.length <= 0){
+        revenueBarChart = new ApexCharts(element, {
+          series:[],
+          labels:[],
+          noData: {
+            text: "No Entries Yet",
+            align: "center",
+            verticalAlign: "middle",
+          },
+          chart: {
+            type: "bar"
+          },
+        });
+
+        revenueBarChart.render();
+
+        return;
+      }
+
       const maxValue = Math.max(...data.map(o => o.total));
       $('#room_name_period').text(data.sort((a,b)=> b.total - a.total)[0].name);
 
@@ -658,6 +677,25 @@ function drawApexPopularRoomPieChart(){
     },
     dataType:"JSON",
     success: function(data){
+
+      if(data.length <= 0){
+        revenuePieChart = new ApexCharts(element, {
+          series:[],
+          labels:[],
+          noData: {
+            text: "No Entries Yet",
+            align: "center",
+            verticalAlign: "middle",
+          },
+          chart: {
+            type: "pie"
+          },
+        });
+
+        revenuePieChart.render();
+
+        return;
+      }
 
       $('#room_type_period').text(data.sort((a,b)=> b.total - a.total)[0].name);
 
@@ -887,7 +925,6 @@ function setActiveRevenuePeriod(period){
     },
     dataType:"JSON",
     success: function(data){
-      console.log(data);
       const el = document.getElementById("period_bookings");
       el.innerHTML="";
 
@@ -936,6 +973,8 @@ if(revenue_page){
   drawApexBookingLineChart();
   drawApexPopularRoomBarChart();
   drawApexPopularRoomPieChart();
+
+  console.log(revenueBarChart);
 }
 
 
